@@ -7,7 +7,7 @@ var defaultAppBar = AppBar(
 );
 
 var defaultDrawer = Drawer(
-  backgroundColor: Colors.grey[300],
+  backgroundColor: Colors.grey[300], elevation: 0,
   child: Column(
     children: const [
       DrawerHeader(child: Icon(Icons.abc)),
