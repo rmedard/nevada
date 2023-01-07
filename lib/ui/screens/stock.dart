@@ -12,8 +12,19 @@ class Stock extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Produits',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Produits',
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+              ElevatedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('Nouveau Produit'),
+                style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+              )
+            ],
+          ),
           DataTable(
               columns: const <DataColumn>[
                 DataColumn(label: Text('')),
