@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 class MetricCard extends StatelessWidget {
-  const MetricCard({Key? key}) : super(key: key);
+  final Widget body;
+  const MetricCard({Key? key, required this.body}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        color: Colors.blue,
-      ),
+    return Card(
+        color: Colors.white,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+          child: body,
+        ),
     );
   }
 }

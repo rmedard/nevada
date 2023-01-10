@@ -21,7 +21,7 @@ class MobileLayout extends StatelessWidget {
                 itemCount: 4,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                   itemBuilder: (context, index) {
-                    return const MetricCard();
+                    return const MetricCard(body: Text('mobile data'),);
                   }),
             ),
           ),

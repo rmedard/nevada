@@ -21,7 +21,7 @@ class Dashboard extends StatelessWidget {
                       itemCount: 4,
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
                       itemBuilder: (context, index) {
-                        return const MetricCard();
+                        return const MetricCard(body: Text('data'),);
                       }),
                 ),
               ),
@@ -29,9 +29,9 @@ class Dashboard extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      return const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        child: ListTile(tileColor: Colors.red),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        child: ListTile(tileColor: Theme.of(context).primaryColor),
                       );
                     }),
               ),
@@ -41,7 +41,7 @@ class Dashboard extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              Expanded(child: Container(color: Colors.pink))
+              Expanded(child: Container(color: Theme.of(context).primaryColor))
             ],
           ),
         )

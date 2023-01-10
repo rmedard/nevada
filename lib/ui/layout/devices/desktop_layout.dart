@@ -14,8 +14,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: defaultBackground,
-      appBar: defaultAppBar,
+      backgroundColor: const Color(0xFFF1FAFE),
       body: Row(
         children: [
           NavigationRail(
@@ -23,8 +22,9 @@ class _DesktopLayoutState extends State<DesktopLayout> {
               leading: const DrawerHeader(child: Text('NEVADA STOCK', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),)),
               onDestinationSelected: (index) => setState(() => _selectedIndex = index),
               destinations: menuElements
-                  .map((e) => NavigationRailDestination(icon: e.icon, label: Text(e.label)))
+                  .map((e) => NavigationRailDestination(icon: e.icon, selectedIcon: e.iconFill, label: Text(e.label)))
                   .toList(),
+              useIndicator: true,
               selectedIndex: _selectedIndex),
           menuElements[_selectedIndex].body
         ],
