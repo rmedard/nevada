@@ -8,15 +8,15 @@ class Separator extends StatelessWidget {
   Widget build(BuildContext context) {
     if (direction == SeparatorDirection.horizontal) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Divider(
           thickness: 2,
           color: Theme.of(context).primaryColor.withOpacity(0.5),
             indent: 10, endIndent: 10),
       );
     } else {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: VerticalDivider(
           thickness: 2,
           color: Colors.green,

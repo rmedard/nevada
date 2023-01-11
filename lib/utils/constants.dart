@@ -18,3 +18,9 @@ var boxNames = {
   BoxNameKey.stockRefills: (StockRefill).toString(),
   BoxNameKey.transactions: (Transaction).toString(),
 };
+
+const configBoxName = 'config';
+
+enum ConfigKey {
+  regions, languages
+}

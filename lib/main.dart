@@ -35,6 +35,13 @@ void main() async {
   Hive.registerAdapter(StockRefillAdapter());
   Hive.registerAdapter(TransactionAdapter());
 
+  /** Init Regions **/
+
+  var configBox = await Hive.openBox<dynamic>(configBoxName);
+  if (configBox.isEmpty) {
+    configBox.put(ConfigKey.regions.name, ['regions', 'Matola', 'Zimpeto', 'Nyambane', 'Xai Xai']);
+  }
+
   /** Init Products & Stock **/
   var productsBox = await Hive.openBox<Product>(boxNames[BoxNameKey.products]!);
   if (productsBox.isEmpty) {
@@ -74,8 +81,7 @@ void main() async {
   }
 
   /** Init Customers **/
-  var customersBox =
-      await Hive.openBox<Customer>(boxNames[BoxNameKey.customers]!);
+  var customersBox = await Hive.openBox<Customer>(boxNames[BoxNameKey.customers]!);
   if (customersBox.isEmpty) {
     var phones = [
       '+258 48 337 00 14',
