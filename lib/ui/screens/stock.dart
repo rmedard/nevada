@@ -21,9 +21,7 @@ class Stock extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Produits',
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+                  Text('Produits', style: Theme.of(context).textTheme.headline1),
                   ElevatedButton.icon(
                     onPressed: () {},
                     icon: const Icon(Icons.add),
@@ -71,8 +69,7 @@ class Stock extends StatelessWidget {
                             )),
                             DataCell(Text('${e.value.totalStock}')),
                             DataCell(IconButton(
-                                icon:
-                                    const Icon(Icons.add, color: Colors.green),
+                                icon: const Icon(Icons.add, color: Colors.green),
                                 onPressed: () {
                                   showDialog(
                                       context: context,

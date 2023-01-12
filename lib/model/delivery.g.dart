@@ -18,7 +18,7 @@ class DeliveryAdapter extends TypeAdapter<Delivery> {
     };
     return Delivery(
       uuid: fields[0] as String,
-      customerUuid: fields[1] as String,
+      customer: fields[1] as Customer,
       date: fields[2] as DateTime,
     )..lines = (fields[3] as HiveList).castHiveList();
   }
@@ -30,7 +30,7 @@ class DeliveryAdapter extends TypeAdapter<Delivery> {
       ..writeByte(0)
       ..write(obj.uuid)
       ..writeByte(1)
-      ..write(obj.customerUuid)
+      ..write(obj.customer)
       ..writeByte(2)
       ..write(obj.date)
       ..writeByte(3)

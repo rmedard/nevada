@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:nevada/model/product.dart';
 
 part 'delivery_line.g.dart';
 
@@ -12,7 +13,7 @@ class DeliveryLine extends HiveObject {
   String deliveryUuid;
 
   @HiveField(2)
-  String productUuid;
+  Product product;
 
   @HiveField(3)
   int productQuantity;
@@ -23,7 +24,7 @@ class DeliveryLine extends HiveObject {
   DeliveryLine(
       {required this.uuid,
       required this.deliveryUuid,
-      required this.productUuid,
+      required this.product,
       required this.productQuantity,
       required this.productUnitPrice});
 }

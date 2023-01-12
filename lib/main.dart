@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/delivery_line.dart';
@@ -39,7 +40,8 @@ void main() async {
 
   var configBox = await Hive.openBox<dynamic>(configBoxName);
   if (configBox.isEmpty) {
-    configBox.put(ConfigKey.regions.name, ['regions', 'Matola', 'Zimpeto', 'Nyambane', 'Xai Xai']);
+    configBox.put(ConfigKey.regions.name,
+        ['regions', 'Matola', 'Zimpeto', 'Nyambane', 'Xai Xai']);
   }
 
   /** Init Products & Stock **/
@@ -84,10 +86,10 @@ void main() async {
   var customersBox = await Hive.openBox<Customer>(boxNames[BoxNameKey.customers]!);
   if (customersBox.isEmpty) {
     var phones = [
-      '+258 48 337 00 14',
-      '+258 48 337 00 14',
-      '+258 48 337 00 14',
-      '+258 48 337 00 14'
+      '+258 48 337 11 14',
+      '+258 48 337 22 14',
+      '+258 48 337 33 14',
+      '+258 48 337 44 14'
     ];
     var regions = ['Matola', 'Nyambani', 'Xai Xai', 'Zimpeto'];
 
@@ -114,24 +116,46 @@ class NevadaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var baseColor = const Color(0xFF4261EC);
-    baseColor;
+    const kColorPrimary = Color(0xff4261EC);
+    const kColorPrimaryLight = Color(0xff8fb7ee);
+    const kColorAccent = Color(0xffe80013);
+    const kColorOrange = Colors.deepOrangeAccent;
+    const kColorRed = Colors.red;
+    const kColorGreen = Color(0xff00e861);
+    const kColorLightGray = Color(0xffecf0fa);
+    const kColorDark = Color(0xff181818);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nevada',
       theme: ThemeData(
-          primarySwatch: MaterialColor(baseColor.value, <int, Color>{
-        50: baseColor.withOpacity(0.1),
-        100: baseColor.withOpacity(0.2),
-        200: baseColor.withOpacity(0.3),
-        300: baseColor.withOpacity(0.4),
-        400: baseColor.withOpacity(0.5),
-        500: baseColor.withOpacity(0.6),
-        600: baseColor.withOpacity(0.7),
-        700: baseColor.withOpacity(0.8),
-        800: baseColor.withOpacity(0.9),
-        900: baseColor.withOpacity(1),
-      })),
+          primarySwatch: MaterialColor(
+            kColorPrimary.value, <int, Color>{
+              50: kColorPrimary.withOpacity(0.1),
+              100: kColorPrimary.withOpacity(0.2),
+              200: kColorPrimary.withOpacity(0.3),
+              300: kColorPrimary.withOpacity(0.4),
+              400: kColorPrimary.withOpacity(0.5),
+              500: kColorPrimary.withOpacity(0.6),
+              600: kColorPrimary.withOpacity(0.7),
+              700: kColorPrimary.withOpacity(0.8),
+              800: kColorPrimary.withOpacity(0.9),
+              900: kColorPrimary.withOpacity(1),
+            },
+          ),
+          textTheme: TextTheme(
+              headline1: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 32, color: kColorDark),
+              headline2: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 26, color: kColorDark),
+              headline3: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 20, color: kColorDark),
+              headline4: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 14, color: kColorDark),
+              headline5: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 6, color: kColorDark),
+              headline6: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 2, color: kColorDark),
+              bodyText1: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 16, color: kColorDark),
+              bodyText2: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
+              subtitle1: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
+              subtitle2: GoogleFonts.nunito(fontWeight: FontWeight.w400, fontSize: 14, color: kColorDark),
+              button: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
+              caption: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark))),
       home: const ResponsiveLayout(
           mobileScaffold: MobileLayout(),
           tabletScaffold: TabletLayout(),

@@ -19,7 +19,7 @@ class DeliveryLineAdapter extends TypeAdapter<DeliveryLine> {
     return DeliveryLine(
       uuid: fields[0] as String,
       deliveryUuid: fields[1] as String,
-      productUuid: fields[2] as String,
+      product: fields[2] as Product,
       productQuantity: fields[3] as int,
       productUnitPrice: fields[4] as int,
     );
@@ -34,7 +34,7 @@ class DeliveryLineAdapter extends TypeAdapter<DeliveryLine> {
       ..writeByte(1)
       ..write(obj.deliveryUuid)
       ..writeByte(2)
-      ..write(obj.productUuid)
+      ..write(obj.product)
       ..writeByte(3)
       ..write(obj.productQuantity)
       ..writeByte(4)

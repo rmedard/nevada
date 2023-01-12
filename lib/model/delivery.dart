@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery_line.dart';
 
 part 'delivery.g.dart';
@@ -10,7 +11,7 @@ class Delivery extends HiveObject {
   String uuid;
 
   @HiveField(1)
-  String customerUuid;
+  Customer customer;
 
   @HiveField(2)
   DateTime date;
@@ -18,6 +19,5 @@ class Delivery extends HiveObject {
   @HiveField(3)
   late HiveList<DeliveryLine> lines;
 
-  Delivery(
-      {required this.uuid, required this.customerUuid, required this.date});
+  Delivery({required this.uuid, required this.customer, required this.date});
 }

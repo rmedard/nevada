@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nevada/model/delivery.dart';
 import 'package:nevada/services/clients_service.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/separator.dart';
+import 'package:nevada/ui/forms/delivery_form.dart';
+import 'package:nevada/ui/forms/inputs/products_drop_down.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
+import 'package:uuid/uuid.dart';
 
 class Clients extends StatelessWidget {
   const Clients({Key? key}) : super(key: key);
@@ -86,7 +90,11 @@ class Clients extends StatelessWidget {
                                       elevation: 0,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                                     ),
-                                    onPressed: (){}))
+                                    onPressed: () => showDialog(context: context, builder: (context) {
+                                      var newDelivery = Delivery(uuid: const Uuid().v4(), customer: e.value, date: DateTime.now());
+                                      return AlertDialog(
+                                          content: DeliveryForm(delivery: newDelivery, isNew: true));
+                                    })))
                               ]))
                           .toList()),
                 ),
