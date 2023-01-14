@@ -11,4 +11,8 @@ class BaseService<T> {
     return dataBox.values.toList();
   }
 
+  void createNew(String uuid, T t) {
+    dataBox.put(uuid, t);
+  }
+
 }

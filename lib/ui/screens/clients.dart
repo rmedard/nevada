@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/services/clients_service.dart';
+import 'package:nevada/services/deliveries_service.dart';
+import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/separator.dart';
+import 'package:nevada/ui/components/table_column_title.dart';
+import 'package:nevada/ui/forms/customer_delivery_form.dart';
 import 'package:nevada/ui/forms/delivery_form.dart';
 import 'package:nevada/ui/forms/inputs/products_drop_down.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
+import 'package:nevada/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
 class Clients extends StatelessWidget {
@@ -64,13 +70,13 @@ class Clients extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: DataTable(
                       columns: const <DataColumn>[
-                        DataColumn(label: Text('#')),
-                        DataColumn(label: Text('Nom')),
-                        DataColumn(label: Text('Quartier')),
-                        DataColumn(label: Text('Téléphone')),
-                        DataColumn(label: Text('Dernière livraison')),
-                        DataColumn(label: Text('Créance')),
-                        DataColumn(label: Text('Livraison', style: TextStyle(fontWeight: FontWeight.bold))),
+                        DataColumn(label: TableColumnTitle(title: '#')),
+                        DataColumn(label: TableColumnTitle(title: 'Nom')),
+                        DataColumn(label: TableColumnTitle(title: 'Quartier')),
+                        DataColumn(label: TableColumnTitle(title: 'Téléphone')),
+                        DataColumn(label: TableColumnTitle(title: 'Dernière livraison')),
+                        DataColumn(label: TableColumnTitle(title: 'Créance')),
+                        DataColumn(label: TableColumnTitle(title: 'Livraison')),
                       ],
                       rows: clients
                           .asMap()
@@ -93,7 +99,11 @@ class Clients extends StatelessWidget {
                                     onPressed: () => showDialog(context: context, builder: (context) {
                                       var newDelivery = Delivery(uuid: const Uuid().v4(), customer: e.value, date: DateTime.now());
                                       return AlertDialog(
-                                          content: DeliveryForm(delivery: newDelivery, isNew: true));
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                          content: CustomerDeliveryForm(delivery: newDelivery, isNew: true),
+                                          actions: const [
+                                            DefaultButton(label: 'Sauvegarder')
+                                          ]);
                                     })))
                               ]))
                           .toList()),

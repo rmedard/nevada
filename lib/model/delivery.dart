@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery_line.dart';
+import 'package:nevada/utils/constants.dart';
 
 part 'delivery.g.dart';
 
@@ -17,7 +18,7 @@ class Delivery extends HiveObject {
   DateTime date;
 
   @HiveField(3)
-  late HiveList<DeliveryLine> lines;
+  HiveList<DeliveryLine> lines = HiveList(Hive.box<DeliveryLine>(boxNames[BoxNameKey.deliveryLines]!), objects: []);
 
   Delivery({required this.uuid, required this.customer, required this.date});
 }

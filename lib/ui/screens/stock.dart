@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nevada/services/products_service.dart';
+import 'package:nevada/ui/components/default_button.dart';
+import 'package:nevada/ui/components/table_column_title.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 
 class Stock extends StatelessWidget {
@@ -45,12 +47,12 @@ class Stock extends StatelessWidget {
               child: DataTable(
                   columns: const <DataColumn>[
                     DataColumn(label: Text('')),
-                    DataColumn(label: Text('Nom du produit')),
-                    DataColumn(label: Text('Prix unitaire')),
-                    DataColumn(label: Text('Déscription')),
-                    DataColumn(label: Text('')),
-                    DataColumn(label: Text('Stock')),
-                    DataColumn(label: Text(''))
+                    DataColumn(label: TableColumnTitle(title: 'Nom du produit')),
+                    DataColumn(label: TableColumnTitle(title: 'Prix unitaire')),
+                    DataColumn(label: TableColumnTitle(title: 'Déscription')),
+                    DataColumn(label: TableColumnTitle(title: '')),
+                    DataColumn(label: TableColumnTitle(title: 'Stock')),
+                    DataColumn(label: TableColumnTitle(title: ''))
                   ],
                   rows: products
                       .asMap()
@@ -95,15 +97,8 @@ class Stock extends StatelessWidget {
                                           ),
                                           actionsAlignment: MainAxisAlignment.center,
                                           actionsPadding: const EdgeInsets.only(bottom: 20),
-                                          actions: [
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-                                              child: const Padding(
-                                                padding: EdgeInsets.symmetric(vertical: 10),
-                                                child: Text('Sauvegarder'),
-                                              ),
-                                            )
+                                          actions: const [
+                                            DefaultButton(label: 'Sauvegarder')
                                           ],
                                         );
                                       });

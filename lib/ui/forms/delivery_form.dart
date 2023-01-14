@@ -28,19 +28,20 @@ class _DeliveryFormState extends State<DeliveryForm> {
       for (var product in selectedProducts) {
         dropDowns.add(
             ProductsDropDown(
-              menuItems: products.map((p) => DropdownMenuItem(value: p.uuid,child: Text(p.name))).toList(),
+              menuItems: products.map((p) => DropdownMenuItem<String>(key: UniqueKey(), value: p.uuid,child: Text(p.name))).toList(),
               onChanged: (value) {},
               selectedValue: product.uuid));
       }
     }
+    var menuItems = products.map((p) => DropdownMenuItem<String>(key: UniqueKey(), value: p.uuid, child: Text(p.name))).toList();
     dropDowns.add(ProductsDropDown(
-        menuItems: products.map((p) => DropdownMenuItem(value: p.uuid, child: Text(p.name))).toList(),
+        menuItems: menuItems,
         onChanged: (value) {
           debugPrint('Selected product: $value');
           setState(() {
             products.removeWhere((p) => selectedProducts.map((s) => s.uuid).any((uuid) => p.uuid == uuid));
           });
-        }, selectedValue: '',));
+        }, selectedValue: ''));
     return Container(child: Column(children: dropDowns));
   }
 }

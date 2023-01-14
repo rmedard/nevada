@@ -10,6 +10,7 @@ import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
+import 'package:nevada/ui/constants.dart';
 import 'package:nevada/ui/layout/devices/desktop_layout.dart';
 import 'package:nevada/ui/layout/devices/mobile_layout.dart';
 import 'package:nevada/ui/layout/devices/tablet_layout.dart';
@@ -108,6 +109,9 @@ void main() async {
     }
   }
 
+  /** Init DeliveryLine **/
+  await Hive.openBox<DeliveryLine>(boxNames[BoxNameKey.deliveryLines]!);
+
   runApp(const NevadaApp());
 }
 
@@ -143,13 +147,14 @@ class NevadaApp extends StatelessWidget {
               900: kColorPrimary.withOpacity(1),
             },
           ),
+          backgroundColor: defaultBackground,
           textTheme: TextTheme(
               headline1: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 32, color: kColorDark),
               headline2: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 26, color: kColorDark),
               headline3: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 20, color: kColorDark),
               headline4: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 14, color: kColorDark),
-              headline5: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 6, color: kColorDark),
-              headline6: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 2, color: kColorDark),
+              headline5: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 10, color: kColorDark.withOpacity(0.6)),
+              headline6: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 6, color: kColorDark.withOpacity(0.6)),
               bodyText1: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 16, color: kColorDark),
               bodyText2: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
               subtitle1: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),

@@ -8,6 +8,10 @@ class ProductsDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(items: menuItems, onChanged: onChanged, value: selectedValue);
+    if (selectedValue.isEmpty) {
+      return DropdownButton<String>(key: UniqueKey(), items: menuItems, onChanged: onChanged);
+    } else {
+      return DropdownButton<String>(key: UniqueKey(), items: menuItems, onChanged: onChanged, value: selectedValue);
+    }
   }
 }
