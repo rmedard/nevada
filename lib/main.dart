@@ -109,8 +109,10 @@ void main() async {
     }
   }
 
-  /** Init DeliveryLine **/
+  /** Init Delivery **/
   await Hive.openBox<DeliveryLine>(boxNames[BoxNameKey.deliveryLines]!);
+  await Hive.openBox<Delivery>(boxNames[BoxNameKey.deliveries]!);
+
 
   runApp(const NevadaApp());
 }

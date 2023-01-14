@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/services/clients_service.dart';
-import 'package:nevada/services/deliveries_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/separator.dart';
 import 'package:nevada/ui/components/table_column_title.dart';
 import 'package:nevada/ui/forms/customer_delivery_form.dart';
-import 'package:nevada/ui/forms/delivery_form.dart';
-import 'package:nevada/ui/forms/inputs/products_drop_down.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
-import 'package:nevada/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
 class Clients extends StatelessWidget {
@@ -69,6 +64,9 @@ class Clients extends StatelessWidget {
                 ),
                 child: SingleChildScrollView(
                   child: DataTable(
+                    headingTextStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColorDark),
                       columns: const <DataColumn>[
                         DataColumn(label: TableColumnTitle(title: '#')),
                         DataColumn(label: TableColumnTitle(title: 'Nom')),
@@ -76,7 +74,7 @@ class Clients extends StatelessWidget {
                         DataColumn(label: TableColumnTitle(title: 'Téléphone')),
                         DataColumn(label: TableColumnTitle(title: 'Dernière livraison')),
                         DataColumn(label: TableColumnTitle(title: 'Créance')),
-                        DataColumn(label: TableColumnTitle(title: 'Livraison')),
+                        DataColumn(label: TableColumnTitle(title: '')),
                       ],
                       rows: clients
                           .asMap()
@@ -92,7 +90,7 @@ class Clients extends StatelessWidget {
                                     icon: const Icon(Nevada.add, size: 15),
                                     label: const Text('Livraison'),
                                     style: OutlinedButton.styleFrom( foregroundColor: Colors.green,
-                                      padding: EdgeInsets.symmetric(vertical: 13, horizontal: 6),
+                                      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 6),
                                       elevation: 0,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                                     ),

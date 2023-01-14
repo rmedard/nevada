@@ -14,37 +14,38 @@ class Stock extends StatelessWidget {
     var stockEditorController = TextEditingController(text: '0');
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Produits', style: Theme.of(context).textTheme.headline1),
-                  ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.add),
-                    label: const Text('Nouveau Produit'),
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: const EdgeInsets.all(15),
-                        backgroundColor: Theme.of(context).primaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                  )
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Produits', style: Theme.of(context).textTheme.headline1),
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.add),
+                  label: const Text('Nouveau Produit'),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      padding: const EdgeInsets.all(15),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
+                )
+              ],
             ),
             Container(
               width: double.infinity,
+              margin: const EdgeInsets.symmetric(vertical: 20),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: DataTable(
+                headingTextStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColorDark),
                   columns: const <DataColumn>[
                     DataColumn(label: Text('')),
                     DataColumn(label: TableColumnTitle(title: 'Nom du produit')),
