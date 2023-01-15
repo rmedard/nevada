@@ -8,6 +8,7 @@ class MetricCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         color: Colors.white,
+        margin: EdgeInsets.zero,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(

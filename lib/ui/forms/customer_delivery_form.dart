@@ -20,26 +20,38 @@ class CustomerDeliveryForm extends StatelessWidget {
       quantityEditControllers.putIfAbsent(product.uuid, () => TextEditingController(text: '0'));
     }
     return SingleChildScrollView(
-      child: Column(children: [
-        Column(
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Date de livraison', style: textTheme.headline5),
-                Text(DateFormat('dd MMM yyyy').format(DateTime.now()), style: textTheme.headline4),
+        SizedBox(
+          width: 350,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Date de livraison', style: textTheme.headline4?.copyWith(color: Colors.grey[500])),
+                  Text(DateFormat('EEEE, dd MMM yyyy').format(DateTime.now()), style: textTheme.headline4),
+                ]),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Client', style: textTheme.headline4?.copyWith(color: Colors.grey[500])),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(delivery.customer.names, style: textTheme.headline4),
+                      Text(delivery.customer.location, style: textTheme.headline5),
+                    ],
+                  )
               ]),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Client', style: textTheme.headline5),
-                Text(delivery.customer.names, style: textTheme.headline4)
-            ]),
-          ],
+            ],
+          ),
         ),
+        const SizedBox(height: 20),
         ProductDeliveryTable(delivery: delivery),
-        Visibility(
-          visible: isNew,
+        Visibility(visible: isNew,
           child: const Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
             child: DeliveryPaymentStatus()),

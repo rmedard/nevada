@@ -14,76 +14,86 @@ class Home extends StatelessWidget {
           child: Row(
             children: [
               MetricCard(
-                body: Column(
-                  children: [
-                    Column(children: [
-                      Text(
-                        'ENTREES',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          '+350.000 MT',
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                body: SizedBox(
+                  height: 170,
+                  width: 250,
+                  child: Column(
+                    children: [
+                      Column(children: [
+                        Text(
+                          'ENTREES',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                         ),
-                      ),
-                    ]),
-                    const Separator(direction: SeparatorDirection.horizontal),
-                    Row(
-                      children: [
-                        Column(
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            '+350.000 MT',
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                        ),
+                      ]),
+                      const Separator(direction: SeparatorDirection.horizontal),
+                      Expanded(
+                        child: Row(
                           children: [
-                            Text('CREANCES', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text('+100.000 MT',
-                                  style: TextStyle(
-                                      color: Colors.black45,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15)),
+                            Column(
+                              children: [
+                                Text('CREANCES', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text('+100.000 MT',
+                                      style: TextStyle(
+                                          color: Colors.black45,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)),
+                                ),
+                              ],
+                            ),
+                            const Separator(direction: SeparatorDirection.vertical),
+                            Column(
+                              children: [
+                                Text('CASH', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text('+250.000 MT',
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        const Separator(direction: SeparatorDirection.vertical),
-                        Column(
-                          children: [
-                            Text('CASH', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text('+250.000 MT',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15)),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
+              const SizedBox(width: 20),
               MetricCard(
-                body: Column(
-                  children: [
-                    Text('DEPENSES',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20)),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        '-125.500 MT',
-                        style: TextStyle(
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                body: SizedBox(
+                  height: 170,
+                  width: 250,
+                  child: Column(
+                    children: const [
+                      Text('DEPENSES', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            '-125.500 MT',
+                            style: TextStyle(
+                                color: Colors.deepOrange,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             ],
