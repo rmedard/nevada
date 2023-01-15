@@ -19,7 +19,13 @@ class _DesktopLayoutState extends State<DesktopLayout> {
         children: [
           NavigationRail(
               extended: true,
-              leading: DrawerHeader(child: Text('NEVADA STOCK', style: Theme.of(context).textTheme.headline1)),
+              leading: DrawerHeader(child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('NEVADA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
+                  Text('INDUSTRY', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),)
+                ],
+              )),
               onDestinationSelected: (index) => setState(() => _selectedIndex = index),
               destinations: menuElements
                   .map((e) => NavigationRailDestination(icon: e.icon, selectedIcon: e.iconFill, label: Text(e.label)))
