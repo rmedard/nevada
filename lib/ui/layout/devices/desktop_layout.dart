@@ -17,21 +17,25 @@ class _DesktopLayoutState extends State<DesktopLayout> {
       backgroundColor: const Color(0xFFF1FAFE),
       body: Row(
         children: [
-          NavigationRail(
-              extended: true,
-              leading: DrawerHeader(child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text('NEVADA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
-                  Text('INDUSTRY', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),)
-                ],
-              )),
-              onDestinationSelected: (index) => setState(() => _selectedIndex = index),
-              destinations: menuElements
-                  .map((e) => NavigationRailDestination(icon: e.icon, selectedIcon: e.iconFill, label: Text(e.label)))
-                  .toList(),
-              useIndicator: true,
-              selectedIndex: _selectedIndex),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            color: Colors.white,
+            child: NavigationRail(
+                extended: true,
+                leading: DrawerHeader(child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text('NEVADA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
+                    Text('INDUSTRY', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),)
+                  ],
+                )),
+                onDestinationSelected: (index) => setState(() => _selectedIndex = index),
+                destinations: menuElements
+                    .map((e) => NavigationRailDestination(icon: e.icon, selectedIcon: e.iconFill, label: Text(e.label)))
+                    .toList(),
+                useIndicator: true,
+                selectedIndex: _selectedIndex),
+          ),
           menuElements[_selectedIndex].body
         ],
       ),
