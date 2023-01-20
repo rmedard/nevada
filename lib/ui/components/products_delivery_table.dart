@@ -130,6 +130,7 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
                     showEditIcon: true,
                     onTap: () => setState(() => lineEditDto.editUnitPriceFocusNode.requestFocus())),
                 DataCell(Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text('${lineTotalPrice(product.uuid)}'),
