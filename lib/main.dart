@@ -135,7 +135,20 @@ class NevadaApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Nevada',
       theme: ThemeData(
-          primarySwatch: MaterialColor(
+          textTheme: TextTheme(
+              displayLarge: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 32, color: kColorDark),
+              displayMedium: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 26, color: kColorDark),
+              displaySmall: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 20, color: kColorDark),
+              headlineMedium: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 14, color: kColorDark),
+              headlineSmall: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 10, color: kColorDark.withOpacity(0.6)),
+              titleLarge: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 6, color: kColorDark.withOpacity(0.6)),
+              bodyLarge: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 16, color: kColorDark),
+              bodyMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
+              titleMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
+              titleSmall: GoogleFonts.nunito(fontWeight: FontWeight.w400, fontSize: 14, color: kColorDark),
+              labelLarge: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
+              bodySmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark)),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: MaterialColor(
             kColorPrimary.value, <int, Color>{
               50: kColorPrimary.withOpacity(0.1),
               100: kColorPrimary.withOpacity(0.2),
@@ -148,21 +161,7 @@ class NevadaApp extends StatelessWidget {
               800: kColorPrimary.withOpacity(0.9),
               900: kColorPrimary.withOpacity(1),
             },
-          ),
-          backgroundColor: defaultBackground,
-          textTheme: TextTheme(
-              headline1: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 32, color: kColorDark),
-              headline2: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 26, color: kColorDark),
-              headline3: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 20, color: kColorDark),
-              headline4: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 14, color: kColorDark),
-              headline5: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 10, color: kColorDark.withOpacity(0.6)),
-              headline6: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 6, color: kColorDark.withOpacity(0.6)),
-              bodyText1: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 16, color: kColorDark),
-              bodyText2: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
-              subtitle1: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
-              subtitle2: GoogleFonts.nunito(fontWeight: FontWeight.w400, fontSize: 14, color: kColorDark),
-              button: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
-              caption: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark))),
+          )).copyWith(background: defaultBackground)),
       home: const ResponsiveLayout(
           mobileScaffold: MobileLayout(),
           tabletScaffold: TabletLayout(),

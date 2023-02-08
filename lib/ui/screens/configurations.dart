@@ -28,7 +28,7 @@ class Configurations extends StatelessWidget {
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         children: [
-                          Text('Quartiers', style: textTheme.headline3),
+                          Text('Quartiers', style: textTheme.displaySmall),
                           DataTable(
                             headingTextStyle: TextStyle(
                                 fontWeight: FontWeight.bold,

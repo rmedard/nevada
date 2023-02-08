@@ -12,7 +12,7 @@ class ScreenElements {
         child: Column(
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text(title, style: Theme.of(context).textTheme.headline1),
+              Text(title, style: Theme.of(context).textTheme.displayLarge),
               actions
             ]),
             const SizedBox(height: 20),

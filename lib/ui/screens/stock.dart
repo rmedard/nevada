@@ -56,7 +56,7 @@ class Stock extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text('${e.value.unitBasePrice}'),
-                            Text('MT', style: Theme.of(context).textTheme.headline5),
+                            Text('MT', style: Theme.of(context).textTheme.headlineSmall),
                           ],
                         )),
                         DataCell(Text(e.value.description)),

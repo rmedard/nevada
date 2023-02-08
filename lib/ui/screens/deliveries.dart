@@ -13,7 +13,7 @@ class Deliveries extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Livraisons', style: Theme.of(context).textTheme.headline1),
+                Text('Livraisons', style: Theme.of(context).textTheme.displayLarge),
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.add),
@@ -36,7 +36,7 @@ class Deliveries extends StatelessWidget {
                 ),
               child: deliveries.isEmpty ? Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Center(child: Text('Pas de livraisons', style: Theme.of(context).textTheme.headline4,)),
+                child: Center(child: Text('Pas de livraisons', style: Theme.of(context).textTheme.headlineMedium,)),
               ) : DataTable(
                 headingTextStyle: TextStyle(
                     fontWeight: FontWeight.bold,

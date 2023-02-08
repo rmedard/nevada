@@ -95,7 +95,7 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
                 DataCell(Container(
                     margin: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
+                        color: Theme.of(context).colorScheme.background,
                         borderRadius: BorderRadius.circular(10)),
                     child: TextField(
                         controller: lineEditDto.quantityEditController,
@@ -134,7 +134,7 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text('${lineTotalPrice(product.uuid)}'),
-                    Text('MT', style: textTheme.headline5)
+                    Text('MT', style: textTheme.headlineSmall)
                   ],
                 )),
               ]);
@@ -142,13 +142,13 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text('Prix Total', style: textTheme.headline4),
+            Text('Prix Total', style: textTheme.headlineMedium),
             const SizedBox(width: 20),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('${deliveryTotalPrice()}', style: textTheme.headline3),
-                Text('MT', style: textTheme.headline5?.copyWith(fontWeight: FontWeight.bold))
+                Text('${deliveryTotalPrice()}', style: textTheme.displaySmall),
+                Text('MT', style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold))
               ],
             ),
           ],
