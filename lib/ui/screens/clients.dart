@@ -1,33 +1,77 @@
+import 'package:basic_utils/basic_utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:nevada/model/delivery.dart';
-import 'package:nevada/services/clients_service.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:nevada/model/customer.dart';
+import 'package:nevada/services/customers_service.dart';
+import 'package:nevada/services/configurations_service.dart';
+import 'package:nevada/ui/components/customers_list.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/separator.dart';
-import 'package:nevada/ui/components/table_column_title.dart';
-import 'package:nevada/ui/forms/customer_delivery_form.dart';
+import 'package:nevada/ui/forms/customer_edit_form.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
-import 'package:uuid/uuid.dart';
 
-class Clients extends StatelessWidget {
+class Clients extends StatefulWidget {
   const Clients({Key? key}) : super(key: key);
 
   @override
+  State<Clients> createState() => _ClientsState();
+}
+
+class _ClientsState extends State<Clients> {
+
+  var searchNameController = TextEditingController();
+  var hasSearchText = false;
+  var searchRegionValue = '';
+  var clients = CustomersService().getAll();
+
+  @override
+  void initState() {
+    super.initState();
+    searchNameController.addListener(_onSearchTextChanged);
+  }
+
+  @override
+  void dispose() {
+    searchNameController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchTextChanged() {
+    hasSearchText = !StringUtils.isNullOrEmpty(searchNameController.value.text);
+    setState(() {
+      clients = CustomersService().findByName(name: searchNameController.value.text, location: searchRegionValue);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var clients = CustomersService().getAll();
     return ScreenElements().defaultBodyFrame(
         context: context,
         title: 'Clients',
-        actions: ElevatedButton.icon(
-          onPressed: () {},
+        actions: FilledButton.icon(
           icon: const Icon(Icons.add),
           label: const Text('Nouveau Client'),
-          style: ElevatedButton.styleFrom(
-              elevation: 0,
+          style: FilledButton.styleFrom(
               padding: const EdgeInsets.all(15),
-              backgroundColor: Theme.of(context).primaryColor,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      title: Text('Client', style: Theme.of(context).textTheme.headlineLarge),
+                      content: CustomerEditForm(
+                          customer: Customer.empty(),
+                          editCustomer: (Customer newCustomer) =>
+                              CustomersService().createNew(newCustomer.uuid, newCustomer)),
+                      actions: const [DefaultButton(label: 'Sauvegarder')],
+                      actionsPadding: const EdgeInsets.all(20));
+                });
+          },
         ),
         body: Expanded(
           child: Column(
@@ -39,12 +83,72 @@ class Clients extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.2,
                     child: Row(
                       children: [
-                        MetricCard(body: Column(
-                          children: [
-                            Text('Nom du client'),
-                            Text('region'),
-                          ],
-                        )),
+                        MetricCard(
+                          body: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 350,
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: FormBuilderTextField(
+                                  name: 'search_names',
+                                  controller: searchNameController,
+                                  decoration: InputDecoration(
+                                      label: const Text('Chercher'),
+                                      border: InputBorder.none,
+                                      prefixIcon: const Icon(Icons.search),
+                                      suffixIcon: hasSearchText ? IconButton(
+                                          icon:  const Icon(Icons.clear),
+                                          onPressed: () => searchNameController.clear()) : const SizedBox.shrink()
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                width: 350,
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: FormBuilderDropdown(
+                                    name: 'search_customer_region',
+                                    borderRadius: BorderRadius.circular(10),
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        label: Text('Quartier'),
+                                        prefixIcon: Icon(Nevada.location)),
+                                    initialValue: 'all',
+                                    items: ConfigurationsService()
+                                        .getRegions(hasAllOption: true)
+                                        .entries
+                                        .mapIndexed<DropdownMenuItem>(
+                                          (index, element) => DropdownMenuItem(
+                                            key: UniqueKey(),
+                                            value: element.key,
+                                            child: Row(
+                                              children: [
+                                                index == 0 ? const SizedBox.shrink() : Text('$index.'),
+                                                const SizedBox(width: 10),
+                                                Text(element.value)
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                    onChanged: (value) {
+                                      searchRegionValue = value == 'all' ? '' : value;
+                                      setState(() {
+                                        clients = CustomersService().findByName(name: searchNameController.value.text, location: searchRegionValue);
+                                      });
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
                         const SizedBox(width: 20),
                         MetricCard(
                           body: Row(
@@ -73,57 +177,11 @@ class Clients extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
-                  ),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
                   child: SingleChildScrollView(
-                    child: DataTable(
-                        headingTextStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColorDark),
-                        columns: const <DataColumn>[
-                          DataColumn(label: TableColumnTitle(title: '#')),
-                          DataColumn(label: TableColumnTitle(title: 'Nom')),
-                          DataColumn(label: TableColumnTitle(title: 'Téléphone')),
-                          DataColumn(label: TableColumnTitle(title: 'Dernière livraison')),
-                          DataColumn(label: TableColumnTitle(title: 'Créance')),
-                          DataColumn(label: TableColumnTitle(title: '')),
-                        ],
-                        rows: clients
-                            .asMap()
-                            .entries
-                            .map<DataRow>((e) => DataRow(cells: [
-                          DataCell(Text('${e.key + 1}')),
-                          DataCell(Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(e.value.names),
-                              Text(e.value.location,
-                                style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey[600]),)
-                            ],
-                          )),
-                          DataCell(Text(e.value.phone)),
-                          DataCell(Text('24/12/2022')),
-                          DataCell(Text('3500 MT', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),)),
-                          DataCell(OutlinedButton.icon(
-                              icon: const Icon(Nevada.add, size: 15),
-                              label: const Text('Livraison'),
-                              style: OutlinedButton.styleFrom( foregroundColor: Colors.green,
-                                  padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 6),
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-                              ),
-                              onPressed: () => showDialog(context: context, builder: (context) {
-                                var newDelivery = Delivery(uuid: const Uuid().v4(), customer: e.value, date: DateTime.now());
-                                return AlertDialog(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                    content: CustomerDeliveryForm(delivery: newDelivery, isNew: true),
-                                    actions: const [
-                                      DefaultButton(label: 'Sauvegarder')
-                                    ]);
-                              })))
-                        ]))
-                            .toList()),
+                    child: CustomersList(customers: clients),
                   ),
                 ),
               ),

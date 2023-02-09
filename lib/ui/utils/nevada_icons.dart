@@ -12,6 +12,10 @@ class Nevada {
 
   static const String _fontFamily = 'nevada';
 
+  static const IconData phone_call_fill = IconData(0xe91d, fontFamily: _fontFamily);
+  static const IconData phone_call = IconData(0xe91e, fontFamily: _fontFamily);
+  static const IconData user_fill = IconData(0xe91f, fontFamily: _fontFamily);
+  static const IconData user = IconData(0xe920, fontFamily: _fontFamily);
   static const IconData add_fill = IconData(0xe900, fontFamily: _fontFamily);
   static const IconData add = IconData(0xe901, fontFamily: _fontFamily);
   static const IconData back = IconData(0xe902, fontFamily: _fontFamily);

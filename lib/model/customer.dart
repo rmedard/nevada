@@ -1,5 +1,6 @@
 
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 part 'customer.g.dart';
 
@@ -19,4 +20,6 @@ class Customer extends HiveObject {
   String location;
 
   Customer({required this.uuid, required this.names, required this.phone, required this.location});
+
+  static Customer empty() => Customer(uuid: const Uuid().v4(), names: '', phone: '', location: '');
 }

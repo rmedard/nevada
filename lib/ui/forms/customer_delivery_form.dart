@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nevada/model/delivery.dart';
+import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/products_service.dart';
 import 'package:nevada/ui/components/delivery_payment_status.dart';
 import 'package:nevada/ui/components/products_delivery_table.dart';
@@ -42,7 +43,7 @@ class CustomerDeliveryForm extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(delivery.customer.names, style: textTheme.headlineMedium),
-                      Text(delivery.customer.location, style: textTheme.headlineSmall),
+                      Text(ConfigurationsService().getRegion(delivery.customer.location), style: textTheme.headlineSmall),
                     ],
                   )
               ]),

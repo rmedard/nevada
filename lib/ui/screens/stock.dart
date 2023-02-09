@@ -82,8 +82,7 @@ class Stock extends StatelessWidget {
                                       content: Container(
                                         decoration: BoxDecoration(
                                             color: Colors.grey[100],
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
+                                            borderRadius: BorderRadius.circular(10)),
                                         child: TextField(
                                           autofocus: true,
                                           keyboardType: TextInputType.number,

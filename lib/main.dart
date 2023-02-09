@@ -38,11 +38,14 @@ void main() async {
   Hive.registerAdapter(TransactionAdapter());
 
   /** Init Regions **/
-
   var configBox = await Hive.openBox<dynamic>(configBoxName);
   if (configBox.isEmpty) {
-    configBox.put(ConfigKey.regions.name,
-        ['regions', 'Matola', 'Zimpeto', 'Nyambane', 'Xai Xai']);
+    configBox.put(ConfigKey.regions.name, {
+      const Uuid().v4(): 'Matola',
+      const Uuid().v4(): 'Zimpeto',
+      const Uuid().v4(): 'Inhambane',
+      const Uuid().v4(): 'Xai Xai'
+    });
   }
 
   /** Init Products & Stock **/
@@ -92,19 +95,19 @@ void main() async {
       '+258 48 337 33 14',
       '+258 48 337 44 14'
     ];
-    var regions = ['Matola', 'Nyambani', 'Xai Xai', 'Zimpeto'];
 
     var listSize = 50;
+    var regions = configBox.get(ConfigKey.regions.name) as Map<dynamic, dynamic>;
     for (int i = 0; i < listSize; i++) {
       var phoneIndex = Random().nextInt(phones.length);
-      var regionIndex = Random().nextInt(regions.length);
+      var regionIndex = Random().nextInt(regions.entries.length);
       var name = StringUtils.generateRandomString(10,
           alphabet: true, special: false, numeric: false);
       var client = Customer(
           uuid: const Uuid().v4(),
           names: name,
           phone: phones[phoneIndex],
-          location: regions[regionIndex]);
+          location: regions.entries.elementAt(regionIndex).key);
       customersBox.put(client.uuid, client);
     }
   }

@@ -9,7 +9,18 @@ class ConfigurationsService {
     configBox = Hive.box(configBoxName);
   }
 
-  List<String> getRegions() {
-    return configBox.get(ConfigKey.regions.name, defaultValue: []) as List<String>;
+  Map<String, String> getRegions({required bool hasAllOption}) {
+    Map<dynamic, dynamic> rawRegions = configBox.get(ConfigKey.regions.name);
+    Map<String, String> regions = {};
+    if (hasAllOption) {
+      regions.putIfAbsent('all', () => 'Tout');
+    }
+    regions.addAll(rawRegions.map((key, value) => MapEntry<String, String>(key.toString(), value.toString())));
+    return regions;
+  }
+
+  String getRegion(String key) {
+    var regions = getRegions(hasAllOption: false);
+    return regions.containsKey(key) ? regions.entries.firstWhere((element) => element.key == key).value : '';
   }
 }

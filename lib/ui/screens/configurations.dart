@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/products_service.dart';
@@ -8,7 +9,7 @@ class Configurations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var regions = ConfigurationsService().getRegions();
+    var regions = ConfigurationsService().getRegions(hasAllOption: false);
     var products = ProductsService().getAll();
     var textTheme = Theme.of(context).textTheme;
     return ScreenElements().defaultBodyFrame(
@@ -33,18 +34,14 @@ class Configurations extends StatelessWidget {
                             headingTextStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColorDark),
-                              columns: [
+                              columns: const [
                                 DataColumn(label: Text('#')),
                                 DataColumn(label: Text('Nom')),
                               ],
-                              rows: regions
-                                  .asMap()
-                                  .entries
-                                  .map<DataRow>((e) => DataRow(cells: [
-                                        DataCell(Text('${e.key}')),
-                                        DataCell(Text(e.value))
-                                      ]))
-                                  .toList()),
+                              rows: regions.entries.mapIndexed<DataRow>((index, element) => DataRow(cells: [
+                                DataCell(Text(('${++index}'))),
+                                DataCell(Text(element.value))
+                              ])).toList())
                         ],
                       ),
                     ),
