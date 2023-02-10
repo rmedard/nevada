@@ -60,10 +60,9 @@ class CustomerEditForm extends StatelessWidget {
                       label: Text('Quartier'),
                       prefixIcon: Icon(Nevada.location)
                   ),
-                  items: regions.entries
-                      .mapIndexed<DropdownMenuItem>(
-                        (index, element) => DropdownMenuItem(
-                      key: UniqueKey(),
+                  items: regions.entries.mapIndexed<DropdownMenuItem>((index, element) {
+                    debugPrint('Key: ${element.key}');
+                    return DropdownMenuItem(
                       value: element.key,
                       child: Row(
                         children: [
@@ -72,7 +71,8 @@ class CustomerEditForm extends StatelessWidget {
                           Text(element.value)
                         ],
                       ),
-                    ),
+                    );
+                  },
                   ).toList(),
                   onChanged: (value) => customer.location = value),
             ),

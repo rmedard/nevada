@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:nevada/model/customer.dart';
+import 'package:nevada/model/dtos/customer_search_dto.dart';
 import 'package:nevada/services/customers_service.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/ui/components/customers_list.dart';
@@ -23,8 +24,10 @@ class Clients extends StatefulWidget {
 class _ClientsState extends State<Clients> {
 
   var searchNameController = TextEditingController();
+  var customerSearchDto = CustomerSearchDto();
+
+
   var hasSearchText = false;
-  var searchRegionValue = '';
   var clients = CustomersService().getAll();
 
   @override
@@ -42,7 +45,8 @@ class _ClientsState extends State<Clients> {
   void _onSearchTextChanged() {
     hasSearchText = !StringUtils.isNullOrEmpty(searchNameController.value.text);
     setState(() {
-      clients = CustomersService().findByName(name: searchNameController.value.text, location: searchRegionValue);
+      customerSearchDto.name = searchNameController.value.text;
+      clients = CustomersService().find(customerSearchDto: customerSearchDto);
     });
   }
 
@@ -140,9 +144,9 @@ class _ClientsState extends State<Clients> {
                                         )
                                         .toList(),
                                     onChanged: (value) {
-                                      searchRegionValue = value == 'all' ? '' : value;
+                                      customerSearchDto.region = value;
                                       setState(() {
-                                        clients = CustomersService().findByName(name: searchNameController.value.text, location: searchRegionValue);
+                                        clients = CustomersService().find(customerSearchDto: customerSearchDto);
                                       });
                                     }),
                               )
