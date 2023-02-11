@@ -13,8 +13,9 @@ class _DesktopLayoutState extends State<DesktopLayout> {
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    var colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: const Color(0xFFF1FAFE),
       body: Row(
         children: [
           Container(
@@ -22,11 +23,12 @@ class _DesktopLayoutState extends State<DesktopLayout> {
             color: Colors.white,
             child: NavigationRail(
                 extended: true,
+                indicatorColor: colorScheme.primary,
                 leading: DrawerHeader(child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text('NEVADA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
-                    Text('INDUSTRY', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),)
+                  children: [
+                    Text('NEVADA', style: textTheme.displayMedium?.copyWith(color: colorScheme.primary)),
+                    Text('INDUSTRY', style: textTheme.titleLarge)
                   ],
                 )),
                 onDestinationSelected: (index) => setState(() => _selectedIndex = index),

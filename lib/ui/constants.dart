@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nevada/ui/screens/clients.dart';
 import 'package:nevada/ui/screens/configurations.dart';
-import 'package:nevada/ui/screens/dashboard.dart';
 import 'package:nevada/ui/screens/transactions.dart';
 import 'package:nevada/ui/screens/deliveries.dart';
 import 'package:nevada/ui/screens/home.dart';
 import 'package:nevada/ui/screens/stock.dart';
 import 'package:nevada/ui/utils/menu_item.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
-
-var defaultBackground = const Color(0xFFF1FAFE);
 
 var defaultAppBar = AppBar(
   backgroundColor: Colors.blue[900],

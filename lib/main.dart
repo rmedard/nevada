@@ -133,12 +133,6 @@ class NevadaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const kColorPrimary = Color(0xff4261EC);
-    const kColorPrimaryLight = Color(0xff8fb7ee);
-    const kColorAccent = Color(0xffe80013);
-    const kColorOrange = Colors.deepOrangeAccent;
-    const kColorRed = Colors.red;
-    const kColorGreen = Color(0xff00e861);
-    const kColorLightGray = Color(0xffecf0fa);
     const kColorDark = Color(0xff181818);
 
     return MaterialApp(
@@ -162,20 +156,23 @@ class NevadaApp extends StatelessWidget {
             bodyMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
             bodySmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark),
           ),
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: MaterialColor(
-            kColorPrimary.value, <int, Color>{
-              50: kColorPrimary.withOpacity(0.1),
-              100: kColorPrimary.withOpacity(0.2),
-              200: kColorPrimary.withOpacity(0.3),
-              300: kColorPrimary.withOpacity(0.4),
-              400: kColorPrimary.withOpacity(0.5),
-              500: kColorPrimary.withOpacity(0.6),
-              600: kColorPrimary.withOpacity(0.7),
-              700: kColorPrimary.withOpacity(0.8),
-              800: kColorPrimary.withOpacity(0.9),
-              900: kColorPrimary.withOpacity(1),
-            },
-          )).copyWith(background: defaultBackground)),
+          colorScheme: ColorScheme.fromSwatch(
+              primarySwatch: MaterialColor(
+                kColorPrimary.value, <int, Color>{
+                  50: kColorPrimary.withOpacity(0.1),
+                  100: kColorPrimary.withOpacity(0.2),
+                  200: kColorPrimary.withOpacity(0.3),
+                  300: kColorPrimary.withOpacity(0.4),
+                  400: kColorPrimary.withOpacity(0.5),
+                  500: kColorPrimary.withOpacity(0.6),
+                  600: kColorPrimary.withOpacity(0.7),
+                  700: kColorPrimary.withOpacity(0.8),
+                  800: kColorPrimary.withOpacity(0.9),
+                  900: kColorPrimary.withOpacity(1),
+                }),
+              accentColor: Colors.deepOrangeAccent,
+              errorColor: Colors.redAccent,
+              backgroundColor: Colors.grey[300])),
       home: const ResponsiveLayout(
           mobileScaffold: MobileLayout(),
           tabletScaffold: TabletLayout(),

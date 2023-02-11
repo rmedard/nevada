@@ -3,6 +3,7 @@ import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/dtos/snackbar_message.dart';
 import 'package:nevada/services/configurations_service.dart';
+import 'package:nevada/services/customers_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/table_column_title.dart';
 import 'package:nevada/ui/forms/customer_delivery_form.dart';
@@ -30,11 +31,8 @@ class _CustomersListState extends State<CustomersList> {
         columns: const <DataColumn>[
           DataColumn(label: TableColumnTitle(title: '#')),
           DataColumn(label: TableColumnTitle(title: 'Nom')),
-          DataColumn(
-              label: TableColumnTitle(title: 'Téléphone')),
-          DataColumn(
-              label: TableColumnTitle(
-                  title: 'Dernière livraison')),
+          DataColumn(label: TableColumnTitle(title: 'Téléphone')),
+          DataColumn(label: TableColumnTitle(title: 'Dernière livraison')),
           DataColumn(label: TableColumnTitle(title: 'Créance')),
           DataColumn(label: TableColumnTitle(title: '')),
         ],
@@ -85,9 +83,39 @@ class _CustomersListState extends State<CustomersList> {
                                 label: 'Supprimer',
                                 buttonStyle: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), backgroundColor: colorScheme.error),
                                 onSubmit: () {
-                                  UtilsDisplay().showSnackBar(dialogContext, SnackbarMessage(messageType: MessageType.success, title: 'Suppression de client', message: 'Client supprimé avec succès'));
+                                  CustomersService().delete(e.value.uuid).then((deleted) {
+                                    const String title = 'Suppression de client';
+                                    String message;
+                                    MessageType messageType;
+                                    if (deleted) {
+                                      message = 'Client supprimé avec succès';
+                                      messageType =  MessageType.success;
+                                      setState(() => widget.customers.removeWhere((customer) => customer.uuid == e.value.uuid));
+                                    } else {
+                                      message = 'Suppression du client échouée';
+                                      messageType = MessageType.error;
+                                    }
+                                    UtilsDisplay().showSnackBar(dialogContext, SnackbarMessage(messageType: messageType, title: title, message: message));
+                                  });
                                 }),
-                            DefaultButton(label: 'Sauvegarder', onSubmit: () {})
+                            DefaultButton(
+                                label: 'Sauvegarder',
+                                onSubmit: () {
+                                  CustomersService().update(e.value).then((updated) {
+                                    const String title = 'Mise à jour du client';
+                                    String message;
+                                    MessageType messageType;
+                                    if (updated) {
+                                      message = 'Détails du client mis à jour avec succès';
+                                      messageType =  MessageType.success;
+                                      setState((){});
+                                    } else {
+                                      message = 'Mise à jour du client échouée';
+                                      messageType = MessageType.error;
+                                    }
+                                    UtilsDisplay().showSnackBar(dialogContext, SnackbarMessage(messageType: messageType, title: title, message: message));
+                                  });
+                                })
                           ],
                           actionsPadding: const EdgeInsets.all(20));
                     });
@@ -100,7 +128,7 @@ class _CustomersListState extends State<CustomersList> {
                   icon: const Icon(Nevada.truck_loading, size: 15),
                   label: const Text('Livraison'),
                   style: FilledButton.styleFrom(
-                      elevation: 0, backgroundColor: Colors.green,
+                      elevation: 0,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                   onPressed: () => showDialog(
                       context: context,

@@ -8,7 +8,6 @@ class TabletLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: defaultBackground,
       appBar: defaultAppBar,
       drawer: defaultDrawer,
       body: Column(

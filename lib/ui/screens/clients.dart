@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/dtos/customer_search_dto.dart';
+import 'package:nevada/model/dtos/snackbar_message.dart';
 import 'package:nevada/services/customers_service.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/ui/components/customers_list.dart';
@@ -13,6 +14,7 @@ import 'package:nevada/ui/components/separator.dart';
 import 'package:nevada/ui/forms/customer_edit_form.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
+import 'package:nevada/ui/utils/utils_display.dart';
 
 class Clients extends StatefulWidget {
   const Clients({Key? key}) : super(key: key);
@@ -65,15 +67,28 @@ class _ClientsState extends State<Clients> {
           onPressed: () {
             showDialog(
                 context: context,
-                builder: (context) {
+                builder: (dialogContext) {
                   return AlertDialog(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      title: Text('Client', style: Theme.of(context).textTheme.headlineLarge),
+                      title: Text('Client', style: Theme.of(dialogContext).textTheme.headlineLarge),
                       content: CustomerEditForm(
-                          customer: Customer.empty(),
+                          customer: newCustomer,
                           editCustomer: (Customer customer) => newCustomer = customer),
                       actions: [
-                        DefaultButton(label: 'Sauvegarder', onSubmit: () => CustomersService().createNew(newCustomer.uuid, newCustomer))
+                        DefaultButton(label: 'Sauvegarder', onSubmit: () => CustomersService().createNew(newCustomer.uuid, newCustomer).then((isCreated) {
+                          const String title = 'Création d\'un nouveau client';
+                          String message;
+                          MessageType messageType;
+                          if (isCreated) {
+                            message = 'Nouveau client créé avec succès';
+                            messageType =  MessageType.success;
+                            setState(() => clients = CustomersService().find(customerSearchDto: customerSearchDto));
+                          } else {
+                            message = 'Création du client échouée';
+                            messageType = MessageType.error;
+                          }
+                          UtilsDisplay().showSnackBar(dialogContext, SnackbarMessage(messageType: messageType, title: title, message: message));
+                        }))
                       ],
                       actionsPadding: const EdgeInsets.all(20));
                 });
