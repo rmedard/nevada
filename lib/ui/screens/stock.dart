@@ -25,7 +25,8 @@ class Stock extends StatelessWidget {
               elevation: 0,
               padding: const EdgeInsets.all(15),
               backgroundColor: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
         ),
         body: Container(
           width: double.infinity,
@@ -56,7 +57,7 @@ class Stock extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text('${e.value.unitBasePrice}'),
-                            Text('MT', style: Theme.of(context).textTheme.headlineSmall),
+                            Text('MT', style: Theme.of(context).textTheme.bodySmall),
                           ],
                         )),
                         DataCell(Text(e.value.description)),
@@ -82,7 +83,8 @@ class Stock extends StatelessWidget {
                                       content: Container(
                                         decoration: BoxDecoration(
                                             color: Colors.grey[100],
-                                            borderRadius: BorderRadius.circular(10)),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
                                         child: TextField(
                                           autofocus: true,
                                           keyboardType: TextInputType.number,
@@ -103,8 +105,11 @@ class Stock extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       actionsPadding:
                                           const EdgeInsets.only(bottom: 20),
-                                      actions: const [
-                                        DefaultButton(label: 'Sauvegarder')
+                                      actions: [
+                                        DefaultButton(
+                                          label: 'Sauvegarder',
+                                          onSubmit: () {},
+                                        )
                                       ],
                                     );
                                   });

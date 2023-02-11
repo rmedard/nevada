@@ -52,6 +52,7 @@ class _ClientsState extends State<Clients> {
 
   @override
   Widget build(BuildContext context) {
+    var newCustomer = Customer.empty();
     return ScreenElements().defaultBodyFrame(
         context: context,
         title: 'Clients',
@@ -70,9 +71,10 @@ class _ClientsState extends State<Clients> {
                       title: Text('Client', style: Theme.of(context).textTheme.headlineLarge),
                       content: CustomerEditForm(
                           customer: Customer.empty(),
-                          editCustomer: (Customer newCustomer) =>
-                              CustomersService().createNew(newCustomer.uuid, newCustomer)),
-                      actions: const [DefaultButton(label: 'Sauvegarder')],
+                          editCustomer: (Customer customer) => newCustomer = customer),
+                      actions: [
+                        DefaultButton(label: 'Sauvegarder', onSubmit: () => CustomersService().createNew(newCustomer.uuid, newCustomer))
+                      ],
                       actionsPadding: const EdgeInsets.all(20));
                 });
           },

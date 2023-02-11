@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
+import 'package:loggy/loggy.dart';
 
-class BaseService<T> {
+class BaseService<T> with UiLoggy {
   late Box<T> dataBox;
 
   BaseService() {
@@ -11,8 +12,19 @@ class BaseService<T> {
     return dataBox.values.toList();
   }
 
-  void createNew(String uuid, T t) {
-    dataBox.put(uuid, t);
+  Future<bool> delete(String uuid) async {
+    loggy.info("Deleting entity: ${T.runtimeType.toString()} | ID: $uuid}");
+    return await dataBox.delete(uuid).then((value) {
+      loggy.info('Entity $uuid deleted successfully!');
+      return true;
+    }, onError: (error) {
+      loggy.error(error);
+      return false;
+    });
   }
 
+  void createNew(String uuid, T t) {
+    loggy.info("Creating entity: ${t.runtimeType.toString()}");
+    dataBox.put(uuid, t);
+  }
 }

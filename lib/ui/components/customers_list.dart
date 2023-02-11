@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery.dart';
+import 'package:nevada/model/dtos/snackbar_message.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/table_column_title.dart';
 import 'package:nevada/ui/forms/customer_delivery_form.dart';
 import 'package:nevada/ui/forms/customer_edit_form.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
+import 'package:nevada/ui/utils/utils_display.dart';
 import 'package:uuid/uuid.dart';
 
 class CustomersList extends StatefulWidget {
@@ -69,16 +71,24 @@ class _CustomersListState extends State<CustomersList> {
             children: [
               FilledButton.icon(
                   onPressed: () {
-                    showDialog(context: context, builder: (context) {
+                    showDialog(context: context, builder: (dialogContext) {
                       return AlertDialog(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                          title: Text('Client', style: Theme.of(context).textTheme.headlineLarge),
+                          title: Text('Client', style: Theme.of(dialogContext).textTheme.headlineLarge),
                           content: CustomerEditForm(
                               customer: e.value,
                               editCustomer: (Customer newCustomer) {
                                 debugPrint(newCustomer.uuid);
                               }),
-                          actions: const [DefaultButton(label: 'Sauvegarder')],
+                          actions: [
+                            DefaultButton(
+                                label: 'Supprimer',
+                                buttonStyle: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), backgroundColor: colorScheme.error),
+                                onSubmit: () {
+                                  UtilsDisplay().showSnackBar(dialogContext, SnackbarMessage(messageType: MessageType.success, title: 'Suppression de client', message: 'Client supprimé avec succès'));
+                                }),
+                            DefaultButton(label: 'Sauvegarder', onSubmit: () {})
+                          ],
                           actionsPadding: const EdgeInsets.all(20));
                     });
                   },
@@ -103,8 +113,8 @@ class _CustomersListState extends State<CustomersList> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                             content: CustomerDeliveryForm(delivery: newDelivery, isNew: true),
                             actionsPadding: const EdgeInsets.all(20),
-                            actions: const [
-                              DefaultButton(label: 'Sauvegarder')
+                            actions: [
+                              DefaultButton(label: 'Sauvegarder', onSubmit: () {})
                             ]);
                       })),
             ],

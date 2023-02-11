@@ -5,6 +5,7 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:loggy/loggy.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/product.dart';
@@ -27,6 +28,12 @@ void main() async {
   if (Platform.isWindows || Platform.isMacOS) {
     WindowManager.instance.setMinimumSize(const Size(370, 800));
   }
+
+  /** Init Loggy **/
+  Loggy.initLoggy(
+    logPrinter: const PrettyPrinter(showColors: true),
+    logOptions: const LogOptions(LogLevel.all, stackTraceLevel: LogLevel.off)
+  );
 
   /** Init hive **/
   await Hive.initFlutter();
@@ -139,18 +146,22 @@ class NevadaApp extends StatelessWidget {
       title: 'Nevada',
       theme: ThemeData(
           textTheme: TextTheme(
-              displayLarge: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 32, color: kColorDark),
-              displayMedium: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 26, color: kColorDark),
-              displaySmall: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 20, color: kColorDark),
-              headlineMedium: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 14, color: kColorDark),
-              headlineSmall: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 10, color: kColorDark.withOpacity(0.6)),
-              titleLarge: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 6, color: kColorDark.withOpacity(0.6)),
-              bodyLarge: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 16, color: kColorDark),
-              bodyMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
-              titleMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
-              titleSmall: GoogleFonts.nunito(fontWeight: FontWeight.w400, fontSize: 14, color: kColorDark),
-              labelLarge: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
-              bodySmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark)),
+            displayLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 57, color: kColorDark),
+            displayMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 45, color: kColorDark),
+            displaySmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 36, color: kColorDark),
+            headlineLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 32, color: kColorDark),
+            headlineMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 28, color: kColorDark),
+            headlineSmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 24, color: kColorDark),
+            titleLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 22, color: kColorDark),
+            titleMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
+            titleSmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
+            labelLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: Colors.white),
+            labelMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.white),
+            labelSmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 11, color: Colors.white),
+            bodyLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
+            bodyMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
+            bodySmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark),
+          ),
           colorScheme: ColorScheme.fromSwatch(primarySwatch: MaterialColor(
             kColorPrimary.value, <int, Color>{
               50: kColorPrimary.withOpacity(0.1),
