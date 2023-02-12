@@ -14,16 +14,14 @@ class Deliveries extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Livraisons', style: Theme.of(context).textTheme.displayLarge),
-                ElevatedButton.icon(
+                FilledButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.add),
                   label: const Text('Nouvelle Livraison'),
-                  style: ElevatedButton.styleFrom(
+                  style: FilledButton.styleFrom(
                       elevation: 0,
                       padding: const EdgeInsets.all(15),
-                      backgroundColor: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                 )
               ],
             ),

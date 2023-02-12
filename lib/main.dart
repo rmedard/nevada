@@ -11,7 +11,6 @@ import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
-import 'package:nevada/ui/constants.dart';
 import 'package:nevada/ui/layout/devices/desktop_layout.dart';
 import 'package:nevada/ui/layout/devices/mobile_layout.dart';
 import 'package:nevada/ui/layout/devices/tablet_layout.dart';
@@ -57,6 +56,7 @@ void main() async {
 
   /** Init Products & Stock **/
   var productsBox = await Hive.openBox<Product>(boxNames[BoxNameKey.products]!);
+  var productionsBox = await Hive.openBox<StockRefill>(boxNames[BoxNameKey.stockRefills]!);
   if (productsBox.isEmpty) {
     var product1 = Product(
         uuid: const Uuid().v4(),
