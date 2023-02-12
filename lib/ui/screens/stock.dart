@@ -19,13 +19,14 @@ class Stock extends StatefulWidget {
 class _StockState extends State<Stock> {
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
     var products = ProductsService().getAll();
     var productions = ProductionService().getAll();
     var stockEditorController = TextEditingController(text: '0');
 
     return ScreenElements().defaultBodyFrame(
         context: context,
-        title: 'Produits',
+        title: 'Stock',
         actions: FilledButton.icon(
           onPressed: () {},
           icon: const Icon(Icons.add),
@@ -36,7 +37,9 @@ class _StockState extends State<Stock> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text('Produits', style: textTheme.headlineMedium),
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -66,7 +69,7 @@ class _StockState extends State<Stock> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text('${e.value.unitBasePrice}'),
-                                Text('MT', style: Theme.of(context).textTheme.bodySmall),
+                                Text('MT', style: textTheme.bodySmall),
                               ],
                             )),
                             DataCell(Text(e.value.description)),
@@ -87,25 +90,45 @@ class _StockState extends State<Stock> {
                                         return AlertDialog(
                                           icon: const Icon(Nevada.box_open),
                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                          content: Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[100],
-                                                borderRadius: BorderRadius.circular(10)),
-                                            child: TextField(
-                                              autofocus: true,
-                                              keyboardType: TextInputType.number,
-                                              inputFormatters: [
-                                                FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
-                                              ],
-                                              decoration: const InputDecoration(
-                                                  suffixText: 'Cartons',
-                                                  border: InputBorder.none,
-                                                  contentPadding: EdgeInsets.symmetric(horizontal: 10)),
-                                              controller: stockEditorController,
-                                            ),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+                                                child: TextField(
+                                                  readOnly: true,
+                                                  keyboardType: TextInputType.number,
+                                                  decoration: const InputDecoration(
+                                                      suffixIcon: Icon(Icons.calendar_month),
+                                                      border: InputBorder.none,
+                                                      contentPadding: EdgeInsets.symmetric(horizontal: 10)),
+                                                  onTap: () {
+                                                    showDatePicker(context: context, initialDate: DateTime.now(),
+                                                        firstDate: DateTime.now().subtract(const Duration(days: 30)),
+                                                        lastDate: DateTime.now().add(const Duration(days: 30)));
+                                                  },
+                                                ),
+                                              ),
+                                              const SizedBox(height: 20),
+                                              Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[100],
+                                                  borderRadius: BorderRadius.circular(10)),
+                                              child: TextField(
+                                                autofocus: true,
+                                                keyboardType: TextInputType.number,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
+                                                ],
+                                                decoration: const InputDecoration(
+                                                    suffixText: 'Cartons',
+                                                    border: InputBorder.none,
+                                                    contentPadding: EdgeInsets.symmetric(horizontal: 10)),
+                                                controller: stockEditorController,
+                                              ),
+                                            )],
                                           ),
-                                          actionsAlignment: MainAxisAlignment.center,
-                                          actionsPadding: const EdgeInsets.only(bottom: 20),
+                                          actionsPadding: const EdgeInsets.only(bottom: 20, right: 20),
                                           actions: [
                                             DefaultButton(
                                               label: 'Sauvegarder',
@@ -128,6 +151,7 @@ class _StockState extends State<Stock> {
                       .toList()),
             ),
             const SizedBox(height: 20),
+            Text('Production', style: textTheme.headlineMedium),
             SingleChildScrollView(
               child: Container(
                 width: double.infinity,
