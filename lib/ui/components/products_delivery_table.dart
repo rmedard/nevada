@@ -134,7 +134,7 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text('${lineTotalPrice(product.uuid)}'),
-                    Text('MT', style: textTheme.headlineSmall)
+                    Text('MT', style: textTheme.labelSmall)
                   ],
                 )),
               ]);
@@ -142,13 +142,13 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text('Prix Total', style: textTheme.headlineMedium),
+            Text('Prix Total', style: textTheme.headlineSmall),
             const SizedBox(width: 20),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('${deliveryTotalPrice()}', style: textTheme.displaySmall),
-                Text('MT', style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold))
+                Text('${deliveryTotalPrice()}', style: textTheme.headlineMedium),
+                Text('MT', style: textTheme.titleMedium)
               ],
             ),
           ],

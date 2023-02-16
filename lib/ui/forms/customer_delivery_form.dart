@@ -31,19 +31,19 @@ class CustomerDeliveryForm extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Date de livraison', style: textTheme.headlineMedium?.copyWith(color: Colors.grey[500])),
-                  Text(DateFormat('EEEE, dd MMM yyyy').format(DateTime.now()), style: textTheme.headlineMedium),
+                  Text('Date de livraison', style: textTheme.titleMedium?.copyWith(color: Colors.grey[500])),
+                  Text(DateFormat('EEEE, dd MMM yyyy').format(DateTime.now()), style: textTheme.titleMedium),
                 ]),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Client', style: textTheme.headlineMedium?.copyWith(color: Colors.grey[500])),
+                  Text('Client', style: textTheme.titleMedium?.copyWith(color: Colors.grey[500])),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(delivery.customer.names, style: textTheme.headlineMedium),
-                      Text(ConfigurationsService().getRegion(delivery.customer.location), style: textTheme.headlineSmall),
+                      Text(delivery.customer.names, style: textTheme.titleMedium),
+                      Text(ConfigurationsService().getRegion(delivery.customer.location), style: textTheme.labelSmall),
                     ],
                   )
               ]),

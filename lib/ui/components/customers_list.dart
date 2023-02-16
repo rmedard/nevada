@@ -4,6 +4,7 @@ import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/dtos/snackbar_message.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/customers_service.dart';
+import 'package:nevada/services/deliveries_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/table_column_title.dart';
 import 'package:nevada/ui/forms/customer_delivery_form.dart';
@@ -142,7 +143,11 @@ class _CustomersListState extends State<CustomersList> {
                             content: CustomerDeliveryForm(delivery: newDelivery, isNew: true),
                             actionsPadding: const EdgeInsets.all(20),
                             actions: [
-                              DefaultButton(label: 'Sauvegarder', onSubmit: () {})
+                              DefaultButton(label: 'Sauvegarder', onSubmit: () {
+                                DeliveriesService().createNew(newDelivery.uuid, newDelivery).then((created) {
+
+                                });
+                              })
                             ]);
                       })),
             ],

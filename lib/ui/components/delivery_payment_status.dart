@@ -54,7 +54,7 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text('A payer le', style: Theme.of(context).textTheme.headlineMedium),
+                          Text('A payer le', style: Theme.of(context).textTheme.titleMedium),
                           const SizedBox(width: 10),
                           Expanded(
                             child: GestureDetector(
