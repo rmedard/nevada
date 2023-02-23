@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/dtos/delivery_line_edit_dto.dart';
 import 'package:nevada/model/product.dart';
@@ -9,9 +8,11 @@ import 'package:nevada/ui/components/table_column_title.dart';
 import 'package:uuid/uuid.dart';
 
 class ProductDeliveryTable extends StatefulWidget {
-  final Delivery delivery;
 
-  const ProductDeliveryTable({Key? key, required this.delivery}) : super(key: key);
+  final String deliveryUuid;
+  final List<DeliveryLine> deliveryLines;
+
+  const ProductDeliveryTable({Key? key, required this.deliveryUuid, required this.deliveryLines}) : super(key: key);
 
   @override
   State<ProductDeliveryTable> createState() => _ProductDeliveryTableState();
@@ -19,35 +20,13 @@ class ProductDeliveryTable extends StatefulWidget {
 
 class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
   late List<Product> products;
-  List<DeliveryLineEditDto> deliveryLineEditDtos = [];
+  late List<DeliveryLineEditDto> deliveryLineEditDtos;
 
   @override
   void initState() {
     super.initState();
     products = ProductsService().getAll();
-
-    for (var product in products) {
-      var line = widget.delivery.lines.firstWhere(
-          (deliveryLine) => deliveryLine.product.uuid == product.uuid,
-          orElse: () => DeliveryLine(
-              uuid: const Uuid().v4(),
-              deliveryUuid: widget.delivery.uuid,
-              product: product,
-              productQuantity: 0,
-              productUnitPrice: product.unitBasePrice));
-      var quantityEditCtlr = TextEditingController();
-      quantityEditCtlr.text = '${line.productQuantity}';
-
-      var unitPriceEditCtlr = TextEditingController();
-      unitPriceEditCtlr.text = '${product.unitBasePrice}';
-
-      var lineEditDto = DeliveryLineEditDto(
-          deliveryLine: line,
-          quantityEditController: quantityEditCtlr,
-          unitPriceEditController: unitPriceEditCtlr,
-          editUnitPriceFocusNode: FocusNode());
-      deliveryLineEditDtos.add(lineEditDto);
-    }
+    deliveryLineEditDtos = _constructDeliveryLines(products);
   }
 
   @override
@@ -57,6 +36,39 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
       lineEditDto.unitPriceEditController.dispose();
     }
     super.dispose();
+  }
+
+  List<DeliveryLineEditDto> _constructDeliveryLines(List<Product> products) {
+    List<DeliveryLineEditDto> deliveryLineDtos = [];
+    for (var product in products) {
+      var line = widget.deliveryLines.firstWhere(
+              (deliveryLine) => deliveryLine.product.uuid == product.uuid,
+          orElse: () {
+                var newLine = DeliveryLine(
+                    uuid: const Uuid().v4(),
+                    deliveryUuid: widget.deliveryUuid,
+                    product: product,
+                    productQuantity: 0,
+                    productUnitPrice: product.unitBasePrice);
+                widget.deliveryLines.add(newLine);
+                return newLine;
+              });
+      var quantityEditCtlr = TextEditingController();
+      quantityEditCtlr.text = '${line.productQuantity}';
+      quantityEditCtlr.addListener(() => line.productQuantity = int.parse(quantityEditCtlr.value.text));
+
+      var unitPriceEditCtlr = TextEditingController();
+      unitPriceEditCtlr.text = '${product.unitBasePrice}';
+      unitPriceEditCtlr.addListener(() => line.productUnitPrice = int.parse(unitPriceEditCtlr.value.text));
+
+      var lineEditDto = DeliveryLineEditDto(
+          deliveryLine: line,
+          quantityEditController: quantityEditCtlr,
+          unitPriceEditController: unitPriceEditCtlr,
+          editUnitPriceFocusNode: FocusNode());
+      deliveryLineDtos.add(lineEditDto);
+    }
+    return deliveryLineDtos;
   }
 
   int deliveryTotalPrice() {
@@ -89,7 +101,7 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
               DataColumn(label: TableColumnTitle(title: 'Prix total')),
             ],
             rows: products.map((product) {
-              var lineEditDto = deliveryLineEditDtos.firstWhere((element) => element.deliveryLine.product.uuid == product.uuid);
+              var lineEditDto = deliveryLineEditDtos.firstWhere((lineDto) => lineDto.deliveryLine.product.uuid == product.uuid);
               return DataRow(cells: <DataCell>[
                 DataCell(Text(product.description)),
                 DataCell(Container(

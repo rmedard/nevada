@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class MetricCard extends StatelessWidget {
   final Widget body;
-  const MetricCard({Key? key, required this.body}) : super(key: key);
+  final double horizontalPadding;
+  final double verticalPadding;
+  const MetricCard({Key? key, required this.body, required this.horizontalPadding, required this.verticalPadding}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class MetricCard extends StatelessWidget {
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
           child: body,
         ),
     );

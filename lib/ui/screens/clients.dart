@@ -105,6 +105,7 @@ class _ClientsState extends State<Clients> {
                     child: Row(
                       children: [
                         MetricCard(
+                          horizontalPadding: 40, verticalPadding: 20,
                           body: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -172,6 +173,8 @@ class _ClientsState extends State<Clients> {
                         ),
                         const SizedBox(width: 20),
                         MetricCard(
+                          horizontalPadding: 40,
+                          verticalPadding: 20,
                           body: Row(
                             children: [
                               Icon(Icons.people_alt, color: Theme.of(context).primaryColor),

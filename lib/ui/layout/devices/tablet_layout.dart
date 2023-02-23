@@ -20,7 +20,7 @@ class TabletLayout extends StatelessWidget {
                   itemCount: 4,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
                   itemBuilder: (context, index) {
-                    return const MetricCard(body: Text('tablet data'),);
+                    return const MetricCard(body: Text('tablet data'), horizontalPadding: 40, verticalPadding: 20);
                   }),
             ),
           ),

@@ -14,6 +14,8 @@ class Home extends StatelessWidget {
           child: Row(
             children: [
               MetricCard(
+                horizontalPadding: 40,
+                verticalPadding: 20,
                 body: SizedBox(
                   height: 170,
                   width: 250,
@@ -37,7 +39,6 @@ class Home extends StatelessWidget {
                       ]),
                       const Separator(direction: SeparatorDirection.horizontal),
                       Expanded(
-                        flex: 1,
                         child: Row(
                           children: [
                             Column(
@@ -76,6 +77,8 @@ class Home extends StatelessWidget {
               ),
               const SizedBox(width: 20),
               MetricCard(
+                horizontalPadding: 40,
+                verticalPadding: 20,
                 body: SizedBox(
                   height: 170,
                   width: 250,

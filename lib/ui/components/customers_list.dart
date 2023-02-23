@@ -4,10 +4,9 @@ import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/dtos/snackbar_message.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/customers_service.dart';
-import 'package:nevada/services/deliveries_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
+import 'package:nevada/ui/components/dialogs/delivery_dialog.dart';
 import 'package:nevada/ui/components/table_column_title.dart';
-import 'package:nevada/ui/forms/customer_delivery_form.dart';
 import 'package:nevada/ui/forms/customer_edit_form.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/ui/utils/utils_display.dart';
@@ -133,22 +132,12 @@ class _CustomersListState extends State<CustomersList> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                   onPressed: () => showDialog(
                       context: context,
-                      builder: (context) {
+                      builder: (dialogContext) {
                         var newDelivery = Delivery(
                             uuid: const Uuid().v4(),
                             customer: e.value,
                             date: DateTime.now());
-                        return AlertDialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                            content: CustomerDeliveryForm(delivery: newDelivery, isNew: true),
-                            actionsPadding: const EdgeInsets.all(20),
-                            actions: [
-                              DefaultButton(label: 'Sauvegarder', onSubmit: () {
-                                DeliveriesService().createNew(newDelivery.uuid, newDelivery).then((created) {
-
-                                });
-                              })
-                            ]);
+                        return DeliveryDialog(delivery: newDelivery, isNew: true, dialogContext: dialogContext);
                       })),
             ],
           ))
