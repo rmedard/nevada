@@ -2,8 +2,9 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:nevada/model/dtos/customer_search_dto.dart';
+import 'package:intl/intl.dart';
 import 'package:nevada/model/dtos/delivery_panel.dart';
+import 'package:nevada/model/dtos/delivery_search_dto.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/deliveries_service.dart';
 import 'package:nevada/ui/components/metric_card.dart';
@@ -22,7 +23,7 @@ class _DeliveriesState extends State<Deliveries> {
   late List<DeliveryPanel> deliveryPanels = [];
 
   var searchNameController = TextEditingController();
-  var customerSearchDto = CustomerSearchDto();
+  var deliverySearchDto = DeliverySearchDto();
   var hasSearchText = false;
 
   @override
@@ -35,9 +36,9 @@ class _DeliveriesState extends State<Deliveries> {
     searchNameController.addListener((){
       hasSearchText = !StringUtils.isNullOrEmpty(searchNameController.value.text);
       setState(() {
-        customerSearchDto.name = searchNameController.value.text;
+        deliverySearchDto.name = searchNameController.value.text;
         deliveryPanels = DeliveriesService()
-            .find(customerSearchDto: customerSearchDto)
+            .find(deliverySearchDto: deliverySearchDto)
             .map((e) => DeliveryPanel(isExpanded: false, delivery: e))
             .toList();
       });
@@ -122,10 +123,10 @@ class _DeliveriesState extends State<Deliveries> {
                               ),
                             ).toList(),
                             onChanged: (value) {
-                              customerSearchDto.region = value;
+                              deliverySearchDto.region = value;
                               setState(() {
                                 deliveryPanels = DeliveriesService()
-                                    .find(customerSearchDto: customerSearchDto)
+                                    .find(deliverySearchDto: deliverySearchDto)
                                     .map((e) => DeliveryPanel(isExpanded: false, delivery: e))
                                     .toList();
                               });
@@ -135,9 +136,33 @@ class _DeliveriesState extends State<Deliveries> {
                     Expanded(
                       flex: 2,
                       child: FormBuilderDateRangePicker(
-                          name: 'search_deliveries_date_range',
-                          firstDate: DateTime.now().subtract(const Duration(days: 30)),
-                          lastDate: DateTime.now()),
+                        name: 'search_deliveries_date_range',
+                        format: DateFormat('dd/MM/yyyy'),
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        initialValue: DateTimeRange(start: DateTime.now().subtract(const Duration(days: 30)), end: DateTime.now()),
+                        firstDate: DateTime.now().subtract(const Duration(days: 30)),
+                        lastDate: DateTime.now().add(const Duration(days: 30)),
+                        pickerBuilder: (context, builder) {
+                          var screenSize = MediaQuery.of(context).size;
+                          return Container(
+                              color: Colors.transparent,
+                              margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.05, horizontal: screenSize.width * 0.3),
+                              child: ClipRRect(borderRadius: BorderRadius.circular(20), child: builder));
+                        },
+                        onChanged: (value) {
+                          debugPrint(value.toString());
+                          if (value != null) {
+                            deliverySearchDto.start = value.start;
+                            deliverySearchDto.end = value.end;
+                            setState(() {
+                              deliveryPanels = DeliveriesService()
+                                  .find(deliverySearchDto: deliverySearchDto)
+                                  .map((e) => DeliveryPanel(isExpanded: false, delivery: e))
+                                  .toList();
+                            });
+                          }
+                        },
+                      ),
                     )
                   ],
             )),
