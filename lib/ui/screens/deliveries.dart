@@ -81,9 +81,9 @@ class _DeliveriesState extends State<Deliveries> {
                           name: 'search_deliveries_customer_names',
                           controller: searchNameController,
                           decoration: InputDecoration(
-                              label: const Text('Chercher'),
+                              label: const Text('Noms'),
                               border: InputBorder.none,
-                              prefixIcon: const Icon(Icons.search),
+                              prefixIcon: const Icon(Nevada.user),
                               suffixIcon: hasSearchText ? IconButton(
                                   icon:  const Icon(Icons.clear),
                                   onPressed: () => searchNameController.clear()) : const SizedBox.shrink()
@@ -94,7 +94,6 @@ class _DeliveriesState extends State<Deliveries> {
                     Expanded(
                       flex: 1,
                       child: Container(
-                        width: 350,
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         margin: const EdgeInsets.only(right: 10),
                         decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
@@ -134,34 +133,42 @@ class _DeliveriesState extends State<Deliveries> {
                       ),
                     ),
                     Expanded(
-                      flex: 2,
-                      child: FormBuilderDateRangePicker(
-                        name: 'search_deliveries_date_range',
-                        format: DateFormat('dd/MM/yyyy'),
-                        initialEntryMode: DatePickerEntryMode.calendarOnly,
-                        initialValue: DateTimeRange(start: DateTime.now().subtract(const Duration(days: 30)), end: DateTime.now()),
-                        firstDate: DateTime.now().subtract(const Duration(days: 30)),
-                        lastDate: DateTime.now().add(const Duration(days: 30)),
-                        pickerBuilder: (context, builder) {
-                          var screenSize = MediaQuery.of(context).size;
-                          return Container(
-                              color: Colors.transparent,
-                              margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.05, horizontal: screenSize.width * 0.3),
-                              child: ClipRRect(borderRadius: BorderRadius.circular(20), child: builder));
-                        },
-                        onChanged: (value) {
-                          debugPrint(value.toString());
-                          if (value != null) {
-                            deliverySearchDto.start = value.start;
-                            deliverySearchDto.end = value.end;
-                            setState(() {
-                              deliveryPanels = DeliveriesService()
-                                  .find(deliverySearchDto: deliverySearchDto)
-                                  .map((e) => DeliveryPanel(isExpanded: false, delivery: e))
-                                  .toList();
-                            });
-                          }
-                        },
+                      flex: 1,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+                        child: FormBuilderDateRangePicker(
+                          name: 'search_deliveries_date_range',
+                          format: DateFormat('dd/MM/yyyy'),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              label: Text('Periode'),
+                              prefixIcon: Icon(Icons.calendar_month)),
+                          initialEntryMode: DatePickerEntryMode.calendarOnly,
+                          initialValue: DateTimeRange(start: DateTime.now().subtract(const Duration(days: 30)), end: DateTime.now()),
+                          firstDate: DateTime.now().subtract(const Duration(days: 30)),
+                          lastDate: DateTime.now().add(const Duration(days: 30)),
+                          pickerBuilder: (context, builder) {
+                            var screenSize = MediaQuery.of(context).size;
+                            return Container(
+                                color: Colors.transparent,
+                                margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.05, horizontal: screenSize.width * 0.3),
+                                child: ClipRRect(borderRadius: BorderRadius.circular(20), child: builder));
+                          },
+                          onChanged: (value) {
+                            debugPrint(value.toString());
+                            if (value != null) {
+                              deliverySearchDto.start = value.start;
+                              deliverySearchDto.end = value.end;
+                              setState(() {
+                                deliveryPanels = DeliveriesService()
+                                    .find(deliverySearchDto: deliverySearchDto)
+                                    .map((e) => DeliveryPanel(isExpanded: false, delivery: e))
+                                    .toList();
+                              });
+                            }
+                          },
+                        ),
                       ),
                     )
                   ],
