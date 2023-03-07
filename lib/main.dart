@@ -41,6 +41,8 @@ void main() async {
   Hive.registerAdapter(DeliveryLineAdapter());
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(StockRefillAdapter());
+  Hive.registerAdapter(TransactionTypeAdapter());
+  Hive.registerAdapter(TransactionStatusAdapter());
   Hive.registerAdapter(TransactionAdapter());
 
   /** Init Regions **/
@@ -123,6 +125,8 @@ void main() async {
   await Hive.openBox<DeliveryLine>(boxNames[BoxNameKey.deliveryLines]!);
   await Hive.openBox<Delivery>(boxNames[BoxNameKey.deliveries]!);
 
+  /** Init Transactions **/
+  await Hive.openBox<Transaction>(boxNames[BoxNameKey.transactions]!);
 
   runApp(const NevadaApp());
 }

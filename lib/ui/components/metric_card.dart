@@ -15,7 +15,7 @@ class MetricCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
-          child: body,
+          child: body
         ),
     );
   }

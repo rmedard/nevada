@@ -9,7 +9,7 @@ import 'package:nevada/ui/components/dialogs/delivery_dialog.dart';
 import 'package:nevada/ui/components/table_column_title.dart';
 import 'package:nevada/ui/forms/customer_edit_form.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
-import 'package:nevada/ui/utils/utils_display.dart';
+import 'package:nevada/ui/utils/ui_utils.dart';
 import 'package:uuid/uuid.dart';
 
 class CustomersList extends StatefulWidget {
@@ -25,9 +25,7 @@ class _CustomersListState extends State<CustomersList> {
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
     return DataTable(
-        headingTextStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColorDark),
+        headingTextStyle: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.primary),
         columns: const <DataColumn>[
           DataColumn(label: TableColumnTitle(title: '#')),
           DataColumn(label: TableColumnTitle(title: 'Nom')),
@@ -48,8 +46,7 @@ class _CustomersListState extends State<CustomersList> {
             children: [
               Text(e.value.names),
               Text(
-                ConfigurationsService()
-                    .getRegion(e.value.location),
+                ConfigurationsService().getRegion(e.value.location),
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!
@@ -95,7 +92,7 @@ class _CustomersListState extends State<CustomersList> {
                                       message = 'Suppression du client échouée';
                                       messageType = MessageType.error;
                                     }
-                                    UtilsDisplay().showSnackBar(dialogContext, SnackbarMessage(messageType: messageType, title: title, message: message));
+                                    UiUtils().showSnackBar(dialogContext, SnackbarMessage(messageType: messageType, title: title, message: message));
                                   });
                                 }),
                             DefaultButton(
@@ -113,7 +110,7 @@ class _CustomersListState extends State<CustomersList> {
                                       message = 'Mise à jour du client échouée';
                                       messageType = MessageType.error;
                                     }
-                                    UtilsDisplay().showSnackBar(dialogContext, SnackbarMessage(messageType: messageType, title: title, message: message));
+                                    UiUtils().showSnackBar(dialogContext, SnackbarMessage(messageType: messageType, title: title, message: message));
                                   });
                                 })
                           ],
@@ -133,10 +130,7 @@ class _CustomersListState extends State<CustomersList> {
                   onPressed: () => showDialog(
                       context: context,
                       builder: (dialogContext) {
-                        var newDelivery = Delivery(
-                            uuid: const Uuid().v4(),
-                            customer: e.value,
-                            date: DateTime.now());
+                        var newDelivery = Delivery(uuid: const Uuid().v4(), customer: e.value, date: DateTime.now());
                         return DeliveryDialog(delivery: newDelivery, isNew: true, dialogContext: dialogContext);
                       })),
             ],

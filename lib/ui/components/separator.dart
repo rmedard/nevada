@@ -6,21 +6,20 @@ class Separator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     if (direction == SeparatorDirection.horizontal) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Divider(
-          thickness: 2,
-          color: Theme.of(context).primaryColor.withOpacity(0.2),
-            indent: 10, endIndent: 10),
+          thickness: 5,
+          color: Theme.of(context).primaryColor.withOpacity(0.2), indent: 10, endIndent: 10),
       );
     } else {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: VerticalDivider(
-          thickness: 2,
-          color: Theme.of(context).primaryColor.withOpacity(0.2),
-            indent: 10, endIndent: 10),
+          thickness: 5,
+          color: Theme.of(context).primaryColor.withOpacity(0.2), indent: 10, endIndent: 10),
       );
     }
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nevada/model/dtos/snackbar_message.dart';
 
-class UtilsDisplay {
+class UiUtils {
 
   Color _getColor(MessageType messageType, ColorScheme colorScheme) {
     switch (messageType) {

@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'transaction.g.dart';
 
 const typeRelationship = <TransactionType, String> {
-  TransactionType.cash: 'Cash',
-  TransactionType.debt: 'Debt'
+  TransactionType.income: 'Income',
+  TransactionType.expense: 'Expense'
 };
 
 const statusRelationship = <TransactionStatus, String> {
@@ -26,7 +27,7 @@ class Transaction extends HiveObject {
   TransactionType type;
 
   @HiveField(3)
-  String deliveryUuid;
+  String? deliveryUuid;
 
   @HiveField(4)
   DateTime? dueDate;
@@ -49,9 +50,9 @@ class Transaction extends HiveObject {
 @HiveType(typeId: 21)
 enum TransactionType {
   @HiveField(0, defaultValue: true)
-  cash,
+  income,
   @HiveField(1)
-  debt
+  expense
 }
 
 @HiveType(typeId: 51)
@@ -60,4 +61,35 @@ enum TransactionStatus {
   paid,
   @HiveField(1)
   pending
+}
+
+extension TransactionTypeName on TransactionType {
+  String get label {
+    switch (this) {
+      case TransactionType.income:
+        return 'Entrée';
+      case TransactionType.expense:
+        return 'Dépense';
+    }
+  }
+
+  Widget get icon {
+    switch (this) {
+      case TransactionType.income:
+        return const Icon(Icons.arrow_circle_up, color: Colors.green);
+      case TransactionType.expense:
+        return const Icon(Icons.arrow_circle_down, color: Colors.redAccent);
+    }
+  }
+}
+
+extension TransactionStatusName on TransactionStatus {
+  Widget get label {
+    switch (this) {
+      case TransactionStatus.paid:
+        return const Text('Payé', style: TextStyle(color: Colors.green));
+      case TransactionStatus.pending:
+        return const Text('Crédit', style: TextStyle(color: Colors.redAccent));
+    }
+  }
 }

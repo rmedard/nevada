@@ -18,4 +18,10 @@ class DeliveriesService extends BaseService<Delivery> {
         .where((delivery) => delivery.date.isAfter(deliverySearchDto.start) && delivery.date.isBefore(deliverySearchDto.end))
         .toList();
   }
+
+  int computeDeliveryPrice(Delivery delivery) {
+    return delivery.lines
+        .map((line) => line.productUnitPrice * line.productQuantity)
+        .reduce((lineOneTotal, lineTwoTotal) => lineOneTotal + lineTwoTotal);
+  }
 }

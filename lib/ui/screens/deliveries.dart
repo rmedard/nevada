@@ -174,12 +174,23 @@ class _DeliveriesState extends State<Deliveries> {
                   ],
             )),
             const SizedBox(height: 20),
-            ExpansionPanelList(
-              elevation: 0,
-              expandedHeaderPadding: EdgeInsets.zero,
-              expansionCallback: (int index, bool isExpanded) =>
-                  setState(() => deliveryPanels[index].isExpanded = !isExpanded),
-              children: deliveryPanels.map((delivery) => delivery.toPanel()).toList(),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+                child: SingleChildScrollView(
+                  child: ExpansionPanelList(
+                    elevation: 0,
+                    expandedHeaderPadding: EdgeInsets.zero,
+                    expansionCallback: (int index, bool isExpanded) =>
+                        setState(() => deliveryPanels[index].isExpanded = !isExpanded),
+                    children: deliveryPanels.map((delivery) => delivery.toPanel()).toList(),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

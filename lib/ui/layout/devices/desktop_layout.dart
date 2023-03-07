@@ -38,7 +38,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                 useIndicator: true,
                 selectedIndex: _selectedIndex),
           ),
-          menuElements[_selectedIndex].body
+          Expanded(child: menuElements[_selectedIndex].body)
         ],
       ),
     );

@@ -3,13 +3,16 @@ import 'package:intl/intl.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/dtos/snackbar_message.dart';
+import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/deliveries_service.dart';
 import 'package:nevada/services/delivery_lines_service.dart';
+import 'package:nevada/services/transactions_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/delivery_payment_status.dart';
 import 'package:nevada/ui/components/products_delivery_table.dart';
-import 'package:nevada/ui/utils/utils_display.dart';
+import 'package:nevada/ui/utils/ui_utils.dart';
+import 'package:uuid/uuid.dart';
 
 class DeliveryDialog extends StatelessWidget {
 
@@ -36,7 +39,13 @@ class DeliveryDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     List<DeliveryLine> deliveryLines = _cleanUpDeliveryLines(delivery.lines.toList());
-
+    final Transaction newTransaction = Transaction(
+        uuid: const Uuid().v4(),
+        amount: 0,
+        type: TransactionType.income,
+        deliveryUuid: delivery.uuid,
+        status: TransactionStatus.pending,
+        createdAt: DateTime.now());
     return AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text('Livraison'),
@@ -73,9 +82,11 @@ class DeliveryDialog extends StatelessWidget {
                 const SizedBox(height: 20),
                 ProductDeliveryTable(deliveryUuid: delivery.uuid, deliveryLines: deliveryLines),
                 Visibility(visible: isNew,
-                  child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: DeliveryPaymentStatus()),
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: DeliveryPaymentStatus(
+                        onPaymentStatusChanged: (TransactionStatus status) => newTransaction.status = status,
+                        onPaymentDueDateChanged: (DateTime? paymentDueDate) => newTransaction.dueDate = paymentDueDate)),
                 )
               ]),
         ),
@@ -94,13 +105,15 @@ class DeliveryDialog extends StatelessWidget {
               if (isNew) {
                 DeliveriesService()
                     .createNew(delivery.uuid, delivery)
-                    .then((created) => UtilsDisplay().showSnackBar(context, SnackbarMessage(messageType: MessageType.success, title: 'Création de livraison', message: 'Livraison enregistrée')));
+                    .then((created) => UiUtils().showSnackBar(context, SnackbarMessage(messageType: MessageType.success, title: 'Création de livraison', message: 'Livraison enregistrée')));
               } else {
                 DeliveriesService()
                     .update(delivery)
-                    .then((updated) => UtilsDisplay().showSnackBar(context, SnackbarMessage(messageType: MessageType.success, title: 'Modification de livraison', message: 'Livraison modifiée avec succès')));
+                    .then((updated) => UiUtils().showSnackBar(context, SnackbarMessage(messageType: MessageType.success, title: 'Modification de livraison', message: 'Livraison modifiée avec succès')));
               }
-              Navigator.of(dialogContext).pop();
+              newTransaction.amount = DeliveriesService().computeDeliveryPrice(delivery);
+              newTransaction.type = TransactionType.income;
+              TransactionsService().createNew(newTransaction.uuid, newTransaction).then((_) => Navigator.of(dialogContext).pop());
             }
           })
         ]);

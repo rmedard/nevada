@@ -4,7 +4,10 @@ import 'package:nevada/model/transaction.dart';
 
 class DeliveryPaymentStatus extends StatefulWidget {
 
-  const DeliveryPaymentStatus({Key? key}) : super(key: key);
+  final ValueChanged<TransactionStatus> onPaymentStatusChanged;
+  final ValueChanged<DateTime?> onPaymentDueDateChanged;
+
+  const DeliveryPaymentStatus({Key? key, required this.onPaymentStatusChanged, required this.onPaymentDueDateChanged}) : super(key: key);
 
   @override
   State<DeliveryPaymentStatus> createState() => _DeliveryPaymentStatusState();
@@ -14,22 +17,25 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
 
   TransactionStatus? deliveryPaymentStatus = TransactionStatus.pending;
 
-  var selectedDate = DateTime.now().add(const Duration(days: 7));
+  DateTime? selectedDate = DateTime.now().add(const Duration(days: 7));
   final _dateController = TextEditingController();
 
   String selectedDateValue() {
-    return DateFormat('EEEE, dd/MM/yyyy').format(selectedDate);
+    return DateFormat('EEEE, dd/MM/yyyy').format(selectedDate ?? DateTime.now());
   }
 
   @override
   void initState() {
     super.initState();
     _dateController.text = selectedDateValue();
+    _dateController.addListener(() {
+
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var debtDelayDays = selectedDate.difference(DateTime.now()).inDays + 1;
+    var debtDelayDays = selectedDate == null ? 0 : selectedDate!.difference(DateTime.now()).inDays + 1;
     return Card(
         elevation: 0,
         margin: EdgeInsets.zero,
@@ -42,7 +48,10 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
                 value: TransactionStatus.paid,
                 groupValue: deliveryPaymentStatus,
                 title: const Text('Livraison payée'),
-                onChanged: (value) => setState(() => deliveryPaymentStatus = value)),
+                onChanged: (value) => setState(() {
+                  deliveryPaymentStatus = value;
+                  widget.onPaymentStatusChanged(value!);
+                })),
             RadioListTile(
                 value: TransactionStatus.pending,
                 groupValue: deliveryPaymentStatus,
@@ -61,18 +70,17 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
                               onTap: () async {
                                 final DateTime? picked = await showDatePicker(
                                     context: context,
-                                    initialDate: selectedDate,
+                                    initialDate: selectedDate ?? DateTime.now(),
                                     initialDatePickerMode: DatePickerMode.day,
                                     firstDate: DateTime.now(),
                                     keyboardType: TextInputType.datetime,
                                     initialEntryMode: DatePickerEntryMode.calendarOnly,
                                     lastDate: DateTime.now().add(const Duration(days: 30)));
-                                if (picked != null) {
-                                  setState(() {
-                                    selectedDate = picked;
-                                    _dateController.text = selectedDateValue();
-                                  });
-                                }
+                                setState(() {
+                                  selectedDate = picked;
+                                  widget.onPaymentDueDateChanged(picked);
+                                  _dateController.text = selectedDateValue();
+                                });
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(right: 10),
@@ -94,7 +102,10 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
                         ],
                       ),
                     )),
-                onChanged: (value) => setState(() => deliveryPaymentStatus = value))
+                onChanged: (value) => setState(() {
+                  deliveryPaymentStatus = value;
+                  widget.onPaymentStatusChanged(value!);
+                }))
           ],),
         ));
   }

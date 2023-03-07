@@ -14,7 +14,7 @@ import 'package:nevada/ui/components/separator.dart';
 import 'package:nevada/ui/forms/customer_edit_form.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
-import 'package:nevada/ui/utils/utils_display.dart';
+import 'package:nevada/ui/utils/ui_utils.dart';
 
 class Clients extends StatefulWidget {
   const Clients({Key? key}) : super(key: key);
@@ -87,7 +87,7 @@ class _ClientsState extends State<Clients> {
                             message = 'Création du client échouée';
                             messageType = MessageType.error;
                           }
-                          UtilsDisplay().showSnackBar(dialogContext, SnackbarMessage(messageType: messageType, title: title, message: message));
+                          UiUtils().showSnackBar(dialogContext, SnackbarMessage(messageType: messageType, title: title, message: message));
                         }))
                       ],
                       actionsPadding: const EdgeInsets.all(20));
@@ -201,9 +201,7 @@ class _ClientsState extends State<Clients> {
                   padding: const EdgeInsets.all(20),
                   decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
                   child: SingleChildScrollView(
                     child: CustomersList(customers: clients),
                   ),
