@@ -59,7 +59,7 @@ class Transactions extends StatelessWidget {
                   .mapIndexed<DataRow>((index, transaction) => DataRow(cells: [
                     DataCell(Text('${++index}')),
                     DataCell(Text(DateFormat('dd-MM-yyyy').format(transaction.createdAt))),
-                    DataCell(Text('${transaction.deliveryUuid}')),
+                    DataCell(Text(TransactionsService().getCustomerName(transaction))),
                     DataCell(Text('${transaction.amount} MT')),
                     DataCell(transaction.type.icon),
                     DataCell(transaction.status.label)

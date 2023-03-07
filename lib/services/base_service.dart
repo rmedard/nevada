@@ -8,6 +8,11 @@ class BaseService<T extends HiveObject> with UiLoggy {
     dataBox = Hive.box(T.toString());
   }
 
+  T? findById(String uuid) {
+    loggy.info("Retrieving entity: ${T.runtimeType.toString()} | ID: $uuid}");
+    return dataBox.get(uuid);
+  }
+
   List<T> getAll() {
     return dataBox.values.toList();
   }
