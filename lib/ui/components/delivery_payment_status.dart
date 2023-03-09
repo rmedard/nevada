@@ -21,7 +21,7 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
   final _dateController = TextEditingController();
 
   String selectedDateValue() {
-    return DateFormat('EEEE, dd/MM/yyyy').format(selectedDate ?? DateTime.now());
+    return DateFormat('dd/MM/yyyy').format(selectedDate ?? DateTime.now());
   }
 
   @override
@@ -35,6 +35,8 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    var colorScheme = Theme.of(context).colorScheme;
     var debtDelayDays = selectedDate == null ? 0 : selectedDate!.difference(DateTime.now()).inDays + 1;
     return Card(
         elevation: 0,
@@ -47,7 +49,7 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
             RadioListTile(
                 value: TransactionStatus.paid,
                 groupValue: deliveryPaymentStatus,
-                title: const Text('Livraison payée'),
+                title: const Text('Payée'),
                 onChanged: (value) => setState(() {
                   deliveryPaymentStatus = value;
                   widget.onPaymentStatusChanged(value!);
@@ -55,15 +57,15 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
             RadioListTile(
                 value: TransactionStatus.pending,
                 groupValue: deliveryPaymentStatus,
-                title: const Text('Livraison à crédit'),
+                title: const Text('Crédit'),
                 secondary: Visibility(
                     visible: deliveryPaymentStatus == TransactionStatus.pending,
                     child: SizedBox(
-                      width: 360,
+                      width: 280,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text('A payer le', style: Theme.of(context).textTheme.titleMedium),
+                          Text('A payer le', style: textTheme.titleSmall),
                           const SizedBox(width: 10),
                           Expanded(
                             child: GestureDetector(
@@ -92,7 +94,8 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
                                         border: InputBorder.none,
                                         prefixIcon: const Icon(Icons.edit, size: 15),
                                         enabled: false,
-                                        suffix: Text('+$debtDelayDays jours')),
+                                        suffix: Text('$debtDelayDays jours',
+                                            style: textTheme.titleSmall?.copyWith(color: colorScheme.primary.withOpacity(0.4)))),
                                     keyboardType: TextInputType.text,
                                     controller: _dateController
                                 ),

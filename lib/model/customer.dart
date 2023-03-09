@@ -1,4 +1,5 @@
 
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,7 +20,24 @@ class Customer extends HiveObject {
   @HiveField(3)
   String location;
 
-  Customer({required this.uuid, required this.names, required this.phone, required this.location});
+  @HiveField(4, defaultValue: 0)
+  int balance;
 
-  static Customer empty() => Customer(uuid: const Uuid().v4(), names: '', phone: '', location: '');
+  @HiveField(5)
+  DateTime? lastDeliveryDate;
+
+  Customer({required this.uuid, required this.names, required this.phone, required this.location, required this.balance});
+
+  static Customer empty() => Customer(uuid: const Uuid().v4(), names: '', phone: '', location: '', balance: 0);
+}
+
+extension CustomerBalanceText on Customer {
+  Widget get balanceText {
+    return Text(
+      '$balance MT',
+      style: TextStyle(
+          color: balance < 0 ? Colors.redAccent : Colors.green,
+          fontWeight: FontWeight.bold),
+    );
+  }
 }

@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'dart:math';
 
-import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -16,7 +14,6 @@ import 'package:nevada/ui/layout/devices/mobile_layout.dart';
 import 'package:nevada/ui/layout/devices/tablet_layout.dart';
 import 'package:nevada/ui/layout/responsive_layout.dart';
 import 'package:nevada/utils/constants.dart';
-import 'package:uuid/uuid.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'model/customer.dart';
@@ -46,80 +43,14 @@ void main() async {
   Hive.registerAdapter(TransactionAdapter());
 
   /** Init Regions **/
-  var configBox = await Hive.openBox<dynamic>(configBoxName);
-  if (configBox.isEmpty) {
-    configBox.put(ConfigKey.regions.name, {
-      const Uuid().v4(): 'Matola',
-      const Uuid().v4(): 'Zimpeto',
-      const Uuid().v4(): 'Inhambane',
-      const Uuid().v4(): 'Xai Xai'
-    });
-  }
+  await Hive.openBox<dynamic>(configBoxName);
 
   /** Init Products & Stock **/
-  var productsBox = await Hive.openBox<Product>(boxNames[BoxNameKey.products]!);
-  var productionsBox = await Hive.openBox<StockRefill>(boxNames[BoxNameKey.stockRefills]!);
-  if (productsBox.isEmpty) {
-    var product1 = Product(
-        uuid: const Uuid().v4(),
-        name: '24pcs-0.5l',
-        description: 'Pack of 6 pieces of 0.5 litre',
-        unitBasePrice: 250,
-        totalStock: 0);
-    var product2 = Product(
-        uuid: const Uuid().v4(),
-        name: '12pcs-1.5l',
-        description: 'Pack of 6 pieces of 1.5 litres',
-        unitBasePrice: 250,
-        totalStock: 0);
-    var product3 = Product(
-        uuid: const Uuid().v4(),
-        name: '4pcs-6l',
-        description: 'Pack of 2 pieces of 5 litres',
-        unitBasePrice: 200,
-        totalStock: 0);
-    var product4 = Product(
-        uuid: const Uuid().v4(),
-        name: '1pc-20l',
-        description: 'Pack of 1 piece of 20 litres',
-        unitBasePrice: 900,
-        totalStock: 0);
-    var product5 = Product(
-        uuid: const Uuid().v4(),
-        name: '1pc-20l-refill',
-        description: 'Refill Pack of 1 piece of 20 litres',
-        unitBasePrice: 140,
-        totalStock: 0);
-    for (var product in [product1, product2, product3, product4, product5]) {
-      productsBox.put(product.uuid, product);
-    }
-  }
+  await Hive.openBox<Product>(boxNames[BoxNameKey.products]!);
+  await Hive.openBox<StockRefill>(boxNames[BoxNameKey.stockRefills]!);
 
   /** Init Customers **/
-  var customersBox = await Hive.openBox<Customer>(boxNames[BoxNameKey.customers]!);
-  if (customersBox.isEmpty) {
-    var phones = [
-      '+258 48 337 11 14',
-      '+258 48 337 22 14',
-      '+258 48 337 33 14',
-      '+258 48 337 44 14'
-    ];
-
-    var listSize = 50;
-    var regions = configBox.get(ConfigKey.regions.name) as Map<dynamic, dynamic>;
-    for (int i = 0; i < listSize; i++) {
-      var phoneIndex = Random().nextInt(phones.length);
-      var regionIndex = Random().nextInt(regions.entries.length);
-      var name = StringUtils.generateRandomString(10,
-          alphabet: true, special: false, numeric: false);
-      var client = Customer(
-          uuid: const Uuid().v4(),
-          names: name,
-          phone: phones[phoneIndex],
-          location: regions.entries.elementAt(regionIndex).key);
-      customersBox.put(client.uuid, client);
-    }
-  }
+  await Hive.openBox<Customer>(boxNames[BoxNameKey.customers]!);
 
   /** Init Delivery **/
   await Hive.openBox<DeliveryLine>(boxNames[BoxNameKey.deliveryLines]!);
@@ -176,7 +107,9 @@ class NevadaApp extends StatelessWidget {
                 }),
               accentColor: Colors.deepOrangeAccent,
               errorColor: Colors.redAccent,
-              backgroundColor: Colors.grey[300])),
+              backgroundColor: Colors.grey[300]),
+          dataTableTheme: const DataTableThemeData(
+              headingTextStyle: TextStyle(fontWeight: FontWeight.bold, color: kColorPrimary), columnSpacing: 3)),
       home: const ResponsiveLayout(
           mobileScaffold: MobileLayout(),
           tabletScaffold: TabletLayout(),

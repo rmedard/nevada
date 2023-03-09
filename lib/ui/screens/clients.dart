@@ -101,54 +101,85 @@ class _ClientsState extends State<Clients> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.2,
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        MetricCard(
-                          horizontalPadding: 40, verticalPadding: 20,
-                          body: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 350,
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(10),
+                        Expanded(
+                          flex: 1,
+                          child: MetricCard(
+                            horizontalPadding: 40,
+                            verticalPadding: 20,
+                            body: Row(
+                              children: [
+                                Icon(Icons.people_alt, color: Theme.of(context).primaryColor),
+                                const Separator(direction: SeparatorDirection.vertical),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text('Clients'),
+                                    Text(
+                                      clients.length.toString(),
+                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
+                                    ),
+                                  ],
                                 ),
-                                child: FormBuilderTextField(
-                                  name: 'search_names',
-                                  controller: searchNameController,
-                                  decoration: InputDecoration(
-                                      label: const Text('Chercher'),
-                                      border: InputBorder.none,
-                                      prefixIcon: const Icon(Icons.search),
-                                      suffixIcon: hasSearchText ? IconButton(
-                                          icon:  const Icon(Icons.clear),
-                                          onPressed: () => searchNameController.clear()) : const SizedBox.shrink()
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          flex: 3,
+                          child: MetricCard(
+                            horizontalPadding: 20, verticalPadding: 20,
+                            body: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    width: 350,
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: FormBuilderTextField(
+                                      name: 'search_names',
+                                      controller: searchNameController,
+                                      decoration: InputDecoration(
+                                          label: const Text('Noms'),
+                                          border: InputBorder.none,
+                                          prefixIcon: const Icon(Icons.search),
+                                          suffixIcon: hasSearchText ? IconButton(
+                                              icon:  const Icon(Icons.clear),
+                                              splashColor: Colors.redAccent, splashRadius: 20,
+                                              onPressed: () => searchNameController.clear()) : const SizedBox.shrink()
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Container(
-                                width: 350,
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                    color: Colors.grey[100],
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: FormBuilderDropdown(
-                                    name: 'search_customer_region',
-                                    borderRadius: BorderRadius.circular(10),
-                                    decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        label: Text('Quartier'),
-                                        prefixIcon: Icon(Nevada.location)),
-                                    initialValue: 'all',
-                                    items: ConfigurationsService()
-                                        .getRegions(hasAllOption: true)
-                                        .entries
-                                        .mapIndexed<DropdownMenuItem>(
-                                          (index, element) => DropdownMenuItem(
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    width: 350,
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[100],
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: FormBuilderDropdown(
+                                        name: 'search_customer_region',
+                                        borderRadius: BorderRadius.circular(10),
+                                        decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                            label: Text('Quartier'),
+                                            prefixIcon: Icon(Nevada.location)),
+                                        initialValue: 'all',
+                                        items: ConfigurationsService()
+                                            .getRegions(hasAllOption: true)
+                                            .entries
+                                            .mapIndexed<DropdownMenuItem>(
+                                              (index, element) => DropdownMenuItem(
                                             key: UniqueKey(),
                                             value: element.key,
                                             child: Row(
@@ -160,36 +191,17 @@ class _ClientsState extends State<Clients> {
                                             ),
                                           ),
                                         )
-                                        .toList(),
-                                    onChanged: (value) {
-                                      customerSearchDto.region = value;
-                                      setState(() {
-                                        clients = CustomersService().find(customerSearchDto: customerSearchDto);
-                                      });
-                                    }),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        MetricCard(
-                          horizontalPadding: 40,
-                          verticalPadding: 20,
-                          body: Row(
-                            children: [
-                              Icon(Icons.people_alt, color: Theme.of(context).primaryColor),
-                              const Separator(direction: SeparatorDirection.vertical),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text('Clients'),
-                                  Text(
-                                    clients.length.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
+                                            .toList(),
+                                        onChanged: (value) {
+                                          customerSearchDto.region = value;
+                                          setState(() {
+                                            clients = CustomersService().find(customerSearchDto: customerSearchDto);
+                                          });
+                                        }),
                                   ),
-                                ],
-                              ),
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],

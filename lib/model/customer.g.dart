@@ -21,13 +21,14 @@ class CustomerAdapter extends TypeAdapter<Customer> {
       names: fields[1] as String,
       phone: fields[2] as String,
       location: fields[3] as String,
-    );
+      balance: fields[4] == null ? 0 : fields[4] as int,
+    )..lastDeliveryDate = fields[5] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, Customer obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.uuid)
       ..writeByte(1)
@@ -35,7 +36,11 @@ class CustomerAdapter extends TypeAdapter<Customer> {
       ..writeByte(2)
       ..write(obj.phone)
       ..writeByte(3)
-      ..write(obj.location);
+      ..write(obj.location)
+      ..writeByte(4)
+      ..write(obj.balance)
+      ..writeByte(5)
+      ..write(obj.lastDeliveryDate);
   }
 
   @override

@@ -63,6 +63,19 @@ enum TransactionStatus {
   pending
 }
 
+extension TransactionRowColor on Transaction {
+  MaterialStateProperty<Color> get rowColor {
+    if (type == TransactionType.income) {
+      if (status == TransactionStatus.pending) {
+        return MaterialStatePropertyAll(Colors.redAccent.withOpacity(0.1));
+      } else if (status == TransactionStatus.paid) {
+        return MaterialStatePropertyAll(Colors.green.withOpacity(0.1));
+      }
+    }
+    return const MaterialStatePropertyAll(Colors.white);
+  }
+}
+
 extension TransactionTypeName on TransactionType {
   String get label {
     switch (this) {
@@ -87,9 +100,9 @@ extension TransactionStatusName on TransactionStatus {
   Widget get label {
     switch (this) {
       case TransactionStatus.paid:
-        return const Text('Payé', style: TextStyle(color: Colors.green));
+        return const Text('Payé', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold));
       case TransactionStatus.pending:
-        return const Text('Crédit', style: TextStyle(color: Colors.redAccent));
+        return const Text('Crédit', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold));
     }
   }
 }

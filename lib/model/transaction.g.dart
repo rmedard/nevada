@@ -20,7 +20,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       uuid: fields[0] as String,
       amount: fields[1] as int,
       type: fields[2] as TransactionType,
-      deliveryUuid: fields[3] as String,
+      deliveryUuid: fields[3] as String?,
       status: fields[5] as TransactionStatus,
       createdAt: fields[6] as DateTime,
     )..dueDate = fields[4] as DateTime?;

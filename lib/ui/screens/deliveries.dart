@@ -66,7 +66,8 @@ class _DeliveriesState extends State<Deliveries> {
             MetricCard(
                 horizontalPadding: 20,
                 verticalPadding: 20,
-                body: Row(mainAxisSize: MainAxisSize.min,
+                body: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
                       flex: 1,

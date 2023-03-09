@@ -4,7 +4,6 @@ import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/dtos/delivery_line_edit_dto.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/services/products_service.dart';
-import 'package:nevada/ui/components/table_column_title.dart';
 import 'package:uuid/uuid.dart';
 
 class ProductDeliveryTable extends StatefulWidget {
@@ -89,16 +88,14 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         DataTable(
-            headingTextStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColorDark),
             columns: const [
-              DataColumn(label: TableColumnTitle(title: 'Produit')),
-              DataColumn(label: TableColumnTitle(title: 'Quantité')),
-              DataColumn(label: TableColumnTitle(title: 'Prix unitaire')),
-              DataColumn(label: TableColumnTitle(title: 'Prix total')),
+              DataColumn(label: Text('Produit')),
+              DataColumn(label: Text('Quantité')),
+              DataColumn(label: Text('Prix unitaire')),
+              DataColumn(label: Text('Prix total')),
             ],
             rows: products.map((product) {
               var lineEditDto = deliveryLineEditDtos.firstWhere((lineDto) => lineDto.deliveryLine.product.uuid == product.uuid);
@@ -152,7 +149,7 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
               ]);
             }).toList()),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text('Prix Total', style: textTheme.headlineSmall),
             const SizedBox(width: 20),

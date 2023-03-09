@@ -4,7 +4,6 @@ import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/services/production_service.dart';
 import 'package:nevada/services/products_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
-import 'package:nevada/ui/components/table_column_title.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:uuid/uuid.dart';
@@ -48,17 +47,14 @@ class _StockState extends State<Stock> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: DataTable(
-                    headingTextStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColorDark),
                     columns: const <DataColumn>[
                       DataColumn(label: Text('#')),
-                      DataColumn(label: TableColumnTitle(title: 'Nom du produit')),
-                      DataColumn(label: TableColumnTitle(title: 'Prix unitaire')),
-                      DataColumn(label: TableColumnTitle(title: 'Déscription')),
-                      DataColumn(label: TableColumnTitle(title: '')),
-                      DataColumn(label: TableColumnTitle(title: 'Stock')),
-                      DataColumn(label: TableColumnTitle(title: ''))
+                      DataColumn(label: Text('Nom du produit')),
+                      DataColumn(label: Text('Prix unitaire')),
+                      DataColumn(label: Text('Déscription')),
+                      DataColumn(label: Text('')),
+                      DataColumn(label: Text('Stock')),
+                      DataColumn(label: Text(''))
                     ],
                     rows: products
                         .asMap()
@@ -78,7 +74,7 @@ class _StockState extends State<Stock> {
                                 icon: const Icon(
                                   Icons.edit,
                                   color: Colors.deepOrange,
-                                ),
+                                ), splashRadius: 20,
                                 onPressed: () {},
                               )),
                               DataCell(Text('${e.value.totalStock}')),
@@ -162,9 +158,6 @@ class _StockState extends State<Stock> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: DataTable(
-                        headingTextStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColorDark),
                         columns: const [
                           DataColumn(label: Text('#')),
                           DataColumn(label: Text('Produit')),

@@ -58,7 +58,7 @@ class CustomerEditForm extends StatelessWidget {
               decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
               child: FormBuilderDropdown(
                   name: 'customer_region',
-                  initialValue: StringUtils.isNotNullOrEmpty(customer.location) ? customer.location : regions.entries.first.key,
+                  initialValue: StringUtils.isNullOrEmpty(customer.location) ? regions.entries.first.key : customer.location,
                   decoration: const InputDecoration(
                       border: InputBorder.none,
                       label: Text('Quartier'),

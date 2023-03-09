@@ -74,7 +74,6 @@ class DeliveryPanel {
                 width: double.maxFinite,
                 child: DataTable(
                     showBottomBorder: false,
-                    headingTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
                     columns: const [
                   DataColumn(label: Text('Produit')),
                   DataColumn(label: Text('Quantité')),

@@ -10,7 +10,7 @@ class ConfigurationsService {
   }
 
   Map<String, String> getRegions({required bool hasAllOption}) {
-    Map<dynamic, dynamic> rawRegions = configBox.get(ConfigKey.regions.name);
+    Map<dynamic, dynamic> rawRegions = configBox.get(ConfigKey.regions.name, defaultValue: <dynamic, dynamic>{});
     Map<String, String> regions = {};
     if (hasAllOption) {
       regions.putIfAbsent('all', () => 'Tout');
