@@ -12,15 +12,9 @@ import 'package:nevada/ui/components/delivery_payment_status.dart';
 import 'package:nevada/ui/components/products_delivery_table.dart';
 import 'package:nevada/ui/utils/ui_utils.dart';
 
-class DeliveryDialog extends StatelessWidget {
+class DialogGenerator {
 
-  final Delivery delivery;
-  final bool isNew;
-  final BuildContext dialogContext;
-
-  const DeliveryDialog({Key? key, required this.delivery, required this.isNew, required this.dialogContext}) : super(key: key);
-
-  List<DeliveryLine> _cleanUpDeliveryLines(List<DeliveryLine> lines) {
+  static List<DeliveryLine> _cleanUpDeliveryLines(List<DeliveryLine> lines) {
     lines.removeWhere((line) {
       if (line.productQuantity == 0) {
         if (line.isInBox) {
@@ -33,8 +27,7 @@ class DeliveryDialog extends StatelessWidget {
     return lines;
   }
 
-  @override
-  Widget build(BuildContext context) {
+  static AlertDialog deliveryDialog(BuildContext context, Delivery delivery, bool isNew) {
     var textTheme = Theme.of(context).textTheme;
     List<DeliveryLine> deliveryLines = _cleanUpDeliveryLines(delivery.lines.toList());
     DateTime? paymentDueDate;
@@ -72,8 +65,8 @@ class DeliveryDialog extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: DeliveryPaymentStatus(
-                        onPaymentStatusChanged: (TransactionStatus status) => paymentStatus = status,
-                        onPaymentDueDateChanged: (DateTime? dueDate) => paymentDueDate = dueDate)),
+                          onPaymentStatusChanged: (TransactionStatus status) => paymentStatus = status,
+                          onPaymentDueDateChanged: (DateTime? dueDate) => paymentDueDate = dueDate)),
                 )
               ]),
         ),

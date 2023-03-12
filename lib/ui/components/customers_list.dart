@@ -9,6 +9,7 @@ import 'package:nevada/services/customers_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/dialogs/delivery_dialog.dart';
 import 'package:nevada/ui/forms/customer_edit_form.dart';
+import 'package:nevada/ui/utils/dialog_generator.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/ui/utils/ui_utils.dart';
 import 'package:uuid/uuid.dart';
@@ -119,9 +120,10 @@ class _CustomersListState extends State<CustomersList> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                   onPressed: () => showDialog(
                       context: context,
-                      builder: (dialogContext) {
+                      builder: (context) {
                         var newDelivery = Delivery(uuid: const Uuid().v4(), customer: customer, date: DateTime.now());
-                        return DeliveryDialog(delivery: newDelivery, isNew: true, dialogContext: dialogContext);
+                        // return DeliveryDialog(delivery: newDelivery, isNew: true, dialogContext: context);
+                        return DialogGenerator.deliveryDialog(context, newDelivery, true);
                       })),
             ],
           ))

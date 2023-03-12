@@ -50,31 +50,36 @@ class TestDataService {
           name: '24pcs-0.5l',
           description: 'Pack of 6 pieces of 0.5 litre',
           unitBasePrice: 250,
-          totalStock: 0);
+          totalStock: 0,
+          isStockable: true);
       var product2 = Product(
           uuid: const Uuid().v4(),
           name: '12pcs-1.5l',
           description: 'Pack of 6 pieces of 1.5 litres',
           unitBasePrice: 250,
-          totalStock: 0);
+          totalStock: 0,
+          isStockable: true);
       var product3 = Product(
           uuid: const Uuid().v4(),
           name: '4pcs-6l',
           description: 'Pack of 2 pieces of 5 litres',
           unitBasePrice: 200,
-          totalStock: 0);
+          totalStock: 0,
+          isStockable: true);
       var product4 = Product(
           uuid: const Uuid().v4(),
           name: '1pc-20l',
           description: 'Pack of 1 piece of 20 litres',
           unitBasePrice: 900,
-          totalStock: 0);
+          totalStock: 0,
+          isStockable: true);
       var product5 = Product(
           uuid: const Uuid().v4(),
           name: '1pc-20l-refill',
           description: 'Refill Pack of 1 piece of 20 litres',
           unitBasePrice: 140,
-          totalStock: 0);
+          totalStock: 0,
+          isStockable: false);
       for (var product in [product1, product2, product3, product4, product5]) {
         productsBox.put(product.uuid, product);
       }

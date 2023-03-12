@@ -30,7 +30,7 @@ class _ClientsState extends State<Clients> {
 
 
   var hasSearchText = false;
-  var clients = CustomersService().getAll();
+  var clients = CustomersService().getAllSorted();
 
   @override
   void initState() {

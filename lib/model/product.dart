@@ -20,9 +20,18 @@ class Product extends HiveObject {
   @HiveField(4, defaultValue: 0)
   int totalStock;
 
+  @HiveField(5, defaultValue: true)
+  bool isStockable;
+
   Product(
       {required this.uuid,
       required this.name,
       required this.unitBasePrice,
-      required this.description, required this.totalStock});
+      required this.description, required this.totalStock, required this.isStockable});
+}
+
+extension ProductStock on Product {
+  bool get hasValidStock {
+    return !isStockable || totalStock >= 0;
+  }
 }

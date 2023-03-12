@@ -22,13 +22,14 @@ class ProductAdapter extends TypeAdapter<Product> {
       unitBasePrice: fields[2] as int,
       description: fields[3] as String,
       totalStock: fields[4] == null ? 0 : fields[4] as int,
+      isStockable: fields[5] == null ? true : fields[5] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Product obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.uuid)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class ProductAdapter extends TypeAdapter<Product> {
       ..writeByte(3)
       ..write(obj.description)
       ..writeByte(4)
-      ..write(obj.totalStock);
+      ..write(obj.totalStock)
+      ..writeByte(5)
+      ..write(obj.isStockable);
   }
 
   @override

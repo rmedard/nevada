@@ -5,6 +5,7 @@ class MenuElement {
   Icon icon;
   Icon iconFill;
   Widget body;
+  bool hasWarnings;
 
-  MenuElement({required this.label, required this.icon, required this.iconFill,  required this.body});
+  MenuElement({required this.label, required this.icon, required this.iconFill,  required this.body, required this.hasWarnings});
 }

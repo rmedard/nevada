@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/services/production_service.dart';
 import 'package:nevada/services/products_service.dart';
@@ -20,7 +22,7 @@ class _StockState extends State<Stock> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var products = ProductsService().getAll();
-    var productions = ProductionService().getAll();
+    var productions = ProductionService().getAllSorted();
     var stockEditorController = TextEditingController(text: '0');
 
     return ScreenElements().defaultBodyFrame(
@@ -52,32 +54,35 @@ class _StockState extends State<Stock> {
                       DataColumn(label: Text('Nom du produit')),
                       DataColumn(label: Text('Prix unitaire')),
                       DataColumn(label: Text('Déscription')),
-                      DataColumn(label: Text('')),
                       DataColumn(label: Text('Stock')),
+                      DataColumn(label: Text('')),
                       DataColumn(label: Text(''))
                     ],
                     rows: products
-                        .asMap()
-                        .entries
-                        .map<DataRow>((e) => DataRow(cells: [
-                              DataCell(Text('${e.key + 1}')),
-                              DataCell(Text(e.value.name)),
+                        .mapIndexed<DataRow>((index, product) => DataRow(
+                        cells: [
+                              DataCell(Text('${++index}')),
+                              DataCell(Text(product.name)),
                               DataCell(Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text('${e.value.unitBasePrice}'),
+                                  Text('${product.unitBasePrice}'),
                                   Text('MT', style: textTheme.bodySmall),
                                 ],
                               )),
-                              DataCell(Text(e.value.description)),
-                              DataCell(IconButton(
+                              DataCell(Text(product.description)),
+                          DataCell(Row(
+                            children: [
+                              Text('${product.totalStock}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                              product.hasValidStock ? const SizedBox.shrink() : const Icon(Icons.warning_rounded, size: 15, color: Colors.deepOrange)
+                            ],
+                          )),
+                          DataCell(IconButton(
                                 icon: const Icon(
                                   Icons.edit,
-                                  color: Colors.deepOrange,
                                 ), splashRadius: 20,
                                 onPressed: () {},
                               )),
-                              DataCell(Text('${e.value.totalStock}')),
                               DataCell(FilledButton.icon(
                                   icon: const Icon(Icons.add),
                                   onPressed: () {
@@ -130,11 +135,11 @@ class _StockState extends State<Stock> {
                                               DefaultButton(
                                                 label: 'Sauvegarder',
                                                 onSubmit: () {
-                                                  var stockRefill = StockRefill(uuid: const Uuid().v4(), date: DateTime.now(), product: e.value, productQuantity: int.parse(stockEditorController.value.text));
+                                                  var stockRefill = StockRefill(uuid: const Uuid().v4(), date: DateTime.now(), product: product, productQuantity: int.parse(stockEditorController.value.text));
                                                   ProductionService().createNew(stockRefill.uuid, stockRefill).then((created) {
                                                     setState(() {
-                                                       e.value.totalStock += int.parse(stockEditorController.value.text);
-                                                       ProductsService().update(e.value);
+                                                       product.totalStock += int.parse(stockEditorController.value.text);
+                                                       ProductsService().update(product);
                                                     });
                                                   });
                                                   Navigator.pop(dialogContext);

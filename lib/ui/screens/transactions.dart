@@ -45,7 +45,7 @@ class _TransactionsState extends State<Transactions> {
           children: [
             FilledButton.icon(
               onPressed: () {},
-              icon: const Icon(Icons.arrow_downward),
+              icon: const Icon(Icons.trending_down),
               label: const Text('Nouvelle Dépense'),
               style: FilledButton.styleFrom(
                   elevation: 0,
@@ -56,7 +56,7 @@ class _TransactionsState extends State<Transactions> {
             const SizedBox(width: 20),
             FilledButton.icon(
               onPressed: () {},
-              icon: const Icon(Icons.arrow_upward),
+              icon: const Icon(Icons.trending_up),
               label: const Text('Nouvelle Entrée'),
               style: FilledButton.styleFrom(
                   elevation: 0,
