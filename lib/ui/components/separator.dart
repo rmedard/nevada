@@ -18,7 +18,7 @@ class Separator extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: VerticalDivider(
-          thickness: 5,
+          thickness: 1,
           color: Theme.of(context).primaryColor.withOpacity(0.2), indent: 10, endIndent: 10),
       );
     }

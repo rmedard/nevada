@@ -100,112 +100,111 @@ class _ClientsState extends State<Clients> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: SizedBox(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: MetricCard(
-                            horizontalPadding: 40,
-                            verticalPadding: 20,
-                            body: Row(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: MetricCard(
+                        horizontalPadding: 40,
+                        verticalPadding: 20,
+                        body: Row(
+                          children: [
+                            Icon(Icons.people_alt, color: Theme.of(context).primaryColor),
+                            const Separator(direction: SeparatorDirection.vertical),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.people_alt, color: Theme.of(context).primaryColor),
-                                const Separator(direction: SeparatorDirection.vertical),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text('Clients'),
-                                    Text(
-                                      clients.length.toString(),
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
-                                    ),
-                                  ],
+                                const Text('Clients'),
+                                Text(
+                                  clients.length.toString(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
                                 ),
                               ],
                             ),
-                          ),
+                          ],
                         ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          flex: 3,
-                          child: MetricCard(
-                            horizontalPadding: 20, verticalPadding: 20,
-                            body: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    width: 350,
-                                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[100],
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: FormBuilderTextField(
-                                      name: 'search_names',
-                                      controller: searchNameController,
-                                      decoration: InputDecoration(
-                                          label: const Text('Noms'),
-                                          border: InputBorder.none,
-                                          prefixIcon: const Icon(Icons.search),
-                                          suffixIcon: hasSearchText ? IconButton(
-                                              icon:  const Icon(Icons.clear),
-                                              splashColor: Colors.redAccent, splashRadius: 20,
-                                              onPressed: () => searchNameController.clear()) : const SizedBox.shrink()
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      flex: 3,
+                      child: MetricCard(
+                        horizontalPadding: 20, verticalPadding: 20,
+                        body: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                width: 350,
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: FormBuilderTextField(
+                                  name: 'search_names',
+                                  controller: searchNameController,
+                                  decoration: InputDecoration(
+                                      label: const Text('Noms'),
+                                      border: InputBorder.none,
+                                      prefixIcon: const Icon(Icons.search),
+                                      suffixIcon: hasSearchText ? IconButton(
+                                          icon:  const Icon(Icons.clear),
+                                          splashColor: Colors.redAccent, splashRadius: 20,
+                                          onPressed: () => searchNameController.clear()) : const SizedBox.shrink()
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                width: 350,
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: FormBuilderDropdown(
+                                    name: 'search_customer_region',
+                                    borderRadius: BorderRadius.circular(10),
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        label: Text('Quartier'),
+                                        prefixIcon: Icon(Nevada.location)),
+                                    initialValue: 'all',
+                                    items: ConfigurationsService()
+                                        .getRegions(hasAllOption: true)
+                                        .entries
+                                        .mapIndexed<DropdownMenuItem>(
+                                          (index, element) => DropdownMenuItem(
+                                        key: UniqueKey(),
+                                        value: element.key,
+                                        child: Row(
+                                          children: [
+                                            index == 0 ? const SizedBox.shrink() : Text('$index.'),
+                                            const SizedBox(width: 10),
+                                            Text(element.value)
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    width: 350,
-                                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[100],
-                                        borderRadius: BorderRadius.circular(10)),
-                                    child: FormBuilderDropdown(
-                                        name: 'search_customer_region',
-                                        borderRadius: BorderRadius.circular(10),
-                                        decoration: const InputDecoration(
-                                            border: InputBorder.none,
-                                            label: Text('Quartier'),
-                                            prefixIcon: Icon(Nevada.location)),
-                                        initialValue: 'all',
-                                        items: ConfigurationsService()
-                                            .getRegions(hasAllOption: true)
-                                            .entries
-                                            .mapIndexed<DropdownMenuItem>(
-                                              (index, element) => DropdownMenuItem(
-                                            key: UniqueKey(),
-                                            value: element.key,
-                                            child: Row(
-                                              children: [
-                                                index == 0 ? const SizedBox.shrink() : Text('$index.'),
-                                                const SizedBox(width: 10),
-                                                Text(element.value)
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                            .toList(),
-                                        onChanged: (value) {
-                                          customerSearchDto.region = value;
-                                          setState(() {
-                                            clients = CustomersService().find(customerSearchDto: customerSearchDto);
-                                          });
-                                        }),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                                    )
+                                        .toList(),
+                                    onChanged: (value) {
+                                      customerSearchDto.region = value;
+                                      setState(() {
+                                        clients = CustomersService().find(customerSearchDto: customerSearchDto);
+                                      });
+                                    }),
+                              ),
+                            )
+                          ],
                         ),
-                      ],
-                    )),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: Container(

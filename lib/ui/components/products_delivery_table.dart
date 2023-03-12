@@ -148,19 +148,22 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
                 )),
               ]);
             }).toList()),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Prix Total', style: textTheme.headlineSmall),
-            const SizedBox(width: 20),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('${deliveryTotalPrice()}', style: textTheme.headlineMedium),
-                Text('MT', style: textTheme.titleMedium)
-              ],
-            ),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Prix Total', style: textTheme.headlineSmall),
+              const SizedBox(width: 20),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('${deliveryTotalPrice()}', style: textTheme.headlineMedium),
+                  Text('MT', style: textTheme.titleMedium)
+                ],
+              ),
+            ],
+          ),
         )
       ],
     );

@@ -7,12 +7,10 @@ import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/deliveries_service.dart';
 import 'package:nevada/services/delivery_lines_service.dart';
-import 'package:nevada/services/transactions_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/delivery_payment_status.dart';
 import 'package:nevada/ui/components/products_delivery_table.dart';
 import 'package:nevada/ui/utils/ui_utils.dart';
-import 'package:uuid/uuid.dart';
 
 class DeliveryDialog extends StatelessWidget {
 
@@ -39,51 +37,43 @@ class DeliveryDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     List<DeliveryLine> deliveryLines = _cleanUpDeliveryLines(delivery.lines.toList());
-    final Transaction newTransaction = Transaction(
-        uuid: const Uuid().v4(),
-        amount: 0,
-        type: TransactionType.income,
-        deliveryUuid: delivery.uuid,
-        status: TransactionStatus.pending,
-        createdAt: DateTime.now());
+    DateTime? paymentDueDate;
+    TransactionStatus paymentStatus = TransactionStatus.pending;
     return AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Livraison'),
+        title: Column(
+          children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Date de livraison', style: textTheme.titleMedium?.copyWith(color: Colors.grey[500])),
+                  Text(DateFormat('EEEE, dd/MM/yyyy').format(DateTime.now()), style: textTheme.titleMedium),
+                ]),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Client', style: textTheme.titleMedium?.copyWith(color: Colors.grey[500])),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(delivery.customer.names, style: textTheme.titleMedium),
+                      Text(ConfigurationsService().getRegion(delivery.customer.location), style: textTheme.labelSmall),
+                    ],
+                  )
+                ])
+          ],
+        ),
         content: SingleChildScrollView(
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Date de livraison', style: textTheme.titleMedium?.copyWith(color: Colors.grey[500])),
-                          Text(DateFormat('EEEE, dd MMM yyyy').format(DateTime.now()), style: textTheme.titleMedium),
-                        ]),
-                    const SizedBox(height: 10),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Client', style: textTheme.titleMedium?.copyWith(color: Colors.grey[500])),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(delivery.customer.names, style: textTheme.titleMedium),
-                              Text(ConfigurationsService().getRegion(delivery.customer.location), style: textTheme.labelSmall),
-                            ],
-                          )
-                        ]),
-                  ],
-                ),
-                const SizedBox(height: 20),
                 ProductDeliveryTable(deliveryUuid: delivery.uuid, deliveryLines: deliveryLines),
                 Visibility(visible: isNew,
                   child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: DeliveryPaymentStatus(
-                        onPaymentStatusChanged: (TransactionStatus status) => newTransaction.status = status,
-                        onPaymentDueDateChanged: (DateTime? paymentDueDate) => newTransaction.dueDate = paymentDueDate)),
+                        onPaymentStatusChanged: (TransactionStatus status) => paymentStatus = status,
+                        onPaymentDueDateChanged: (DateTime? dueDate) => paymentDueDate = dueDate)),
                 )
               ]),
         ),
@@ -101,16 +91,14 @@ class DeliveryDialog extends StatelessWidget {
             if (DeliveriesService().isValidDelivery(delivery)) {
               if (isNew) {
                 DeliveriesService()
-                    .createNew(delivery.uuid, delivery)
-                    .then((created) => UiUtils().showSnackBar(context, SnackbarMessage(messageType: MessageType.success, title: 'Création de livraison', message: 'Livraison enregistrée')));
+                    .createNewDelivery(delivery, paymentStatus, paymentDueDate)
+                    .then((_) => UiUtils().showSnackBar(context, SnackbarMessage(messageType: MessageType.success, title: 'Création de livraison', message: 'Livraison enregistrée')));
               } else {
                 DeliveriesService()
                     .update(delivery)
                     .then((updated) => UiUtils().showSnackBar(context, SnackbarMessage(messageType: MessageType.success, title: 'Modification de livraison', message: 'Livraison modifiée avec succès')));
               }
-              newTransaction.amount = DeliveriesService().computeDeliveryPrice(delivery);
-              newTransaction.type = TransactionType.income;
-              TransactionsService().createNew(newTransaction.uuid, newTransaction).then((_) => Navigator.of(dialogContext).pop());
+              Navigator.of(dialogContext).pop();
             }
           })
         ]);

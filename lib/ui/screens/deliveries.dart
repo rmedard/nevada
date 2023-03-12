@@ -38,7 +38,7 @@ class _DeliveriesState extends State<Deliveries> {
       setState(() {
         deliverySearchDto.name = searchNameController.value.text;
         deliveryPanels = DeliveriesService()
-            .find(deliverySearchDto: deliverySearchDto)
+            .search(deliverySearchDto: deliverySearchDto)
             .map((e) => DeliveryPanel(isExpanded: false, delivery: e))
             .toList();
       });
@@ -126,7 +126,7 @@ class _DeliveriesState extends State<Deliveries> {
                               deliverySearchDto.region = value;
                               setState(() {
                                 deliveryPanels = DeliveriesService()
-                                    .find(deliverySearchDto: deliverySearchDto)
+                                    .search(deliverySearchDto: deliverySearchDto)
                                     .map((e) => DeliveryPanel(isExpanded: false, delivery: e))
                                     .toList();
                               });
@@ -157,13 +157,12 @@ class _DeliveriesState extends State<Deliveries> {
                                 child: ClipRRect(borderRadius: BorderRadius.circular(20), child: builder));
                           },
                           onChanged: (value) {
-                            debugPrint(value.toString());
                             if (value != null) {
                               deliverySearchDto.start = value.start;
                               deliverySearchDto.end = value.end;
                               setState(() {
                                 deliveryPanels = DeliveriesService()
-                                    .find(deliverySearchDto: deliverySearchDto)
+                                    .search(deliverySearchDto: deliverySearchDto)
                                     .map((e) => DeliveryPanel(isExpanded: false, delivery: e))
                                     .toList();
                               });

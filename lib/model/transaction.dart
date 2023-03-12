@@ -67,7 +67,7 @@ extension TransactionRowColor on Transaction {
   MaterialStateProperty<Color> get rowColor {
     if (type == TransactionType.income) {
       if (status == TransactionStatus.pending) {
-        return MaterialStatePropertyAll(Colors.redAccent.withOpacity(0.1));
+        return MaterialStatePropertyAll(Colors.orangeAccent.withOpacity(0.1));
       } else if (status == TransactionStatus.paid) {
         return MaterialStatePropertyAll(Colors.green.withOpacity(0.1));
       }
@@ -89,20 +89,29 @@ extension TransactionTypeName on TransactionType {
   Widget get icon {
     switch (this) {
       case TransactionType.income:
-        return const Icon(Icons.arrow_circle_up, color: Colors.green);
+        return const Icon(Icons.trending_up, color: Colors.green);
       case TransactionType.expense:
-        return const Icon(Icons.arrow_circle_down, color: Colors.redAccent);
+        return const Icon(Icons.trending_down, color: Colors.redAccent);
     }
   }
 }
 
 extension TransactionStatusName on TransactionStatus {
-  Widget get label {
+  String get label {
     switch (this) {
       case TransactionStatus.paid:
-        return const Text('Payé', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold));
+        return 'Payé';
       case TransactionStatus.pending:
-        return const Text('Crédit', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold));
+        return 'Crédit';
+    }
+  }
+
+  Widget get labelWidget {
+    switch (this) {
+      case TransactionStatus.paid:
+        return Text(label, style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold));
+      case TransactionStatus.pending:
+        return Text(label, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold));
     }
   }
 }
