@@ -4,6 +4,7 @@ import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/dtos/delivery_search_dto.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/base_service.dart';
+import 'package:nevada/services/delivery_lines_service.dart';
 import 'package:nevada/services/transactions_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,6 +20,7 @@ class DeliveriesService extends BaseService<Delivery> {
         .where((delivery) => delivery.customer.names.toLowerCase().contains(deliverySearchDto.name.toLowerCase()))
         .where((delivery) => StringUtils.isNotNullOrEmpty(location) ? delivery.customer.location == location : true)
         .where((delivery) => delivery.date.isAfter(deliverySearchDto.start) && delivery.date.isBefore(deliverySearchDto.end))
+        .sorted((deliveryA, deliveryB) => deliveryB.date.compareTo(deliveryA.date))
         .toList();
   }
 
@@ -57,5 +59,12 @@ class DeliveriesService extends BaseService<Delivery> {
     return delivery.lines
         .map((line) => line.productUnitPrice * line.productQuantity)
         .reduce((lineOneTotal, lineTwoTotal) => lineOneTotal + lineTwoTotal);
+  }
+  
+  Future<bool> deleteDelivery(Delivery delivery) {
+    for (var deliveryLine in delivery.lines) {
+      DeliveryLinesService().delete(deliveryLine.uuid);
+    }
+    return delete(delivery.uuid);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nevada/ui/components/charts/bar_graph.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/separator.dart';
 
@@ -7,11 +8,12 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
+    List<double> weeklyRevenues = [4.4, 2.5, 42.2, 10.5, 100.2, 88.99, 90.10];
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Row(
           children: [
             MetricCard(
               horizontalPadding: 40,
@@ -90,9 +92,37 @@ class Home extends StatelessWidget {
             )
           ],
           ),
-        ),
-        Expanded(child: Container(color: Colors.red, child: Text('data'),))
-      ],
+          const SizedBox(height: 20),
+          Expanded(
+              child: MetricCard(
+                horizontalPadding: 20,
+                verticalPadding: 20,
+                body: Row(
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: Column(
+                          children: [
+                            const Text('Revenues'),
+                            Container(
+                              child: SizedBox(height: 400,
+                                  child: BarGraph(weeklyRevenues: weeklyRevenues)))
+                          ],
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child: Column(
+                          children: [
+                            Text('Production'),
+                            Container(
+                              color: Colors.green,
+                              child: Text('Chart here'),)
+                          ],
+                        )),
+                  ],
+                ),))
+        ],
+      ),
     );
   }
 }

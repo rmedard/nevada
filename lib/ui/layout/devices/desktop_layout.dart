@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/ui/constants.dart';
+import 'package:nevada/ui/utils/menu_item.dart';
+import 'package:provider/provider.dart';
 
 class DesktopLayout extends StatefulWidget {
   const DesktopLayout({Key? key}) : super(key: key);
@@ -15,6 +18,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var colorScheme = Theme.of(context).colorScheme;
+    var stockStatusNotifier = Provider.of<StockStatusNotifier>(context);
     return Scaffold(
       body: Row(
         children: [
@@ -34,20 +38,18 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     Text('INDUSTRY', style: textTheme.titleLarge)
                   ],
                 )),
-                onDestinationSelected: (index) =>
-                    setState(() => _selectedIndex = index),
+                onDestinationSelected: (index) => setState(() => _selectedIndex = index),
                 destinations: menuElements
-                    .map((e) => NavigationRailDestination(
-                        icon: e.icon,
-                        selectedIcon: e.iconFill,
+                    .map((item) => NavigationRailDestination(
+                        icon: item.icon,
+                        selectedIcon: item.iconFill,
                         label: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(e.label),
-                            e.hasWarnings
-                                ? const Icon(Icons.warning_rounded,
-                                    color: Colors.deepOrange)
-                                : const SizedBox.shrink()
+                            Text(item.label),
+                            Consumer<StockStatusNotifier>(builder: (context, notifier, _) => item.menuLabel == MenuItemLabel.stock && notifier.isValidState
+                                ? const Icon(Icons.warning_rounded, color: Colors.deepOrange)
+                                : const SizedBox.shrink())
                           ],
                         )))
                     .toList(),

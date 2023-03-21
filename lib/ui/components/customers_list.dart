@@ -4,14 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/dtos/snackbar_message.dart';
+import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/customers_service.dart';
+import 'package:nevada/services/products_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/dialogs/delivery_dialog.dart';
 import 'package:nevada/ui/forms/customer_edit_form.dart';
-import 'package:nevada/ui/utils/dialog_generator.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/ui/utils/ui_utils.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CustomersList extends StatefulWidget {
@@ -27,6 +29,7 @@ class _CustomersListState extends State<CustomersList> {
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
     var textTheme = Theme.of(context).textTheme;
+    var stockStatusNotifier = Provider.of<StockStatusNotifier>(context);
     return DataTable(
         columns: const <DataColumn>[
           DataColumn(label: Text('#')),
@@ -55,7 +58,7 @@ class _CustomersListState extends State<CustomersList> {
           DataCell(customer.balanceText),
           DataCell(Row(
             children: [
-              FilledButton.icon(
+              IconButton(
                   onPressed: () {
                     showDialog(context: context, builder: (dialogContext) {
                       return AlertDialog(
@@ -108,23 +111,29 @@ class _CustomersListState extends State<CustomersList> {
                           actionsPadding: const EdgeInsets.all(20));
                     });
                   },
-                  style: FilledButton.styleFrom(backgroundColor: colorScheme.error),
-                  icon: const Icon(Nevada.pencil_fill, size: 15),
-                  label: const Text('Modifier')),
+                  tooltip: 'Modifier',
+                  icon: const Icon(Nevada.pencil, size: 18),
+                  splashRadius: 20),
               const SizedBox(width: 10),
-              FilledButton.icon(
-                  icon: const Icon(Nevada.truck_loading, size: 15),
-                  label: const Text('Livraison'),
-                  style: FilledButton.styleFrom(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+              IconButton(
                   onPressed: () => showDialog(
                       context: context,
                       builder: (context) {
                         var newDelivery = Delivery(uuid: const Uuid().v4(), customer: customer, date: DateTime.now());
-                        // return DeliveryDialog(delivery: newDelivery, isNew: true, dialogContext: context);
-                        return DialogGenerator.deliveryDialog(context, newDelivery, true);
-                      })),
+                        return DeliveryDialog(delivery: newDelivery, isNew: true, dialogContext: context);
+                      }).then((value) {
+                        stockStatusNotifier.update(ProductsService().stockHasWarnings());
+                        setState(() {});
+                  }),
+                  tooltip: 'Livraison',
+                  icon: const Icon(Nevada.truck_loading, size: 18),
+                  splashRadius: 20),
+              const SizedBox(width: 10),
+              IconButton(
+                  onPressed: () {},
+                  tooltip: 'Paiement',
+                  icon: const Icon(Nevada.coins, size: 18),
+                  splashRadius: 20),
             ],
           ))
         ]))

@@ -28,7 +28,6 @@ class _ClientsState extends State<Clients> {
   var searchNameController = TextEditingController();
   var customerSearchDto = CustomerSearchDto();
 
-
   var hasSearchText = false;
   var clients = CustomersService().getAllSorted();
 
@@ -68,6 +67,7 @@ class _ClientsState extends State<Clients> {
             showDialog(
                 context: context,
                 builder: (dialogContext) {
+                  newCustomer.location = ConfigurationsService().getRegions(hasAllOption: false).keys.first;
                   return AlertDialog(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       title: Text('Client', style: Theme.of(dialogContext).textTheme.headlineLarge),

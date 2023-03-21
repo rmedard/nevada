@@ -29,10 +29,12 @@ class _DeliveriesState extends State<Deliveries> {
   @override
   void initState() {
     super.initState();
+
     deliveryPanels = DeliveriesService()
-        .getAll()
+        .search(deliverySearchDto: deliverySearchDto)
         .map((e) => DeliveryPanel(isExpanded: false, delivery: e))
         .toList();
+
     searchNameController.addListener((){
       hasSearchText = !StringUtils.isNullOrEmpty(searchNameController.value.text);
       setState(() {

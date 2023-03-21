@@ -9,11 +9,14 @@ import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
+import 'package:nevada/providers/stock_status_notifier.dart';
+import 'package:nevada/services/products_service.dart';
 import 'package:nevada/ui/layout/devices/desktop_layout.dart';
 import 'package:nevada/ui/layout/devices/mobile_layout.dart';
 import 'package:nevada/ui/layout/devices/tablet_layout.dart';
 import 'package:nevada/ui/layout/responsive_layout.dart';
 import 'package:nevada/utils/constants.dart';
+import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'model/customer.dart';
@@ -59,7 +62,15 @@ void main() async {
   /** Init Transactions **/
   await Hive.openBox<Transaction>(boxNames[BoxNameKey.transactions]!);
 
-  runApp(const NevadaApp());
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) {
+          var stockStatusNotifier = StockStatusNotifier();
+          stockStatusNotifier.update(ProductsService().stockHasWarnings());
+          return stockStatusNotifier;
+        })
+      ],
+      child: const NevadaApp()));
 }
 
 class NevadaApp extends StatelessWidget {

@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
+import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/services/production_service.dart';
 import 'package:nevada/services/products_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
+import 'package:nevada/utils/date_tools.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class Stock extends StatefulWidget {
@@ -20,10 +23,10 @@ class Stock extends StatefulWidget {
 class _StockState extends State<Stock> {
   @override
   Widget build(BuildContext context) {
+    var stockStatusNotifier = Provider.of<StockStatusNotifier>(context);
     var textTheme = Theme.of(context).textTheme;
     var products = ProductsService().getAll();
     var productions = ProductionService().getAllSorted();
-    var stockEditorController = TextEditingController(text: '0');
 
     return ScreenElements().defaultBodyFrame(
         context: context,
@@ -77,15 +80,52 @@ class _StockState extends State<Stock> {
                               product.hasValidStock ? const SizedBox.shrink() : const Icon(Icons.warning_rounded, size: 15, color: Colors.deepOrange)
                             ],
                           )),
-                          DataCell(IconButton(
-                                icon: const Icon(
-                                  Icons.edit,
-                                ), splashRadius: 20,
-                                onPressed: () {},
-                              )),
-                              DataCell(FilledButton.icon(
-                                  icon: const Icon(Icons.add),
-                                  onPressed: () {
+                          DataCell(Row(children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit), splashRadius: 20,
+                              tooltip: 'Modifier',
+                              onPressed: () {},
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete_forever, color: Colors.red,), splashRadius: 20,
+                              tooltip: 'Supprimer',
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext dialogContext) {
+                                      return AlertDialog(
+                                        title: const Text('Supprimer le produit'), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const Text('Êtes-vous sûr de vouloir supprimer ce produit ?'),
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 20),
+                                              child: Text('${product.name} | ${product.description}', style: textTheme.titleLarge),
+                                            )
+                                          ],
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () => Navigator.pop(context),
+                                              child: const Text('Annuler')),
+                                          FilledButton(
+                                              onPressed: () {},
+                                              child: const Text('Confimer')),
+                                        ],
+                                      );
+                                    });
+                              },
+                            )
+                          ],)),
+                          DataCell(FilledButton.icon(
+                            icon: const Icon(Icons.add),
+                            label: const Text('Production'),
+                            onPressed: product.isStockable ? () {
+                              var stockRefill = StockRefill(uuid: const Uuid().v4(), date: DateTime.now(), product: product, productQuantity: 0);
+                              var stockEditorController = TextEditingController(text: '${stockRefill.productQuantity}');
+                              var productionDateController = TextEditingController(text: DateTools.basicDateFormatter.format(stockRefill.date));
                                     showDialog(
                                         context: context,
                                         builder: (dialogContext) {
@@ -96,18 +136,30 @@ class _StockState extends State<Stock> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Container(
-                                                  decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey[100],
+                                                      borderRadius: BorderRadius.circular(10)),
                                                   child: TextField(
+                                                    textAlign: TextAlign.center,
+                                                    textAlignVertical: TextAlignVertical.center,
                                                     readOnly: true,
-                                                    keyboardType: TextInputType.number,
+                                                    controller: productionDateController,
                                                     decoration: const InputDecoration(
                                                         suffixIcon: Icon(Icons.calendar_month),
                                                         border: InputBorder.none,
                                                         contentPadding: EdgeInsets.symmetric(horizontal: 10)),
                                                     onTap: () {
-                                                      showDatePicker(context: context, initialDate: DateTime.now(),
+                                                      showDatePicker(
+                                                          context: context,
+                                                          initialDate: stockRefill.date,
                                                           firstDate: DateTime.now().subtract(const Duration(days: 30)),
-                                                          lastDate: DateTime.now().add(const Duration(days: 30)));
+                                                          lastDate: DateTime.now().add(const Duration(days: 30))
+                                                      ).then((value) {
+                                                          if (value != null) {
+                                                            stockRefill.date = value;
+                                                            productionDateController.text = DateTools.basicDateFormatter.format(value);
+                                                          }
+                                                      });
                                                     },
                                                   ),
                                                 ),
@@ -119,6 +171,7 @@ class _StockState extends State<Stock> {
                                                 child: TextField(
                                                   autofocus: true,
                                                   keyboardType: TextInputType.number,
+                                                  textAlign: TextAlign.center,
                                                   inputFormatters: [
                                                     FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
                                                   ],
@@ -135,11 +188,11 @@ class _StockState extends State<Stock> {
                                               DefaultButton(
                                                 label: 'Sauvegarder',
                                                 onSubmit: () {
-                                                  var stockRefill = StockRefill(uuid: const Uuid().v4(), date: DateTime.now(), product: product, productQuantity: int.parse(stockEditorController.value.text));
                                                   ProductionService().createNew(stockRefill.uuid, stockRefill).then((created) {
-                                                    setState(() {
-                                                       product.totalStock += int.parse(stockEditorController.value.text);
-                                                       ProductsService().update(product);
+                                                    product.totalStock += int.parse(stockEditorController.value.text);
+                                                    ProductsService().update(product).then((updated) {
+                                                      stockStatusNotifier.update(ProductsService().stockHasWarnings());
+                                                      setState(() {});
                                                     });
                                                   });
                                                   Navigator.pop(dialogContext);
@@ -148,7 +201,7 @@ class _StockState extends State<Stock> {
                                             ],
                                           );
                                         });
-                                  }, label: const Text('Production'),))
+                                  } : null))
                             ]))
                         .toList()),
               ),
@@ -175,7 +228,11 @@ class _StockState extends State<Stock> {
                           DataCell(Text(e.value.product.name)),
                           DataCell(Text(e.value.dateFormatted)),
                           DataCell(Text('${e.value.productQuantity}')),
-                          DataCell(IconButton(icon: const Icon(Nevada.pencil_fill, size: 15), onPressed: () {  })),
+                          DataCell(
+                              IconButton(
+                                  icon: const Icon(Nevada.pencil_fill, size: 15),
+                                  splashRadius: 20,
+                                  onPressed: () {  })),
                         ])).toList()),
                   ),
                 ),

@@ -98,7 +98,6 @@ class DeliveryDialog extends StatelessWidget {
                     .update(delivery)
                     .then((updated) => UiUtils().showSnackBar(context, SnackbarMessage(messageType: MessageType.success, title: 'Modification de livraison', message: 'Livraison modifiée avec succès')));
               }
-              Navigator.of(context).pop();
             }
           })
         ]);
