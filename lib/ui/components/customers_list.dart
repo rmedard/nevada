@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,7 @@ import 'package:nevada/services/products_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/dialogs/delivery_dialog.dart';
 import 'package:nevada/ui/forms/customer_edit_form.dart';
+import 'package:nevada/ui/screens/entities/customer_page.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/ui/utils/ui_utils.dart';
 import 'package:provider/provider.dart';
@@ -133,6 +135,26 @@ class _CustomersListState extends State<CustomersList> {
                   onPressed: () {},
                   tooltip: 'Paiement',
                   icon: const Icon(Nevada.coins, size: 18),
+                  splashRadius: 20),
+              const SizedBox(width: 30),
+              OpenContainer(
+                closedBuilder: (BuildContext context, void Function() action) {
+                  return IconButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerPage(customer: customer)));
+                      },
+                      tooltip: 'Détails',
+                      icon: const Icon(Icons.arrow_right_rounded, size: 18),
+                      splashRadius: 20);
+                },
+                openBuilder: (BuildContext context, void Function({Object? returnValue}) action) {
+                  return CustomerPage(customer: customer);
+                },),
+              IconButton(
+                  onPressed: () {
+                  },
+                  tooltip: 'Détails',
+                  icon: const Icon(Icons.arrow_right_rounded, size: 18),
                   splashRadius: 20),
             ],
           ))

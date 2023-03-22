@@ -107,6 +107,7 @@ class _StockState extends State<Stock> {
                                           ],
                                         ),
                                         actions: [
+                                          FilledButton(onPressed: (){}, child: Text('data')),
                                           TextButton(
                                               onPressed: () => Navigator.pop(context),
                                               child: const Text('Annuler')),
