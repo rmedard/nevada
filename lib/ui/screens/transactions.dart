@@ -80,7 +80,7 @@ class _TransactionsState extends State<Transactions> {
                           flex: 1,
                           child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
                         child: TextField(
                             decoration: const InputDecoration(
                                 label: Text('Periode'),

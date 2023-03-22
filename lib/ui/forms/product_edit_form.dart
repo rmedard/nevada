@@ -40,6 +40,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
   Widget build(BuildContext context) {
 
     var textTheme = Theme.of(context).textTheme;
+    var colorScheme = Theme.of(context).colorScheme;
 
     return Form(
       key: _productFormKey,
@@ -57,9 +58,9 @@ class _ProductEditFormState extends State<ProductEditForm> {
                       child: Text(widget.isNew ? 'Créer un nouveau produit' : 'Modifier un produit', style: textTheme.headlineSmall)),
                   const SizedBox(height: 20),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: colorScheme.secondary,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: TextFormField(
@@ -79,7 +80,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: colorScheme.secondary,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: TextFormField(
@@ -95,7 +96,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: colorScheme.secondary,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: TextFormField(

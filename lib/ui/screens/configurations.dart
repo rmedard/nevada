@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:nevada/services/configurations_service.dart';
-import 'package:nevada/services/products_service.dart';
 import 'package:nevada/services/test_data_service.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
@@ -16,9 +15,7 @@ class Configurations extends StatefulWidget {
 class _ConfigurationsState extends State<Configurations> {
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
     var regions = ConfigurationsService().getRegions(hasAllOption: false);
-    var products = ProductsService().getAll();
     var textTheme = Theme.of(context).textTheme;
     return ScreenElements().defaultBodyFrame(
         context: context,
@@ -66,12 +63,11 @@ class _ConfigurationsState extends State<Configurations> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Row(children: [
-                  FilledButton(
+                  FilledButton.tonal(
                       onPressed: () {
                         TestDataService().removeAllData();
                         setState(() {});
                       },
-                      style: FilledButton.styleFrom(backgroundColor: colorScheme.secondary),
                       child: const Text('Remove all data')),
                   const SizedBox(width: 10),
                   FilledButton(

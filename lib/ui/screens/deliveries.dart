@@ -49,6 +49,7 @@ class _DeliveriesState extends State<Deliveries> {
 
   @override
   Widget build(BuildContext context) {
+    var colorScheme = Theme.of(context).colorScheme;
     return ScreenElements().defaultBodyFrame(
       context: context,
       title: 'Livraisons',
@@ -77,7 +78,7 @@ class _DeliveriesState extends State<Deliveries> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         margin: const EdgeInsets.only(right: 10),
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
+                          color: colorScheme.secondary,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: FormBuilderTextField(
@@ -98,7 +99,9 @@ class _DeliveriesState extends State<Deliveries> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         margin: const EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(
+                            color: colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(10)),
                         child: FormBuilderDropdown(
                             name: 'search_deliveries_customer_region',
                             borderRadius: BorderRadius.circular(10),
@@ -137,7 +140,9 @@ class _DeliveriesState extends State<Deliveries> {
                       flex: 1,
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(
+                            color: colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(10)),
                         child: FormBuilderDateRangePicker(
                           name: 'search_deliveries_date_range',
                           format: DateFormat('dd/MM/yyyy'),

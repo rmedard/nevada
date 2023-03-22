@@ -145,12 +145,10 @@ class NevadaApp extends StatelessWidget {
             trackColor: MaterialStatePropertyAll<Color>(kColorPrimary.withOpacity(0.2)),
           ),
           navigationRailTheme: const NavigationRailThemeData(
-              backgroundColor: Colors.white, elevation: 0,
-              selectedIconTheme: IconThemeData(
-                  color: kColorPrimary,
-                  shadows: [BoxShadow(spreadRadius: 10, color: Colors.redAccent)],
-              ),
-              indicatorColor: Colors.white,
+              backgroundColor: Colors.white,
+              elevation: 0,
+              selectedIconTheme: IconThemeData(color: kColorPrimary),
+              indicatorColor: Colors.transparent,
               indicatorShape: Border(left: BorderSide(color: kColorPrimary, width: 2)),
               selectedLabelTextStyle: TextStyle(color: kColorPrimary, fontSize: 20),
               unselectedLabelTextStyle: TextStyle(color: kColorDark, fontSize: 20)
