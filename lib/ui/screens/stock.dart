@@ -7,6 +7,7 @@ import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/services/production_service.dart';
 import 'package:nevada/services/products_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
+import 'package:nevada/ui/forms/product_edit_form.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/utils/date_tools.dart';
@@ -32,7 +33,16 @@ class _StockState extends State<Stock> {
         context: context,
         title: 'Stock',
         actions: FilledButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    child: ProductEditForm(product: Product.empty(), isNew: true),
+                  );
+                }).then((_) => setState(() {}));
+          },
           icon: const Icon(Icons.add),
           label: const Text('Nouveau Produit'),
           style: FilledButton.styleFrom(
@@ -65,7 +75,7 @@ class _StockState extends State<Stock> {
                         .mapIndexed<DataRow>((index, product) => DataRow(
                         cells: [
                               DataCell(Text('${++index}')),
-                              DataCell(Text(product.name)),
+                              DataCell(Text(product.name, overflow: TextOverflow.fade)),
                               DataCell(Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
@@ -84,7 +94,16 @@ class _StockState extends State<Stock> {
                             IconButton(
                               icon: const Icon(Icons.edit), splashRadius: 20,
                               tooltip: 'Modifier',
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                        child: ProductEditForm(product: product, isNew: false),
+                                      );
+                                    }).then((_) => setState(() {}));
+                              },
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete_forever, color: Colors.red,), splashRadius: 20,
@@ -107,12 +126,11 @@ class _StockState extends State<Stock> {
                                           ],
                                         ),
                                         actions: [
-                                          FilledButton(onPressed: (){}, child: Text('data')),
                                           TextButton(
                                               onPressed: () => Navigator.pop(context),
                                               child: const Text('Annuler')),
                                           FilledButton(
-                                              onPressed: () {},
+                                              onPressed: () => ProductsService().deleteProduct(product).then((_) => setState(() {})),
                                               child: const Text('Confimer')),
                                         ],
                                       );
@@ -147,7 +165,6 @@ class _StockState extends State<Stock> {
                                                     controller: productionDateController,
                                                     decoration: const InputDecoration(
                                                         suffixIcon: Icon(Icons.calendar_month),
-                                                        border: InputBorder.none,
                                                         contentPadding: EdgeInsets.symmetric(horizontal: 10)),
                                                     onTap: () {
                                                       showDatePicker(
@@ -178,7 +195,6 @@ class _StockState extends State<Stock> {
                                                   ],
                                                   decoration: const InputDecoration(
                                                       suffixText: 'Cartons',
-                                                      border: InputBorder.none,
                                                       contentPadding: EdgeInsets.symmetric(horizontal: 10)),
                                                   controller: stockEditorController,
                                                 ),

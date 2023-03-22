@@ -10,7 +10,8 @@ class TransactionsService extends BaseService<Transaction> {
   List<Transaction> search({required TransactionSearchDto transactionSearchDto}) {
     return dataBox.values
         .where((transaction) => getCustomerName(transaction).toLowerCase().contains(transactionSearchDto.name.toLowerCase()))
-        .where((transaction) => transaction.createdAt.compareTo(transactionSearchDto.start) >= 0 && transaction.createdAt.compareTo(transactionSearchDto.end) <= 0)
+        .where((transaction) => transactionSearchDto.start != null && transaction.createdAt.compareTo(transactionSearchDto.start!) >= 0)
+        .where((transaction) => transactionSearchDto.end != null && transaction.createdAt.compareTo(transactionSearchDto.end!) <= 0)
         .where((transaction) => transactionSearchDto.types.isEmpty || transactionSearchDto.types.contains(transaction.type))
         .where((transaction) => transactionSearchDto.statuses.isEmpty || transactionSearchDto.statuses.contains(transaction.status))
         .toList();

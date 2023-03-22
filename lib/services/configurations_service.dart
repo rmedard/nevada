@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:hive/hive.dart';
 import 'package:nevada/utils/constants.dart';
 
@@ -15,7 +16,12 @@ class ConfigurationsService {
     if (hasAllOption) {
       regions.putIfAbsent('all', () => 'Tout');
     }
-    regions.addAll(rawRegions.map((key, value) => MapEntry<String, String>(key.toString(), value.toString())));
+    regions.addAll(Map.fromEntries(rawRegions
+        .map((key, value) => MapEntry<String, String>(key.toString(), value.toString()))
+        .entries
+        .sortedBy((element) => element.value)
+        .map((element) => MapEntry<String, String>(element.key, element.value)).toList()));
+
     return regions;
   }
 

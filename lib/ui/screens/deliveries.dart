@@ -85,7 +85,6 @@ class _DeliveriesState extends State<Deliveries> {
                           controller: searchNameController,
                           decoration: InputDecoration(
                               label: const Text('Noms'),
-                              border: InputBorder.none,
                               prefixIcon: const Icon(Nevada.user),
                               suffixIcon: hasSearchText ? IconButton(
                                   icon:  const Icon(Icons.clear),
@@ -104,7 +103,6 @@ class _DeliveriesState extends State<Deliveries> {
                             name: 'search_deliveries_customer_region',
                             borderRadius: BorderRadius.circular(10),
                             decoration: const InputDecoration(
-                                border: InputBorder.none,
                                 label: Text('Quartier'),
                                 prefixIcon: Icon(Nevada.location)),
                             initialValue: 'all',
@@ -144,7 +142,6 @@ class _DeliveriesState extends State<Deliveries> {
                           name: 'search_deliveries_date_range',
                           format: DateFormat('dd/MM/yyyy'),
                           decoration: const InputDecoration(
-                              border: InputBorder.none,
                               label: Text('Periode'),
                               prefixIcon: Icon(Icons.calendar_month)),
                           initialEntryMode: DatePickerEntryMode.calendarOnly,

@@ -30,7 +30,7 @@ class _TransactionsState extends State<Transactions> {
     var pastOneMonth = DateTime.now().subtract(const Duration(days: 30));
     var startDate = oldestTransactionDate.isBefore(pastOneMonth) ? pastOneMonth : oldestTransactionDate;
     transactionSearchDto = TransactionSearchDto.init(startDate);
-    dateRangeTextController.text = '${DateTools.basicDateFormatter.format(transactionSearchDto.start)} - ${DateTools.basicDateFormatter.format(transactionSearchDto.end)}';
+    dateRangeTextController.text = '${DateTools.basicDateFormatter.format(transactionSearchDto.start!)} - ${DateTools.basicDateFormatter.format(transactionSearchDto.end!)}';
     transactions = TransactionsService().search(transactionSearchDto: transactionSearchDto);
   }
 
@@ -83,7 +83,6 @@ class _TransactionsState extends State<Transactions> {
                         decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
                         child: TextField(
                             decoration: const InputDecoration(
-                                border: InputBorder.none,
                                 label: Text('Periode'),
                                 prefixIcon: Icon(Icons.calendar_month)),
                             readOnly: true,

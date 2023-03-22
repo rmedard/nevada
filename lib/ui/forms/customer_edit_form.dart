@@ -35,7 +35,6 @@ class CustomerEditForm extends StatelessWidget {
                 name: 'customer_names',
                 controller: namesController,
                 decoration: const InputDecoration(
-                    border: InputBorder.none,
                     label: Text('Noms'),
                     prefixIcon: Icon(Nevada.user_fill)),
               ),
@@ -48,7 +47,6 @@ class CustomerEditForm extends StatelessWidget {
                   name: 'customer_phone',
                   controller: phoneController,
                   decoration: const InputDecoration(
-                      border: InputBorder.none,
                       label: Text('Téléphone'),
                       prefixIcon: Icon(Nevada.phone_call)
                   ),)),
@@ -60,7 +58,6 @@ class CustomerEditForm extends StatelessWidget {
                   name: 'customer_region',
                   initialValue: StringUtils.isNullOrEmpty(customer.location) ? regions.entries.first.key : customer.location,
                   decoration: const InputDecoration(
-                      border: InputBorder.none,
                       label: Text('Quartier'),
                       prefixIcon: Icon(Nevada.location)
                   ),

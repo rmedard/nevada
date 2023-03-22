@@ -91,7 +91,6 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: TextField(
                                     decoration: InputDecoration(
-                                        border: InputBorder.none,
                                         prefixIcon: const Icon(Icons.edit, size: 15),
                                         enabled: false,
                                         suffix: Text('$debtDelayDays jours',

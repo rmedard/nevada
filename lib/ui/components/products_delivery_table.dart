@@ -113,7 +113,6 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
                         ],
-                        decoration: const InputDecoration(border: InputBorder.none),
                         onChanged: (value) {
                           setState(() {
                             lineEditDto.deliveryLine.productQuantity = int.tryParse(value) ?? 0;
@@ -129,7 +128,6 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
                         ],
-                        decoration: const InputDecoration(border: InputBorder.none),
                         onChanged: (value) {
                           setState(() {
                             lineEditDto.deliveryLine.productUnitPrice = int.tryParse(value) ?? 0;

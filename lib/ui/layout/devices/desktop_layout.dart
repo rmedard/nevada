@@ -18,44 +18,36 @@ class _DesktopLayoutState extends State<DesktopLayout> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var colorScheme = Theme.of(context).colorScheme;
-    var stockStatusNotifier = Provider.of<StockStatusNotifier>(context);
     return Scaffold(
       body: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            color: Colors.white,
-            child: NavigationRail(
-                extended: true,
-                indicatorColor: colorScheme.primary,
-                leading: DrawerHeader(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('NEVADA',
-                        style: textTheme.displayMedium
-                            ?.copyWith(color: colorScheme.primary)),
-                    Text('INDUSTRY', style: textTheme.titleLarge)
-                  ],
-                )),
-                onDestinationSelected: (index) => setState(() => _selectedIndex = index),
-                destinations: menuElements
-                    .map((item) => NavigationRailDestination(
-                        icon: item.icon,
-                        selectedIcon: item.iconFill,
-                        label: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(item.label),
-                            Consumer<StockStatusNotifier>(builder: (context, notifier, _) => item.menuLabel == MenuItemLabel.stock && notifier.isValidState
-                                ? const Icon(Icons.warning_rounded, color: Colors.deepOrange)
-                                : const SizedBox.shrink())
-                          ],
-                        )))
-                    .toList(),
-                useIndicator: true,
-                selectedIndex: _selectedIndex),
-          ),
+          NavigationRail(
+              extended: true,
+              leading: DrawerHeader(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                  Text('NEVADA', style: textTheme.displayMedium?.copyWith(color: colorScheme.primary)),
+                  Text('INDUSTRY', style: textTheme.titleLarge)
+                ],
+              )),
+              onDestinationSelected: (index) => setState(() => _selectedIndex = index),
+              destinations: menuElements
+                  .map((item) => NavigationRailDestination(
+                      icon: item.icon,
+                      selectedIcon: item.iconFill,
+                  padding: const EdgeInsets.only(bottom: 20),
+                      label: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(item.label),
+                          Consumer<StockStatusNotifier>(builder: (context, notifier, _) => item.menuLabel == MenuItemLabel.stock && notifier.isValidState
+                              ? const Icon(Icons.warning_rounded, color: Colors.deepOrange)
+                              : const SizedBox.shrink())
+                        ],
+                      )))
+                  .toList(),
+              selectedIndex: _selectedIndex),
           Expanded(child: menuElements[_selectedIndex].body)
         ],
       ),

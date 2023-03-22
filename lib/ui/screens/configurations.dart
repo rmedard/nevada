@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/products_service.dart';
 import 'package:nevada/services/test_data_service.dart';
+import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 
 class Configurations extends StatefulWidget {
@@ -29,39 +30,35 @@ class _ConfigurationsState extends State<Configurations> {
             children: [
               Row(
                 children: [
-                  Card(
-                    margin: EdgeInsets.zero,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          Text('Quartiers', style: textTheme.displaySmall),
-                          DataTable(
-                              columns: const [
-                                DataColumn(label: Text('#')),
-                                DataColumn(label: Text('Nom')),
-                                DataColumn(label: Text('')),
-                              ],
-                              rows: regions.entries.mapIndexed<DataRow>((index, element) => DataRow(cells: [
-                                DataCell(Text(('${++index}'))),
-                                DataCell(Text(element.value)),
-                                DataCell(Row(children: [
-                                  IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      iconSize: 20,
-                                      splashRadius: 20,
-                                      onPressed: (){}),
-                                  IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      iconSize: 20,
-                                      splashRadius: 20,
-                                      onPressed: (){}),
-                                ],))
-                              ])).toList())
-                        ],
-                      ),
+                  MetricCard(
+                    horizontalPadding: 20,
+                    verticalPadding: 20,
+                    body: Column(
+                      children: [
+                        Text('Quartiers', style: textTheme.displaySmall),
+                        DataTable(
+                            columns: const [
+                              DataColumn(label: Text('#')),
+                              DataColumn(label: Text('Nom')),
+                              DataColumn(label: Text('')),
+                            ],
+                            rows: regions.entries.mapIndexed<DataRow>((index, element) => DataRow(cells: [
+                              DataCell(Text(('${++index}.'))),
+                              DataCell(Text(element.value)),
+                              DataCell(Row(children: [
+                                IconButton(
+                                    icon: const Icon(Icons.edit),
+                                    iconSize: 20,
+                                    splashRadius: 20,
+                                    onPressed: (){}),
+                                IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    iconSize: 20,
+                                    splashRadius: 20,
+                                    onPressed: (){}),
+                              ],))
+                            ])).toList())
+                      ],
                     ),
                   )
                 ],

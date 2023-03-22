@@ -30,9 +30,9 @@ void main() async {
 
   /** Init Loggy **/
   Loggy.initLoggy(
-    logPrinter: const PrettyPrinter(showColors: true),
-    logOptions: const LogOptions(LogLevel.all, stackTraceLevel: LogLevel.off)
-  );
+      logPrinter: const PrettyPrinter(showColors: true),
+      logOptions:
+          const LogOptions(LogLevel.all, stackTraceLevel: LogLevel.off));
 
   /** Init hive **/
   await Hive.initFlutter();
@@ -62,15 +62,13 @@ void main() async {
   /** Init Transactions **/
   await Hive.openBox<Transaction>(boxNames[BoxNameKey.transactions]!);
 
-  runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) {
-          var stockStatusNotifier = StockStatusNotifier();
-          stockStatusNotifier.update(ProductsService().stockHasWarnings());
-          return stockStatusNotifier;
-        })
-      ],
-      child: const NevadaApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) {
+      var stockStatusNotifier = StockStatusNotifier();
+      stockStatusNotifier.update(ProductsService().stockHasWarnings());
+      return stockStatusNotifier;
+    })
+  ], child: const NevadaApp()));
 }
 
 class NevadaApp extends StatelessWidget {
@@ -78,49 +76,88 @@ class NevadaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const kColorPrimary = Color(0xff4261EC);
+    const kColorPrimary = Color(0xff4282E7);
     const kColorDark = Color(0xff181818);
+    const kColorDefaultBackground = Color(0xffF9FAFE);
+    const kColorInputBackgroundColor = Color(0xffF7FBFE);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nevada',
       theme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          highlightColor: Colors.transparent,
+          splashFactory: NoSplash.splashFactory,
+          dialogTheme: const DialogTheme(backgroundColor: Colors.white),
+          inputDecorationTheme: const InputDecorationTheme(border: InputBorder.none),
           textTheme: TextTheme(
-            displayLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 57, color: kColorDark),
-            displayMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 45, color: kColorDark),
-            displaySmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 36, color: kColorDark),
-            headlineLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 32, color: kColorDark),
-            headlineMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 28, color: kColorDark),
-            headlineSmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 24, color: kColorDark),
-            titleLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 22, color: kColorDark),
-            titleMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
-            titleSmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
-            labelLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
-            labelMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark),
-            labelSmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 11, color: kColorDark),
-            bodyLarge: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
-            bodyMedium: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
-            bodySmall: GoogleFonts.nunito(fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark),
+            displayLarge: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 57, color: kColorDark),
+            displayMedium: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 45, color: kColorDark),
+            displaySmall: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 36, color: kColorDark),
+            headlineLarge: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 32, color: kColorDark),
+            headlineMedium: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 28, color: kColorDark),
+            headlineSmall: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 24, color: kColorDark),
+            titleLarge: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 22, color: kColorDark),
+            titleMedium: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
+            titleSmall: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
+            labelLarge: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
+            labelMedium: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark),
+            labelSmall: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 11, color: kColorDark),
+            bodyLarge: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
+            bodyMedium: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
+            bodySmall: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark),
           ),
           colorScheme: ColorScheme.fromSwatch(
-              primarySwatch: MaterialColor(
-                kColorPrimary.value, <int, Color>{
-                  50: kColorPrimary.withOpacity(0.1),
-                  100: kColorPrimary.withOpacity(0.2),
-                  200: kColorPrimary.withOpacity(0.3),
-                  300: kColorPrimary.withOpacity(0.4),
-                  400: kColorPrimary.withOpacity(0.5),
-                  500: kColorPrimary.withOpacity(0.6),
-                  600: kColorPrimary.withOpacity(0.7),
-                  700: kColorPrimary.withOpacity(0.8),
-                  800: kColorPrimary.withOpacity(0.9),
-                  900: kColorPrimary.withOpacity(1),
-                }),
-              accentColor: Colors.deepOrangeAccent,
+              primarySwatch: MaterialColor(kColorPrimary.value, <int, Color>{
+                50: kColorPrimary.withOpacity(0.1),
+                100: kColorPrimary.withOpacity(0.2),
+                200: kColorPrimary.withOpacity(0.3),
+                300: kColorPrimary.withOpacity(0.4),
+                400: kColorPrimary.withOpacity(0.5),
+                500: kColorPrimary.withOpacity(0.6),
+                600: kColorPrimary.withOpacity(0.7),
+                700: kColorPrimary.withOpacity(0.8),
+                800: kColorPrimary.withOpacity(0.9),
+                900: kColorPrimary.withOpacity(1),
+              }),
+              accentColor: kColorInputBackgroundColor,
               errorColor: Colors.redAccent,
-              backgroundColor: Colors.grey[300]),
+              backgroundColor: kColorDefaultBackground),
+          switchTheme: SwitchThemeData(
+            splashRadius: 20,
+            thumbColor: const MaterialStatePropertyAll<Color>(kColorPrimary),
+            trackColor: MaterialStatePropertyAll<Color>(kColorPrimary.withOpacity(0.2)),
+          ),
+          navigationRailTheme: const NavigationRailThemeData(
+              backgroundColor: Colors.white, elevation: 0,
+              selectedIconTheme: IconThemeData(
+                  color: kColorPrimary,
+                  shadows: [BoxShadow(spreadRadius: 10, color: Colors.redAccent)],
+              ),
+              indicatorColor: Colors.white,
+              indicatorShape: Border(left: BorderSide(color: kColorPrimary, width: 2)),
+              selectedLabelTextStyle: TextStyle(color: kColorPrimary, fontSize: 20),
+              unselectedLabelTextStyle: TextStyle(color: kColorDark, fontSize: 20)
+          ),
           dataTableTheme: const DataTableThemeData(
-              headingTextStyle: TextStyle(fontWeight: FontWeight.bold, color: kColorPrimary), columnSpacing: 3)),
+              headingTextStyle: TextStyle(fontWeight: FontWeight.bold, color: kColorPrimary),
+              columnSpacing: 3)),
       home: const ResponsiveLayout(
           mobileScaffold: MobileLayout(),
           tabletScaffold: TabletLayout(),

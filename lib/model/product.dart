@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 part 'product.g.dart';
 
@@ -23,11 +24,21 @@ class Product extends HiveObject {
   @HiveField(5, defaultValue: true)
   bool isStockable;
 
+  @HiveField(6, defaultValue: true)
+  bool isActive;
+
   Product(
-      {required this.uuid,
-      required this.name,
-      required this.unitBasePrice,
-      required this.description, required this.totalStock, required this.isStockable});
+      {
+        required this.uuid,
+        required this.name,
+        required this.unitBasePrice,
+        required this.description,
+        required this.totalStock,
+        required this.isStockable,
+        required this.isActive
+      });
+
+  static Product empty() => Product(uuid: const Uuid().v4(), name: '', unitBasePrice: 0, description: '', totalStock: 0, isStockable: true, isActive: true);
 }
 
 extension ProductStock on Product {

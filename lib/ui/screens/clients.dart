@@ -53,6 +53,7 @@ class _ClientsState extends State<Clients> {
 
   @override
   Widget build(BuildContext context) {
+    var colorScheme = Theme.of(context).colorScheme;
     var newCustomer = Customer.empty();
     return ScreenElements().defaultBodyFrame(
         context: context,
@@ -139,7 +140,7 @@ class _ClientsState extends State<Clients> {
                                 width: 350,
                                 padding: const EdgeInsets.symmetric(horizontal: 10),
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[100],
+                                  color: colorScheme.secondary,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: FormBuilderTextField(
@@ -147,7 +148,6 @@ class _ClientsState extends State<Clients> {
                                   controller: searchNameController,
                                   decoration: InputDecoration(
                                       label: const Text('Noms'),
-                                      border: InputBorder.none,
                                       prefixIcon: const Icon(Icons.search),
                                       suffixIcon: hasSearchText ? IconButton(
                                           icon:  const Icon(Icons.clear),
@@ -164,13 +164,12 @@ class _ClientsState extends State<Clients> {
                                 width: 350,
                                 padding: const EdgeInsets.symmetric(horizontal: 10),
                                 decoration: BoxDecoration(
-                                    color: Colors.grey[100],
+                                    color: colorScheme.secondary,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: FormBuilderDropdown(
                                     name: 'search_customer_region',
                                     borderRadius: BorderRadius.circular(10),
                                     decoration: const InputDecoration(
-                                        border: InputBorder.none,
                                         label: Text('Quartier'),
                                         prefixIcon: Icon(Nevada.location)),
                                     initialValue: 'all',
