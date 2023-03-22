@@ -89,6 +89,7 @@ class NevadaApp extends StatelessWidget {
           brightness: Brightness.light,
           highlightColor: Colors.transparent,
           splashFactory: NoSplash.splashFactory,
+          hoverColor: Colors.transparent,
           dialogTheme: const DialogTheme(backgroundColor: Colors.white),
           inputDecorationTheme: const InputDecorationTheme(border: InputBorder.none),
           textTheme: TextTheme(
@@ -148,7 +149,7 @@ class NevadaApp extends StatelessWidget {
               backgroundColor: Colors.white,
               elevation: 0,
               selectedIconTheme: IconThemeData(color: kColorPrimary),
-              indicatorColor: Colors.transparent,
+              indicatorColor: Colors.white,
               indicatorShape: Border(left: BorderSide(color: kColorPrimary, width: 2)),
               selectedLabelTextStyle: TextStyle(color: kColorPrimary, fontSize: 20),
               unselectedLabelTextStyle: TextStyle(color: kColorDark, fontSize: 20)
