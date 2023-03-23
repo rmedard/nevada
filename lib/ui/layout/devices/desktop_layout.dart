@@ -28,7 +28,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                   Text('NEVADA', style: textTheme.displayMedium?.copyWith(color: colorScheme.primary)),
-                  Text('INDUSTRY', style: textTheme.titleLarge)
+                  Text('Industries', style: textTheme.titleLarge)
                 ],
               )),
               onDestinationSelected: (index) => setState(() => _selectedIndex = index),

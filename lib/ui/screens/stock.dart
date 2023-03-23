@@ -37,7 +37,7 @@ class _StockState extends State<Stock> {
           onPressed: () {
             showDialog(
                 context: context,
-                barrierColor: colorScheme.primary.withOpacity(0.2),
+                barrierColor: colorScheme.primary.withOpacity(0.6),
                 builder: (context) {
                   return Dialog(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

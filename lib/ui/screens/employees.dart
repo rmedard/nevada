@@ -4,6 +4,7 @@ import 'package:nevada/model/employee.dart';
 import 'package:nevada/services/employees_service.dart';
 import 'package:nevada/ui/forms/employee_edit_form.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
+import 'package:nevada/ui/screens/entities/employee_page.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/utils/date_tools.dart';
 
@@ -22,8 +23,11 @@ class _EmployeesState extends State<Employees> {
         context: context,
         title: 'Personnel',
         actions: FilledButton.icon(
-            icon: const Icon(Nevada.user_add, size: 15),
+            icon: const Icon(Icons.person_add_alt_sharp),
             label: const Text('Nouvel employé'),
+            style: FilledButton.styleFrom(
+                padding: const EdgeInsets.all(15),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
             onPressed: (){
               showDialog(context: context, builder: (context) {
                 return Dialog(
@@ -69,7 +73,15 @@ class _EmployeesState extends State<Employees> {
                               tooltip: 'Supprimer',
                               icon: const Icon(Icons.delete_outline, size: 18),
                               splashRadius: 20),
-                          Text('Actions'),
+                          const SizedBox(width: 10),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => EmployeePage(employee: employee)),
+                                );
+                              },
+                              icon: Icon(Nevada.forward, size: 18))
                         ],
                       ))
                     ]);
