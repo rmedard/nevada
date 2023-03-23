@@ -16,6 +16,7 @@ class CustomerEditForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var colorScheme = Theme.of(context).colorScheme;
     var namesController = TextEditingController(text: customer.names);
     var phoneController = TextEditingController(text: customer.phone);
     namesController.addListener(() => customer.names = namesController.value.text);
@@ -53,7 +54,7 @@ class CustomerEditForm extends StatelessWidget {
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
               child: FormBuilderDropdown(
                   name: 'customer_region',
                   initialValue: StringUtils.isNullOrEmpty(customer.location) ? regions.entries.first.key : customer.location,

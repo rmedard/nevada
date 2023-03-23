@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
-import 'package:nevada/model/dtos/holiday_span.dart';
 import 'package:nevada/model/dtos/salary_pay.dart';
+import 'package:nevada/model/dtos/yearly_holidays.dart';
+import 'package:uuid/uuid.dart';
 
 part 'employee.g.dart';
 
@@ -23,7 +24,24 @@ class Employee extends HiveObject {
   List<SalaryPay> salaryPayments = [];
 
   @HiveField(5)
-  Map<int, List<HolidaySpan>> holidays = {};
+  Map<int, YearlyHolidays> holidays = {};
 
-  Employee(this.uuid, this.names, this.entryDate, this.baseSalary);
+  Employee({required this.uuid, required this.names, required this.entryDate, required this.baseSalary});
+
+  static Employee empty() => Employee(
+      uuid: const Uuid().v4(),
+      names: '',
+      entryDate: DateTime.now(),
+      baseSalary: 0);
+}
+
+extension EmployeeHolidays on Employee {
+  int get holidaysLeft {
+    int currentYear = DateTime.now().year;
+    if (holidays.keys.contains(currentYear)) {
+      var yearlyHolidays = holidays[currentYear];
+      return yearlyHolidays!.allowedAmount - yearlyHolidays.consumedCount;
+    }
+    return 0;
+  }
 }

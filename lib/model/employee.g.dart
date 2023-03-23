@@ -17,14 +17,13 @@ class EmployeeAdapter extends TypeAdapter<Employee> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Employee(
-      fields[0] as String,
-      fields[1] as String,
-      fields[2] as DateTime,
-      fields[3] as int,
+      uuid: fields[0] as String,
+      names: fields[1] as String,
+      entryDate: fields[2] as DateTime,
+      baseSalary: fields[3] as int,
     )
       ..salaryPayments = (fields[4] as List).cast<SalaryPay>()
-      ..holidays = (fields[5] as Map).map((dynamic k, dynamic v) =>
-          MapEntry(k as int, (v as List).cast<HolidaySpan>()));
+      ..holidays = (fields[5] as Map).cast<int, YearlyHolidays>();
   }
 
   @override

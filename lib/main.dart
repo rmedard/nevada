@@ -6,6 +6,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:loggy/loggy.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/delivery_line.dart';
+import 'package:nevada/model/employee.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
@@ -44,6 +45,7 @@ void main() async {
   Hive.registerAdapter(TransactionTypeAdapter());
   Hive.registerAdapter(TransactionStatusAdapter());
   Hive.registerAdapter(TransactionAdapter());
+  Hive.registerAdapter(EmployeeAdapter());
 
   /** Init Regions **/
   await Hive.openBox<dynamic>(configBoxName);
@@ -54,6 +56,9 @@ void main() async {
 
   /** Init Customers **/
   await Hive.openBox<Customer>(boxNames[BoxNameKey.customers]!);
+
+  /** Init Employees **/
+  await Hive.openBox<Employee>(boxNames[BoxNameKey.employees]!);
 
   /** Init Delivery **/
   await Hive.openBox<DeliveryLine>(boxNames[BoxNameKey.deliveryLines]!);
