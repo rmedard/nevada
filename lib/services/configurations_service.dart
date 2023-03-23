@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:hive/hive.dart';
 import 'package:nevada/utils/constants.dart';
+import 'package:uuid/uuid.dart';
 
 class ConfigurationsService {
 
@@ -23,6 +24,12 @@ class ConfigurationsService {
         .map((element) => MapEntry<String, String>(element.key, element.value)).toList()));
 
     return regions;
+  }
+
+  Future<void> createNewRegion(String regionName) {
+    Map<dynamic, dynamic> rawRegions = configBox.get(ConfigKey.regions.name, defaultValue: <dynamic, dynamic>{});
+    rawRegions.putIfAbsent(const Uuid().v4(), () => regionName);
+    return configBox.put(ConfigKey.regions.name, rawRegions);
   }
 
   String getRegion(String key) {

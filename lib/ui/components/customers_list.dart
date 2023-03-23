@@ -15,6 +15,7 @@ import 'package:nevada/ui/forms/customer_edit_form.dart';
 import 'package:nevada/ui/screens/entities/customer_page.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/ui/utils/ui_utils.dart';
+import 'package:nevada/utils/date_tools.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -56,7 +57,7 @@ class _CustomersListState extends State<CustomersList> {
             ],
           )),
           DataCell(Text(customer.phone)),
-          DataCell(Text(customer.lastDeliveryDate != null ? DateFormat('dd/MM/yyyy').format(customer.lastDeliveryDate!) : '-')),
+          DataCell(Text(customer.lastDeliveryDate != null ? DateTools.basicDateFormatter.format(customer.lastDeliveryDate!) : '-')),
           DataCell(customer.balanceText),
           DataCell(Row(
             children: [

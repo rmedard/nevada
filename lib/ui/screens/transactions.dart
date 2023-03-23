@@ -221,7 +221,9 @@ class _TransactionsState extends State<Transactions> {
                   padding: const EdgeInsets.all(20),
                   decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
                   child: SingleChildScrollView(
                     child: DataTable(
                         columns: const [
@@ -237,8 +239,8 @@ class _TransactionsState extends State<Transactions> {
                             .mapIndexed<DataRow>((index, transaction) =>
                                 DataRow(color: transaction.rowColor, cells: [
                                   DataCell(Text('${++index}')),
-                                  DataCell(Text(DateFormat('dd-MM-yyyy').format(transaction.createdAt))),
-                                  DataCell(Text(DateFormat('dd-MM-yyyy').format(transaction.dueDate ?? transaction.createdAt))),
+                                  DataCell(Text(DateTools.basicDateFormatter.format(transaction.createdAt))),
+                                  DataCell(Text(DateTools.basicDateFormatter.format(transaction.dueDate ?? transaction.createdAt))),
                                   DataCell(Text(TransactionsService().getCustomerName(transaction))),
                                   DataCell(Text(
                                     '${transaction.amount} MT',

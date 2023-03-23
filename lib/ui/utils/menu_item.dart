@@ -20,6 +20,8 @@ extension MenuLabel on MenuElement {
         return 'Transactions';
       case MenuItemLabel.customers:
         return 'Clients';
+      case MenuItemLabel.employees:
+        return 'Personnel';
       case MenuItemLabel.stock:
         return 'Stock';
       case MenuItemLabel.configuration:
@@ -29,5 +31,5 @@ extension MenuLabel on MenuElement {
 }
 
 enum MenuItemLabel {
-  dashboard, deliveries, transactions, customers, stock, configuration;
+  dashboard, deliveries, transactions, customers, employees, stock, configuration;
 }

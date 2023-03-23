@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/test_data_service.dart';
 import 'package:nevada/ui/components/metric_card.dart';
+import 'package:nevada/ui/screens/config/regions_config_block.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 
 class Configurations extends StatefulWidget {
@@ -17,6 +18,7 @@ class _ConfigurationsState extends State<Configurations> {
   Widget build(BuildContext context) {
     var regions = ConfigurationsService().getRegions(hasAllOption: false);
     var textTheme = Theme.of(context).textTheme;
+    var colorScheme = Theme.of(context).colorScheme;
     return ScreenElements().defaultBodyFrame(
         context: context,
         title: 'Configurations',
@@ -27,36 +29,9 @@ class _ConfigurationsState extends State<Configurations> {
             children: [
               Row(
                 children: [
-                  MetricCard(
-                    horizontalPadding: 20,
-                    verticalPadding: 20,
-                    body: Column(
-                      children: [
-                        Text('Quartiers', style: textTheme.displaySmall),
-                        DataTable(
-                            columns: const [
-                              DataColumn(label: Text('#')),
-                              DataColumn(label: Text('Nom')),
-                              DataColumn(label: Text('')),
-                            ],
-                            rows: regions.entries.mapIndexed<DataRow>((index, element) => DataRow(cells: [
-                              DataCell(Text(('${++index}.'))),
-                              DataCell(Text(element.value)),
-                              DataCell(Row(children: [
-                                IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    iconSize: 20,
-                                    splashRadius: 20,
-                                    onPressed: (){}),
-                                IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    iconSize: 20,
-                                    splashRadius: 20,
-                                    onPressed: (){}),
-                              ],))
-                            ])).toList())
-                      ],
-                    ),
+                  SizedBox(
+                    width: 300,
+                    child: RegionsConfigBlock(),
                   )
                 ],
               ),

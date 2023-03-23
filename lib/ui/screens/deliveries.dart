@@ -9,6 +9,7 @@ import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/deliveries_service.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
+import 'package:nevada/utils/date_tools.dart';
 
 import 'elements/screen_elements.dart';
 
@@ -145,7 +146,7 @@ class _DeliveriesState extends State<Deliveries> {
                             borderRadius: BorderRadius.circular(10)),
                         child: FormBuilderDateRangePicker(
                           name: 'search_deliveries_date_range',
-                          format: DateFormat('dd/MM/yyyy'),
+                          format: DateTools.basicDateFormatter,
                           decoration: const InputDecoration(
                               label: Text('Periode'),
                               prefixIcon: Icon(Icons.calendar_month)),

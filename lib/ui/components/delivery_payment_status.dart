@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nevada/model/transaction.dart';
+import 'package:nevada/utils/date_tools.dart';
 
 class DeliveryPaymentStatus extends StatefulWidget {
 
@@ -21,7 +22,7 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
   final _dateController = TextEditingController();
 
   String selectedDateValue() {
-    return DateFormat('dd/MM/yyyy').format(selectedDate ?? DateTime.now());
+    return DateTools.basicDateFormatter.format(selectedDate ?? DateTime.now());
   }
 
   @override
