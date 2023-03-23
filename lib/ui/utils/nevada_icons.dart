@@ -12,6 +12,11 @@ class Nevada {
 
   static const String _fontFamily = 'nevada';
 
+  static const IconData dashboard_fill = IconData(0xe921, fontFamily: _fontFamily);
+  static const IconData dashboard = IconData(0xe922, fontFamily: _fontFamily);
+  static const IconData forward = IconData(0xe923, fontFamily: _fontFamily);
+  static const IconData workers_fill = IconData(0xe924, fontFamily: _fontFamily);
+  static const IconData workers = IconData(0xe925, fontFamily: _fontFamily);
   static const IconData phone_call_fill = IconData(0xe91d, fontFamily: _fontFamily);
   static const IconData phone_call = IconData(0xe91e, fontFamily: _fontFamily);
   static const IconData user_fill = IconData(0xe91f, fontFamily: _fontFamily);
