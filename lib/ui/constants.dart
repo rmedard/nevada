@@ -30,11 +30,11 @@ var defaultDrawer = Drawer(
 );
 
 var menuElements = [
-  MenuElement(menuLabel: MenuItemLabel.dashboard, icon: const Icon(Nevada.home), iconFill: const Icon(Nevada.home_fill), body: const Home()),
+  MenuElement(menuLabel: MenuItemLabel.dashboard, icon: const Icon(Nevada.dashboard), iconFill: const Icon(Nevada.dashboard_fill), body: const Home()),
   MenuElement(menuLabel: MenuItemLabel.deliveries, icon: const Icon(Nevada.truck), iconFill: const Icon(Nevada.truck_fill), body: const Deliveries()),
   MenuElement(menuLabel: MenuItemLabel.transactions, icon: const Icon(Nevada.coins), iconFill: const Icon(Nevada.coins_fill), body: const Transactions()),
   MenuElement(menuLabel: MenuItemLabel.customers, icon: const Icon(Nevada.users), iconFill: const Icon(Nevada.users_fill), body: const Clients()),
-  MenuElement(menuLabel: MenuItemLabel.employees, icon: const Icon(Nevada.users), iconFill: const Icon(Nevada.users_fill), body: const Employees()),
+  MenuElement(menuLabel: MenuItemLabel.employees, icon: const Icon(Nevada.workers), iconFill: const Icon(Nevada.workers_fill), body: const Employees()),
   MenuElement(menuLabel: MenuItemLabel.stock, icon: const Icon(Nevada.stock), iconFill: const Icon(Nevada.stock_fill), body: const Stock()),
   MenuElement(menuLabel: MenuItemLabel.configuration, icon: const Icon(Nevada.settings), iconFill: const Icon(Nevada.settings_fill), body: const Configurations()),
 ];
