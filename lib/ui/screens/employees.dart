@@ -56,7 +56,22 @@ class _EmployeesState extends State<Employees> {
                       DataCell(Text(DateTools.basicDateFormatter.format(employee.entryDate))),
                       DataCell(Text('${employee.baseSalary} MT/mois')),
                       DataCell(Text('${employee.holidaysLeft}')),
-                      DataCell(Text('Actions'))
+                      DataCell(Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {},
+                              tooltip: 'Modifier',
+                              icon: const Icon(Nevada.pencil, size: 18),
+                              splashRadius: 20),
+                          const SizedBox(width: 10),
+                          IconButton(
+                              onPressed: () {},
+                              tooltip: 'Supprimer',
+                              icon: const Icon(Icons.delete_outline, size: 18),
+                              splashRadius: 20),
+                          Text('Actions'),
+                        ],
+                      ))
                     ]);
                   }).toList()),
             ),

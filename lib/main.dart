@@ -25,6 +25,12 @@ import 'model/customer.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
+  await windowManager.waitUntilReadyToShow().then((value) async {
+    await windowManager.setTitle('NEVADA Industries');
+    await windowManager.setTitleBarStyle(TitleBarStyle.normal);
+    await windowManager.setBackgroundColor(const Color(0xff4282E7));
+    await windowManager.show();
+  });
   if (Platform.isWindows || Platform.isMacOS) {
     WindowManager.instance.setMinimumSize(const Size(370, 800));
   }
@@ -94,8 +100,11 @@ class NevadaApp extends StatelessWidget {
           brightness: Brightness.light,
           highlightColor: Colors.transparent,
           splashFactory: NoSplash.splashFactory,
+          dialogBackgroundColor: kColorPrimary.withOpacity(0.1),
           hoverColor: Colors.transparent,
-          dialogTheme: const DialogTheme(backgroundColor: Colors.white),
+          dialogTheme: DialogTheme(
+              backgroundColor: Colors.white,
+              shadowColor: kColorPrimary.withOpacity(0.1)),
           inputDecorationTheme: const InputDecorationTheme(border: InputBorder.none),
           textTheme: TextTheme(
             displayLarge: GoogleFonts.nunito(

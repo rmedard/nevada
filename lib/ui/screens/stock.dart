@@ -26,6 +26,7 @@ class _StockState extends State<Stock> {
   Widget build(BuildContext context) {
     var stockStatusNotifier = Provider.of<StockStatusNotifier>(context);
     var textTheme = Theme.of(context).textTheme;
+    var colorScheme = Theme.of(context).colorScheme;
     var products = ProductsService().getAll();
     var productions = ProductionService().getAllSorted();
 
@@ -36,6 +37,7 @@ class _StockState extends State<Stock> {
           onPressed: () {
             showDialog(
                 context: context,
+                barrierColor: colorScheme.primary.withOpacity(0.2),
                 builder: (context) {
                   return Dialog(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
