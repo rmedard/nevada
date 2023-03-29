@@ -7,6 +7,8 @@ import 'package:loggy/loggy.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/employee.dart';
+import 'package:nevada/model/hiveDtos/salary_pay.dart';
+import 'package:nevada/model/hiveDtos/yearly_holidays.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
@@ -52,6 +54,8 @@ void main() async {
   Hive.registerAdapter(TransactionStatusAdapter());
   Hive.registerAdapter(TransactionAdapter());
   Hive.registerAdapter(EmployeeAdapter());
+  Hive.registerAdapter(SalaryPayAdapter());
+  Hive.registerAdapter(YearlyHolidaysAdapter());
 
   /** Init Regions **/
   await Hive.openBox<dynamic>(configBoxName);
@@ -102,6 +106,11 @@ class NevadaApp extends StatelessWidget {
           splashFactory: NoSplash.splashFactory,
           dialogBackgroundColor: kColorPrimary.withOpacity(0.1),
           hoverColor: Colors.transparent,
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: OutlinedButton.styleFrom(
+              backgroundColor: Colors.white, side: BorderSide(color: kColorPrimary.withOpacity(0.2))
+            )
+          ),
           dialogTheme: DialogTheme(
               backgroundColor: Colors.white,
               shadowColor: kColorPrimary.withOpacity(0.1)),
@@ -126,11 +135,11 @@ class NevadaApp extends StatelessWidget {
             titleSmall: GoogleFonts.nunito(
                 fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
             labelLarge: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
+                fontWeight: FontWeight.bold, fontSize: 14, color: kColorDark),
             labelMedium: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark),
+                fontWeight: FontWeight.bold, fontSize: 12, color: kColorDark),
             labelSmall: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 11, color: kColorDark),
+                fontWeight: FontWeight.bold, fontSize: 11, color: kColorDark),
             bodyLarge: GoogleFonts.nunito(
                 fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
             bodyMedium: GoogleFonts.nunito(

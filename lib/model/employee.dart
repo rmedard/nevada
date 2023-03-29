@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:nevada/model/dtos/salary_pay.dart';
-import 'package:nevada/model/dtos/yearly_holidays.dart';
+import 'package:nevada/model/hiveDtos/salary_pay.dart';
+import 'package:nevada/model/hiveDtos/yearly_holidays.dart';
 import 'package:uuid/uuid.dart';
 
 part 'employee.g.dart';

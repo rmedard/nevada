@@ -66,8 +66,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                     child: TextFormField(
                       controller: productNameTextController,
                       maxLength: 20,
-                      decoration: const InputDecoration(
-                          label: Text('Nom du produit')),
+                      decoration: const InputDecoration(label: Text('Nom du produit')),
                       validator: (value) {
                         if (StringUtils.isNullOrEmpty(value)) {
                           return 'Vous devez mettre un nom de produit';
