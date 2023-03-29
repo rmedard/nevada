@@ -75,17 +75,17 @@ class _EmployeesState extends State<Employees> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Supprimer un employé'),
+                                title: const Text('Supprimer un employé'),
                                 content: Text('Êtes-vous sûr de vouloir supprimer l\'empoloyé: ${employee.names}'),
                                 actions: [
                                   FilledButton.tonal(
                                       onPressed: (){
                                         Navigator.pop(context);
                                       },
-                                      child: Text('Annuller')),
+                                      child: const Text('Annuller')),
                                   FilledButton(
                                       onPressed: (){},
-                                      child: Text('Confirmer'))
+                                      child: const Text('Confirmer'))
                                 ],
                               );
                             });
@@ -180,7 +180,7 @@ class _EmployeesState extends State<Employees> {
                                     Text(DateTools.basicDateFormatter.format(employee.entryDate)),
                                     Text('${employee.baseSalary} MT/mois'),
                                     Text('${employee.holidaysLeft}'),
-                                    IconButton(onPressed: () {}, icon: Icon(Nevada.forward))
+                                    IconButton(onPressed: () {}, icon: const Icon(Nevada.forward))
                                   ],
                                 ),
                                 tileColor: Colors.white,

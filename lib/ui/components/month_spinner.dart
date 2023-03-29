@@ -30,7 +30,8 @@ class _MonthSpinnerState extends State<MonthSpinner> {
         borderRadius: BorderRadius.circular(10)
       ),
       child: TextField(
-        textAlign: TextAlign.center, readOnly: true,
+        textAlign: TextAlign.center,
+        readOnly: true,
         decoration: InputDecoration(
             prefixIcon: IconButton(
                 onPressed: () {
@@ -42,7 +43,7 @@ class _MonthSpinnerState extends State<MonthSpinner> {
                   }
                   inputController.text = '${widget.salaryPay.month}/${widget.salaryPay.year}';
                 },
-                icon: const Icon(Nevada.back)),
+                icon: const Icon(Nevada.back, size: 18)),
             suffixIcon: IconButton(
                 onPressed: () {
                   if (widget.salaryPay.month == 12) {
@@ -53,7 +54,7 @@ class _MonthSpinnerState extends State<MonthSpinner> {
                   }
                   inputController.text = '${widget.salaryPay.month}/${widget.salaryPay.year}';
                 },
-                icon: const Icon(Nevada.forward)),
+                icon: const Icon(Nevada.forward, size: 18)),
         ), controller: inputController,
       ),
     );
