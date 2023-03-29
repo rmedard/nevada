@@ -15,7 +15,9 @@ class Employees extends StatefulWidget {
   State<Employees> createState() => _EmployeesState();
 }
 
-class _EmployeesState extends State<Employees> {
+class _EmployeesState extends State<Employees> with SingleTickerProviderStateMixin {
+
+  late AnimationController _controller;
 
   List<Employee> employees = [];
   double detailsPanelSize = 0;
@@ -129,8 +131,15 @@ class _EmployeesState extends State<Employees> {
 
   @override
   void initState() {
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
     super.initState();
     employees = EmployeesService().getAll();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -176,10 +185,18 @@ class _EmployeesState extends State<Employees> {
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('${index + 1}. ${employee.names}'),
-                                    Text(DateTools.basicDateFormatter.format(employee.entryDate)),
-                                    Text('${employee.baseSalary} MT/mois'),
-                                    Text('${employee.holidaysLeft}'),
+                                    Expanded(
+                                        flex: 2,
+                                        child: Text('${index + 1}. ${employee.names}')),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(DateTools.basicDateFormatter.format(employee.entryDate))),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text('${employee.baseSalary} MT/mois')),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text('${employee.holidaysLeft}')),
                                     IconButton(onPressed: () {}, icon: const Icon(Nevada.forward))
                                   ],
                                 ),
@@ -190,12 +207,12 @@ class _EmployeesState extends State<Employees> {
                                   setState(() {
                                     if (isExpanded) {
                                       if (expandedEmployee?.uuid == employee.uuid) {
-                                        detailsPanelSize = 0;
                                         isExpanded = false;
+                                        _controller.reverse();
                                       }
                                     } else {
-                                      detailsPanelSize = detailsPanelSizeMax;
                                       isExpanded = true;
+                                      _controller.forward();
                                     }
                                     expandedEmployee = employee;
                                   });
@@ -203,18 +220,17 @@ class _EmployeesState extends State<Employees> {
                               );
     }),
                       ),
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        width: detailsPanelSize,
-                        curve: Curves.easeIn,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        decoration: BoxDecoration(
-                          border: Border(left: BorderSide(color: colorScheme.primary.withOpacity(0.2))),
+                      SizeTransition(
+                        sizeFactor: _controller,
+                        axis: Axis.horizontal,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          width: 500,
+                          decoration: BoxDecoration(
+                            border: Border(left: BorderSide(color: colorScheme.primary.withOpacity(0.2))),
+                          ),
+                          child: isExpanded ? EmployeePage(employee: expandedEmployee!) : const SizedBox.shrink(),
                         ),
-                        onEnd: () {
-                          debugPrint('### Ends');
-                        },
-                        child: isExpanded ? Expanded(child: EmployeePage(employee: expandedEmployee!)) : const SizedBox.shrink(),
                       )
                     ],
                   ),

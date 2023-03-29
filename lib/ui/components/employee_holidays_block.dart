@@ -29,7 +29,6 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
 
   EventList<Event> markedDates = EventList(events: {});
 
-
   @override
   void initState() {
     super.initState();
@@ -52,9 +51,7 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
     var colorScheme = Theme.of(context).colorScheme;
     var textTheme = Theme.of(context).textTheme;
     return Container(
-      decoration: BoxDecoration(
-          color: colorScheme.secondary,
-          borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(20)),
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
@@ -112,18 +109,18 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                   Text('12')
                 ])
           ],),
-          SizedBox(
-            width: double.infinity,
-            height: 400,
-            child: CalendarCarousel<Event>(
-              customGridViewPhysics: const NeverScrollableScrollPhysics(),
-              markedDateCustomShapeBorder: CircleBorder(side: BorderSide(color: colorScheme.error)),
-              headerTextStyle: textTheme.labelLarge,
-              locale: 'fr',
-              thisMonthDayBorderColor: Colors.green,
-              markedDatesMap: markedDates,
-            ),
-          ),
+          // SizedBox(
+          //   width: double.infinity,
+          //   height: 400,
+          //   child: CalendarCarousel<Event>(
+          //     customGridViewPhysics: const NeverScrollableScrollPhysics(),
+          //     markedDateCustomShapeBorder: CircleBorder(side: BorderSide(color: colorScheme.error)),
+          //     headerTextStyle: textTheme.labelLarge,
+          //     locale: 'fr',
+          //     thisMonthDayBorderColor: Colors.green,
+          //     markedDatesMap: markedDates,
+          //   ),
+          // ),
         ],
       ),
     );
