@@ -17,7 +17,7 @@ class Employees extends StatefulWidget {
 
 class _EmployeesState extends State<Employees> with SingleTickerProviderStateMixin {
 
-  late AnimationController _controller;
+  late AnimationController _detailsPanelController;
 
   List<Employee> employees = [];
   double detailsPanelSize = 0;
@@ -129,17 +129,42 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
   }
 
 
+  late Widget col;
+
   @override
   void initState() {
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
     super.initState();
+    col = Expanded(
+        flex: 1,
+        child: Text(DateTools.basicDateFormatter.format(DateTime.now())));
+    _detailsPanelController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 300),
+        reverseDuration: const Duration(milliseconds: 300));
+    _detailsPanelController.addListener(() {
+      isExpanded = _detailsPanelController.isAnimating || _detailsPanelController.isCompleted;
+    });
     employees = EmployeesService().getAll();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _detailsPanelController.dispose();
     super.dispose();
+  }
+
+  void onEmployeeLineTap(Employee employee) {
+    if (isExpanded) {
+      if (expandedEmployee?.uuid == employee.uuid) {
+        _detailsPanelController.reverse()
+            .then((value) => setState(() => expandedEmployee = null));
+      } else {
+        setState(() => expandedEmployee = employee);
+      }
+    } else {
+      _detailsPanelController.forward();
+      setState(() => expandedEmployee = employee);
+    }
   }
 
   @override
@@ -181,7 +206,7 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
                             itemBuilder: (context, index) {
                               var employee = employees[index];
                               return ListTile(
-                                selected: isExpanded && expandedEmployee != null && expandedEmployee?.uuid == employee.uuid,
+                                selected: expandedEmployee != null && expandedEmployee?.uuid == employee.uuid,
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -190,38 +215,33 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
                                         child: Text('${index + 1}. ${employee.names}')),
                                     Expanded(
                                         flex: 1,
-                                        child: Text(DateTools.basicDateFormatter.format(employee.entryDate))),
+                                        child: Visibility(
+                                            visible: !isExpanded,
+                                            child: Text(DateTools.basicDateFormatter.format(employee.entryDate)))),
                                     Expanded(
                                         flex: 1,
-                                        child: Text('${employee.baseSalary} MT/mois')),
+                                        child: Visibility(
+                                            visible: !isExpanded,
+                                            child: Text('${employee.baseSalary} MT/mois'))),
                                     Expanded(
                                         flex: 1,
-                                        child: Text('${employee.holidaysLeft}')),
-                                    IconButton(onPressed: () {}, icon: const Icon(Nevada.forward))
+                                        child: Visibility(
+                                            visible: !isExpanded,
+                                            child: Text('${employee.holidaysLeft}'))),
+                                    IconButton(
+                                        onPressed: () => onEmployeeLineTap(employee),
+                                        icon: const Icon(Nevada.forward))
                                   ],
                                 ),
                                 tileColor: Colors.white,
                                 style: ListTileStyle.list,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                onTap: () {
-                                  setState(() {
-                                    if (isExpanded) {
-                                      if (expandedEmployee?.uuid == employee.uuid) {
-                                        isExpanded = false;
-                                        _controller.reverse();
-                                      }
-                                    } else {
-                                      isExpanded = true;
-                                      _controller.forward();
-                                    }
-                                    expandedEmployee = employee;
-                                  });
-                                },
+                                onTap: () => onEmployeeLineTap(employee),
                               );
     }),
                       ),
                       SizeTransition(
-                        sizeFactor: _controller,
+                        sizeFactor: _detailsPanelController,
                         axis: Axis.horizontal,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -229,7 +249,10 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
                           decoration: BoxDecoration(
                             border: Border(left: BorderSide(color: colorScheme.primary.withOpacity(0.2))),
                           ),
-                          child: isExpanded ? EmployeePage(employee: expandedEmployee!) : const SizedBox.shrink(),
+                          child: isExpanded ? EmployeePage(employee: expandedEmployee!, onPageClosed: () {
+                            _detailsPanelController.reverse()
+                                .then((value) => setState(() => expandedEmployee = null));
+                          },) : const SizedBox.shrink(),
                         ),
                       )
                     ],

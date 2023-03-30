@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nevada/model/delivery_line.dart';
+import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/dtos/delivery_line_edit_dto.dart';
+import 'package:nevada/model/hiveDtos/delivery_line.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/services/products_service.dart';
-import 'package:uuid/uuid.dart';
 
 class ProductDeliveryTable extends StatefulWidget {
 
-  final String deliveryUuid;
-  final List<DeliveryLine> deliveryLines;
+  final Delivery delivery;
 
-  const ProductDeliveryTable({Key? key, required this.deliveryUuid, required this.deliveryLines}) : super(key: key);
+  const ProductDeliveryTable({Key? key, required this.delivery}) : super(key: key);
 
   @override
   State<ProductDeliveryTable> createState() => _ProductDeliveryTableState();
@@ -25,7 +24,31 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
   void initState() {
     super.initState();
     products = ProductsService().getAll();
-    deliveryLineEditDtos = _constructDeliveryLines(products);
+    for (var product in products) {
+      if (!widget.delivery.lines.keys.contains(product.uuid)) {
+        widget.delivery.lines.putIfAbsent(product.uuid, () => DeliveryLine(
+            product: product,
+            productQuantity: 0,
+            productUnitPrice: product.unitBasePrice));
+      }
+    }
+
+    deliveryLineEditDtos = widget.delivery.lines.entries.map<DeliveryLineEditDto>((entry) {
+      DeliveryLine line = entry.value;
+      var quantityEditCtlr = TextEditingController();
+      quantityEditCtlr.text = '${entry.value.productQuantity}';
+      quantityEditCtlr.addListener(() => line.productQuantity = int.parse(quantityEditCtlr.value.text));
+
+      var unitPriceEditCtlr = TextEditingController();
+      unitPriceEditCtlr.text = '${line.productUnitPrice}';
+      unitPriceEditCtlr.addListener(() => line.productUnitPrice = int.parse(unitPriceEditCtlr.value.text));
+
+      return DeliveryLineEditDto(
+          deliveryLine: line,
+          quantityEditController: quantityEditCtlr,
+          unitPriceEditController: unitPriceEditCtlr,
+          editUnitPriceFocusNode: FocusNode());
+    }).toList();
   }
 
   @override
@@ -37,51 +60,11 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
     super.dispose();
   }
 
-  List<DeliveryLineEditDto> _constructDeliveryLines(List<Product> products) {
-    List<DeliveryLineEditDto> deliveryLineDtos = [];
-    for (var product in products) {
-      var line = widget.deliveryLines.firstWhere(
-              (deliveryLine) => deliveryLine.product.uuid == product.uuid,
-          orElse: () {
-                var newLine = DeliveryLine(
-                    uuid: const Uuid().v4(),
-                    deliveryUuid: widget.deliveryUuid,
-                    product: product,
-                    productQuantity: 0,
-                    productUnitPrice: product.unitBasePrice);
-                widget.deliveryLines.add(newLine);
-                return newLine;
-              });
-      var quantityEditCtlr = TextEditingController();
-      quantityEditCtlr.text = '${line.productQuantity}';
-      quantityEditCtlr.addListener(() => line.productQuantity = int.parse(quantityEditCtlr.value.text));
-
-      var unitPriceEditCtlr = TextEditingController();
-      unitPriceEditCtlr.text = '${product.unitBasePrice}';
-      unitPriceEditCtlr.addListener(() => line.productUnitPrice = int.parse(unitPriceEditCtlr.value.text));
-
-      var lineEditDto = DeliveryLineEditDto(
-          deliveryLine: line,
-          quantityEditController: quantityEditCtlr,
-          unitPriceEditController: unitPriceEditCtlr,
-          editUnitPriceFocusNode: FocusNode());
-      deliveryLineDtos.add(lineEditDto);
-    }
-    return deliveryLineDtos;
-  }
-
   int deliveryTotalPrice() {
     return deliveryLineEditDtos
         .map((lineEditDto) => lineEditDto.deliveryLine)
         .map((e) => e.productQuantity * e.productUnitPrice)
         .reduce((value, element) => value + element);
-  }
-
-  int lineTotalPrice(String productUuid) {
-    var line = deliveryLineEditDtos
-        .firstWhere((line) => line.deliveryLine.product.uuid == productUuid)
-        .deliveryLine;
-    return line.productUnitPrice * line.productQuantity;
   }
 
   @override
@@ -97,10 +80,9 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
               DataColumn(label: Text('Prix unitaire')),
               DataColumn(label: Text('Prix total')),
             ],
-            rows: products.map((product) {
-              var lineEditDto = deliveryLineEditDtos.firstWhere((lineDto) => lineDto.deliveryLine.product.uuid == product.uuid);
+            rows: deliveryLineEditDtos.map((lineEditDto) {
               return DataRow(cells: <DataCell>[
-                DataCell(Text(product.description)),
+                DataCell(Text(lineEditDto.deliveryLine.product.description)),
                 DataCell(Container(
                     margin: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
@@ -140,7 +122,7 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('${lineTotalPrice(product.uuid)}'),
+                    Text('${lineEditDto.deliveryLine.total}'),
                     Text('MT', style: textTheme.labelSmall)
                   ],
                 )),

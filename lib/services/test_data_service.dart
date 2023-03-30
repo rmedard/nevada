@@ -4,7 +4,6 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery.dart';
-import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
@@ -17,14 +16,12 @@ class TestDataService {
   var productsBox = Hive.box<Product>(boxNames[BoxNameKey.products]!);
   var customersBox = Hive.box<Customer>(boxNames[BoxNameKey.customers]!);
   var stockRefillsBox = Hive.box<StockRefill>(boxNames[BoxNameKey.stockRefills]!);
-  var deliveryLinesBox = Hive.box<DeliveryLine>(boxNames[BoxNameKey.deliveryLines]!);
   var deliveriesBox = Hive.box<Delivery>(boxNames[BoxNameKey.deliveries]!);
   var transactionsBox = Hive.box<Transaction>(boxNames[BoxNameKey.transactions]!);
 
   void removeAllData() {
     transactionsBox.clear();
     deliveriesBox.clear();
-    deliveryLinesBox.clear();
     stockRefillsBox.clear();
     productsBox.clear();
     customersBox.clear();
@@ -52,7 +49,7 @@ class TestDataService {
           unitBasePrice: 250,
           totalStock: 0,
           isStockable: true,
-          isActive: true);
+          isActive: true, unitSize: 0.5, unitsInPack: 24);
       var product2 = Product(
           uuid: const Uuid().v4(),
           name: '12pcs-1.5l',
@@ -60,7 +57,8 @@ class TestDataService {
           unitBasePrice: 250,
           totalStock: 0,
           isStockable: true,
-          isActive: true);
+          isActive: true, unitSize: 1.5,
+          unitsInPack: 12);
       var product3 = Product(
           uuid: const Uuid().v4(),
           name: '4pcs-6l',
@@ -68,7 +66,9 @@ class TestDataService {
           unitBasePrice: 200,
           totalStock: 0,
           isStockable: true,
-          isActive: true);
+          isActive: true,
+          unitSize: 6,
+          unitsInPack: 4);
       var product4 = Product(
           uuid: const Uuid().v4(),
           name: '1pc-20l',
@@ -76,7 +76,7 @@ class TestDataService {
           unitBasePrice: 900,
           totalStock: 0,
           isStockable: true,
-          isActive: true);
+          isActive: true, unitSize: 20, unitsInPack: 1);
       var product5 = Product(
           uuid: const Uuid().v4(),
           name: '1pc-20l-refill',
@@ -84,7 +84,9 @@ class TestDataService {
           unitBasePrice: 140,
           totalStock: 0,
           isStockable: false,
-          isActive: true);
+          isActive: true,
+          unitSize: 0,
+          unitsInPack: 0);
       for (var product in [product1, product2, product3, product4, product5]) {
         productsBox.put(product.uuid, product);
       }

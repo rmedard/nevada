@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:loggy/loggy.dart';
 import 'package:nevada/model/delivery.dart';
-import 'package:nevada/model/delivery_line.dart';
 import 'package:nevada/model/employee.dart';
 import 'package:nevada/model/hiveDtos/salary_pay.dart';
 import 'package:nevada/model/hiveDtos/yearly_holidays.dart';
@@ -14,6 +13,7 @@ import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/services/products_service.dart';
+import 'package:nevada/services/test_data_service.dart';
 import 'package:nevada/ui/layout/devices/desktop_layout.dart';
 import 'package:nevada/ui/layout/devices/mobile_layout.dart';
 import 'package:nevada/ui/layout/devices/tablet_layout.dart';
@@ -23,6 +23,7 @@ import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'model/customer.dart';
+import 'model/hiveDtos/delivery_line.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +45,8 @@ void main() async {
           const LogOptions(LogLevel.all, stackTraceLevel: LogLevel.off));
 
   /** Init hive **/
-  await Hive.initFlutter();
+
+  await Hive.initFlutter('../db');
   Hive.registerAdapter(CustomerAdapter());
   Hive.registerAdapter(DeliveryAdapter());
   Hive.registerAdapter(DeliveryLineAdapter());
@@ -71,7 +73,6 @@ void main() async {
   await Hive.openBox<Employee>(boxNames[BoxNameKey.employees]!);
 
   /** Init Delivery **/
-  await Hive.openBox<DeliveryLine>(boxNames[BoxNameKey.deliveryLines]!);
   await Hive.openBox<Delivery>(boxNames[BoxNameKey.deliveries]!);
 
   /** Init Transactions **/

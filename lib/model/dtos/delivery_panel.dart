@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nevada/model/delivery.dart';
+import 'package:nevada/model/hiveDtos/delivery_line.dart';
 import 'package:nevada/services/configurations_service.dart';
 
 class DeliveryPanel {
@@ -10,12 +11,12 @@ class DeliveryPanel {
   DeliveryPanel({required this.isExpanded, required this.delivery});
 
   List<DataRow> _computeRows() {
-    var rows = delivery.lines
-        .map<DataRow>((e) => DataRow(cells: [
-              DataCell(Text(e.product.name)),
-              DataCell(Text('${e.productQuantity}')),
-              DataCell(Text('${e.productUnitPrice} MT')),
-              DataCell(Text('${e.productUnitPrice * e.productQuantity} MT')),
+    var rows = delivery.lines.values
+        .map<DataRow>((line) => DataRow(cells: [
+              DataCell(Text(line.product.name)),
+              DataCell(Text('${line.productQuantity}')),
+              DataCell(Text('${line.productUnitPrice} MT')),
+              DataCell(Text('${line.total} MT')),
             ]))
         .toList();
     rows.add(
@@ -25,7 +26,7 @@ class DeliveryPanel {
               const DataCell(SizedBox.shrink()),
               const DataCell(SizedBox.shrink()),
               DataCell(Text(
-                  '${delivery.lines.map((line) => line.productUnitPrice * line.productQuantity).reduce((value, element) => value + element)} MT',
+                  '${delivery.lines.values.map((line) => line.total).reduce((value, element) => value + element)} MT',
                   style: const TextStyle(fontWeight: FontWeight.bold))),
             ],
             color: MaterialStateColor.resolveWith((states) => Colors.grey[200]!)));
@@ -59,7 +60,7 @@ class DeliveryPanel {
                   Expanded(
                       flex: 1,
                       child: Text(
-                          '${delivery.lines.map((line) => line.productUnitPrice * line.productQuantity).reduce((value, element) => value + element)} MT'))
+                          '${delivery.lines.values.map((line) => line.total).reduce((value, element) => value + element)} MT'))
                 ],
               ),
             ),

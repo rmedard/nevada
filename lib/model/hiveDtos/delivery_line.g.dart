@@ -8,7 +8,7 @@ part of 'delivery_line.dart';
 
 class DeliveryLineAdapter extends TypeAdapter<DeliveryLine> {
   @override
-  final int typeId = 4;
+  final int typeId = 31;
 
   @override
   DeliveryLine read(BinaryReader reader) {
@@ -17,27 +17,21 @@ class DeliveryLineAdapter extends TypeAdapter<DeliveryLine> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DeliveryLine(
-      uuid: fields[0] as String,
-      deliveryUuid: fields[1] as String,
-      product: fields[2] as Product,
-      productQuantity: fields[3] as int,
-      productUnitPrice: fields[4] as int,
+      product: fields[0] as Product,
+      productQuantity: fields[1] as int,
+      productUnitPrice: fields[2] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, DeliveryLine obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.uuid)
-      ..writeByte(1)
-      ..write(obj.deliveryUuid)
-      ..writeByte(2)
-      ..write(obj.product)
       ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.product)
+      ..writeByte(1)
       ..write(obj.productQuantity)
-      ..writeByte(4)
+      ..writeByte(2)
       ..write(obj.productUnitPrice);
   }
 

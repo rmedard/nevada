@@ -27,6 +27,12 @@ class Product extends HiveObject {
   @HiveField(6, defaultValue: true)
   bool isActive;
 
+  @HiveField(7, defaultValue: 0)
+  double unitSize;
+
+  @HiveField(8, defaultValue: 0)
+  int unitsInPack;
+
   Product(
       {
         required this.uuid,
@@ -35,14 +41,20 @@ class Product extends HiveObject {
         required this.description,
         required this.totalStock,
         required this.isStockable,
-        required this.isActive
+        required this.isActive,
+        required this.unitSize,
+        required this.unitsInPack
       });
 
-  static Product empty() => Product(uuid: const Uuid().v4(), name: '', unitBasePrice: 0, description: '', totalStock: 0, isStockable: true, isActive: true);
+  static Product empty() => Product(uuid: const Uuid().v4(), name: '', unitBasePrice: 0, description: '', totalStock: 0, isStockable: true, isActive: true, unitSize: 0, unitsInPack: 0);
 }
 
 extension ProductStock on Product {
   bool get hasValidStock {
     return !isStockable || totalStock >= 0;
+  }
+
+  bool get isValidProduct {
+    return (isStockable && unitSize > 0 && unitsInPack > 0) || (unitSize == 0 && unitsInPack == 0);
   }
 }

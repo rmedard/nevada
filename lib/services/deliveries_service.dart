@@ -4,7 +4,7 @@ import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/dtos/delivery_search_dto.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/base_service.dart';
-import 'package:nevada/services/delivery_lines_service.dart';
+import 'package:nevada/services/products_service.dart';
 import 'package:nevada/services/transactions_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,7 +12,7 @@ class DeliveriesService extends BaseService<Delivery> {
   bool isValidDelivery(Delivery? delivery) {
     return delivery != null &&
         delivery.lines.isNotEmpty &&
-        delivery.lines.none((line) => line.productQuantity < 1);
+        delivery.lines.values.none((line) => line.productQuantity < 1);
   }
 
   List<Delivery> search({required DeliverySearchDto deliverySearchDto}) {
@@ -31,10 +31,13 @@ class DeliveriesService extends BaseService<Delivery> {
     bool created = await createNew(delivery.uuid, delivery);
     if (created) {
       /** Reduce stock **/
-      for (var deliveryLine in delivery.lines) {
-        deliveryLine.product.totalStock -= deliveryLine.productQuantity;
-        deliveryLine.product.save();
-      }
+      delivery.lines.forEach((productId, deliveryLine) {
+        var product = ProductsService().findById(productId);
+        if (product != null) {
+          product.totalStock -= deliveryLine.productQuantity;
+          product.save();
+        }
+      });
 
       /** Create transaction **/
       delivery.customer.lastDeliveryDate = delivery.date;
@@ -59,15 +62,8 @@ class DeliveriesService extends BaseService<Delivery> {
   }
 
   int computeDeliveryPrice(Delivery delivery) {
-    return delivery.lines
+    return delivery.lines.values
         .map((line) => line.productUnitPrice * line.productQuantity)
         .reduce((lineOneTotal, lineTwoTotal) => lineOneTotal + lineTwoTotal);
-  }
-
-  Future<bool> deleteDelivery(Delivery delivery) {
-    for (var deliveryLine in delivery.lines) {
-      DeliveryLinesService().delete(deliveryLine.uuid);
-    }
-    return delete(delivery.uuid);
   }
 }

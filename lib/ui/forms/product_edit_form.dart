@@ -21,6 +21,8 @@ class _ProductEditFormState extends State<ProductEditForm> {
   late TextEditingController productNameTextController = TextEditingController(text: widget.product.name);
   late TextEditingController productDescriptionTextController = TextEditingController(text: widget.product.description);
   late TextEditingController productUnitPriceTextController = TextEditingController(text: '${widget.product.unitBasePrice}');
+  late TextEditingController bottleSizeTextController = TextEditingController(text: '${widget.product.unitSize}');
+  late TextEditingController unitsInPackTextController = TextEditingController(text: '${widget.product.unitsInPack}');
 
   @override
   void initState() {
@@ -114,19 +116,52 @@ class _ProductEditFormState extends State<ProductEditForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Ce produit est stockable?', style: textTheme.titleMedium),
-                          Text('Ex: Le remplissage d\'un bidon vide est un produit non-stockable', style: textTheme.labelSmall,)
+                          Text('Ex: Le remplissage d\'un bidon vide est un produit non-stockable', style: textTheme.labelSmall)
                         ],
                       ),
                       Switch(
                           value: widget.product.isStockable,
                           inactiveThumbColor: Colors.black45,
                           inactiveTrackColor: Colors.grey[200],
-                          onChanged: (bool newValue) {
-                            setState(() {
-                              widget.product.isStockable = newValue;
-                            });
-                          }),
+                          onChanged: (bool newValue) => setState(() => widget.product.isStockable = newValue)),
                     ],
+                  ),
+                  Visibility(
+                    visible: widget.product.isStockable,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: TextFormField(
+                            controller: bottleSizeTextController,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                                label: Text('Taille d\'une bouteille'),
+                                suffix: Text('littres')),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: TextFormField(
+                            controller: unitsInPackTextController,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                                label: Text('Nombre de bouteilles dans un pack'),
+                                suffix: Text('bouteilles')),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 30),
                   FilledButton(

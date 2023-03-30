@@ -20,7 +20,7 @@ class DeliveryAdapter extends TypeAdapter<Delivery> {
       uuid: fields[0] as String,
       customer: fields[1] as Customer,
       date: fields[2] as DateTime,
-    )..lines = (fields[3] as HiveList).castHiveList();
+    )..lines = (fields[3] as Map).cast<String, DeliveryLine>();
   }
 
   @override
