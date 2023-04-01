@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nevada/model/delivery.dart';
-import 'package:nevada/model/hiveDtos/delivery_line.dart';
+import 'package:nevada/model/dtos/delivery_line.dart';
 import 'package:nevada/services/configurations_service.dart';
 
 class DeliveryPanel {
@@ -46,10 +46,8 @@ class DeliveryPanel {
                         children: [
                           Text(delivery.customer.names),
                           Text(
-                            ConfigurationsService()
-                                .getRegion(delivery.customer.location),
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[600]),
+                            ConfigurationsService().getRegion(delivery.customer.location),
+                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                           )
                         ],
                       )),

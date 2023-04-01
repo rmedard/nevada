@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nevada/model/hiveDtos/salary_pay.dart';
+import 'package:nevada/model/dtos/salary_pay.dart';
 import 'package:nevada/model/employee.dart';
 import 'package:nevada/ui/forms/employee_salary_form.dart';
 import 'package:nevada/utils/date_tools.dart';

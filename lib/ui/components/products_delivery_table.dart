@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nevada/model/delivery.dart';
-import 'package:nevada/model/dtos/delivery_line_edit_dto.dart';
-import 'package:nevada/model/hiveDtos/delivery_line.dart';
+import 'package:nevada/model/dtos/delivery_line.dart';
 import 'package:nevada/model/product.dart';
+import 'package:nevada/services/dtos/delivery_line_edit_dto.dart';
 import 'package:nevada/services/products_service.dart';
 
 class ProductDeliveryTable extends StatefulWidget {

@@ -1,8 +1,6 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/test_data_service.dart';
-import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/screens/config/regions_config_block.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 
@@ -16,9 +14,6 @@ class Configurations extends StatefulWidget {
 class _ConfigurationsState extends State<Configurations> {
   @override
   Widget build(BuildContext context) {
-    var regions = ConfigurationsService().getRegions(hasAllOption: false);
-    var textTheme = Theme.of(context).textTheme;
-    var colorScheme = Theme.of(context).colorScheme;
     return ScreenElements().defaultBodyFrame(
         context: context,
         title: 'Configurations',
@@ -34,6 +29,23 @@ class _ConfigurationsState extends State<Configurations> {
                     child: RegionsConfigBlock(),
                   )
                 ],
+              ),
+              SizedBox(
+                width: 300,
+                child: TextField(
+                  decoration: InputDecoration(
+                      label: Text('This is the label'),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 1)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.error,
+                              width: 1))
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),

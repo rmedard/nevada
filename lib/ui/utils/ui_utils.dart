@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nevada/model/dtos/snackbar_message.dart';
+import 'package:nevada/services/dtos/snackbar_message.dart';
 
 class UiUtils {
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nevada/model/hiveDtos/salary_pay.dart';
+import 'package:nevada/model/dtos/salary_pay.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 
 class MonthSpinner extends StatefulWidget {

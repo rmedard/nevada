@@ -1,9 +1,9 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:collection/collection.dart';
-import 'package:nevada/model/dtos/transaction_search_dto.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/base_service.dart';
 import 'package:nevada/services/deliveries_service.dart';
+import 'package:nevada/services/dtos/transaction_search_dto.dart';
 
 class TransactionsService extends BaseService<Transaction> {
 

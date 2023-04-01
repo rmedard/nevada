@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateTools {
@@ -14,5 +15,49 @@ class DateTools {
     return dateTime
         .subtract(Duration(hours: dateTime.hour, minutes: dateTime.minute, seconds: dateTime.second))
         .add(const Duration(hours: 00, minutes: 00, seconds: 00));
+  }
+
+  static DateTime plusMonths(DateTime dateTime, int monthsCount) {
+    if (monthsCount > 0) {
+      int month = dateTime.month;
+      int year = dateTime.year;
+      int day = dateTime.day;
+      if (month == 12) {
+        month = 1;
+        ++year;
+      } else {
+        ++month;
+      }
+      --monthsCount;
+      return plusMonths(DateTime(year, month, day), monthsCount);
+    }
+    return dateTime;
+  }
+
+  static DateTime minusMonths(DateTime dateTime, int monthsCount) {
+    if (monthsCount > 0) {
+      int month = dateTime.month;
+      int year = dateTime.year;
+      int day = 1;
+      if (month == 1) {
+        month = 12;
+        --year;
+      } else {
+        --month;
+      }
+      --monthsCount;
+      return minusMonths(DateTime(year, month, day), monthsCount);
+    }
+    return dateTime;
+  }
+
+  static int countWorkingDays(DateTimeRange dateTimeRange) {
+    List<DateTime> dateTimes = [];
+    for (int i = 0; i <= dateTimeRange.duration.inDays; i++) {
+      dateTimes.add(dateTimeRange.start.add(Duration(days: i)));
+    }
+    return dateTimes
+        .where((dateTime) => dateTime.day != DateTime.saturday && dateTime.day != DateTime.sunday)
+        .length;
   }
 }

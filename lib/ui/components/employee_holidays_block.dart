@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:nevada/model/employee.dart';
+import 'package:nevada/utils/date_tools.dart';
 
 class EmployeeHolidaysBlock extends StatefulWidget {
 
@@ -15,7 +16,11 @@ class EmployeeHolidaysBlock extends StatefulWidget {
 
 class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
 
+  final _holidayPeriodEditController = TextEditingController();
+
   List<DateTime> holidayDates = [];
+
+  DateTimeRange? selectedRange;
 
   var holidayD = [
     DateTime(2023, 1, 1),
@@ -65,7 +70,45 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-
+                            title: Text('Congé de: ${widget.employee.names}'),
+                            content: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
+                              child: TextField(
+                                decoration: InputDecoration(
+                                    label: const Text('Période'),
+                                    suffix: Text('${selectedRange == null ? 0 : DateTools.countWorkingDays(selectedRange!)} jours')),
+                                controller: _holidayPeriodEditController,
+                                onTap: () {
+                                  showDateRangePicker(
+                                      context: context,
+                                      initialEntryMode: DatePickerEntryMode.calendarOnly,
+                                      firstDate: DateTools.minusMonths(DateTime.now(), 1),
+                                      lastDate: DateTools.plusMonths(DateTime.now(), 1),
+                                      builder: (context, builder) {
+                                        var screenSize = MediaQuery.of(context).size;
+                                        return Container(
+                                            color: Colors.transparent,
+                                            margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.05, horizontal: screenSize.width * 0.3),
+                                            child: ClipRRect(borderRadius: BorderRadius.circular(20), child: builder));
+                                      }).then((range) {
+                                        if (range != null) {
+                                          var formatter = DateTools.basicDateFormatter;
+                                          selectedRange = range;
+                                          setState(() {
+                                            _holidayPeriodEditController.text = '${formatter.format(range.start)} - ${formatter.format(range.end)}';
+                                          });
+                                        }
+                                  });
+                                },
+                              ),
+                            ),
+                            actions: [
+                              FilledButton(onPressed: (){}, child: const Text('Annuler')),
+                              FilledButton(onPressed: (){
+                                selectedRange?.duration.inDays;
+                              }, child: const Text('Sauvegarder'))
+                            ],
                           );
                         });
                   },

@@ -27,11 +27,11 @@ class EmployeePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
-                EmployeeDetailsBlock(employee: employee),
+                EmployeeDetailsBlock(key: GlobalKey(), employee: employee),
                 const SizedBox(height: 20),
-                EmployeeSalariesBlock(employee: employee),
+                EmployeeSalariesBlock(key: GlobalKey(), employee: employee),
                 const SizedBox(height: 20),
-                EmployeeHolidaysBlock(employee: employee),
+                EmployeeHolidaysBlock(key: GlobalKey(), employee: employee),
                 const SizedBox(height: 20),
               ]),
           ),

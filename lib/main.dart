@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:loggy/loggy.dart';
+import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery.dart';
+import 'package:nevada/model/dtos/delivery_line.dart';
+import 'package:nevada/model/dtos/salary_pay.dart';
+import 'package:nevada/model/dtos/yearly_holidays.dart';
 import 'package:nevada/model/employee.dart';
-import 'package:nevada/model/hiveDtos/salary_pay.dart';
-import 'package:nevada/model/hiveDtos/yearly_holidays.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/services/products_service.dart';
-import 'package:nevada/services/test_data_service.dart';
 import 'package:nevada/ui/layout/devices/desktop_layout.dart';
 import 'package:nevada/ui/layout/devices/mobile_layout.dart';
 import 'package:nevada/ui/layout/devices/tablet_layout.dart';
@@ -21,9 +22,6 @@ import 'package:nevada/ui/layout/responsive_layout.dart';
 import 'package:nevada/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'model/customer.dart';
-import 'model/hiveDtos/delivery_line.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,7 +103,7 @@ class NevadaApp extends StatelessWidget {
           brightness: Brightness.light,
           highlightColor: Colors.transparent,
           splashFactory: NoSplash.splashFactory,
-          dialogBackgroundColor: kColorPrimary.withOpacity(0.1),
+          dialogBackgroundColor: Colors.white,
           hoverColor: Colors.transparent,
           outlinedButtonTheme: OutlinedButtonThemeData(
             style: OutlinedButton.styleFrom(
@@ -113,7 +111,6 @@ class NevadaApp extends StatelessWidget {
             )
           ),
           dialogTheme: DialogTheme(
-              backgroundColor: Colors.white,
               shadowColor: kColorPrimary.withOpacity(0.1)),
           inputDecorationTheme: const InputDecorationTheme(border: InputBorder.none),
           textTheme: TextTheme(
@@ -148,22 +145,14 @@ class NevadaApp extends StatelessWidget {
             bodySmall: GoogleFonts.nunito(
                 fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark),
           ),
-          colorScheme: ColorScheme.fromSwatch(
-              primarySwatch: MaterialColor(kColorPrimary.value, <int, Color>{
-                50: kColorPrimary.withOpacity(0.1),
-                100: kColorPrimary.withOpacity(0.2),
-                200: kColorPrimary.withOpacity(0.3),
-                300: kColorPrimary.withOpacity(0.4),
-                400: kColorPrimary.withOpacity(0.5),
-                500: kColorPrimary.withOpacity(0.6),
-                600: kColorPrimary.withOpacity(0.7),
-                700: kColorPrimary.withOpacity(0.8),
-                800: kColorPrimary.withOpacity(0.9),
-                900: kColorPrimary.withOpacity(1),
-              }),
-              accentColor: kColorInputBackgroundColor,
-              errorColor: Colors.redAccent,
-              backgroundColor: kColorDefaultBackground),
+          colorScheme: const ColorScheme.light(
+            primary: kColorPrimary,
+            secondary: kColorInputBackgroundColor,
+            error: Colors.redAccent,
+            background: kColorDefaultBackground,
+            surface: kColorPrimary,
+            onSecondary: Colors.white,
+          ),
           switchTheme: SwitchThemeData(
             splashRadius: 20,
             thumbColor: const MaterialStatePropertyAll<Color>(kColorPrimary),
@@ -178,8 +167,10 @@ class NevadaApp extends StatelessWidget {
               selectedLabelTextStyle: TextStyle(color: kColorPrimary, fontSize: 20),
               unselectedLabelTextStyle: TextStyle(color: kColorDark, fontSize: 20)
           ),
-          dataTableTheme: const DataTableThemeData(
-              headingTextStyle: TextStyle(fontWeight: FontWeight.bold, color: kColorPrimary),
+          dataTableTheme: DataTableThemeData(
+              headingTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: kColorPrimary),
+              headingRowColor: MaterialStatePropertyAll<Color>(kColorPrimary.withOpacity(0.1)),
+              dividerThickness: 1,
               columnSpacing: 3)),
       home: const ResponsiveLayout(
           mobileScaffold: MobileLayout(),

@@ -1,9 +1,9 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:nevada/model/delivery.dart';
-import 'package:nevada/model/dtos/delivery_search_dto.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/base_service.dart';
+import 'package:nevada/services/dtos/delivery_search_dto.dart';
 import 'package:nevada/services/products_service.dart';
 import 'package:nevada/services/transactions_service.dart';
 import 'package:uuid/uuid.dart';
@@ -33,7 +33,7 @@ class DeliveriesService extends BaseService<Delivery> {
       /** Reduce stock **/
       delivery.lines.forEach((productId, deliveryLine) {
         var product = ProductsService().findById(productId);
-        if (product != null) {
+        if (product != null && product.isStockable) {
           product.totalStock -= deliveryLine.productQuantity;
           product.save();
         }

@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:nevada/model/customer.dart';
-import 'package:nevada/model/hiveDtos/delivery_line.dart';
+import 'package:nevada/model/dtos/delivery_line.dart';
 
 part 'delivery.g.dart';
 

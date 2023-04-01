@@ -128,15 +128,9 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
     return rows;
   }
 
-
-  late Widget col;
-
   @override
   void initState() {
     super.initState();
-    col = Expanded(
-        flex: 1,
-        child: Text(DateTools.basicDateFormatter.format(DateTime.now())));
     _detailsPanelController = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 300),
@@ -185,7 +179,7 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                     child: EmployeeEditForm(employee: Employee.empty(), isNew: true)
                 );
-              }).then((value) => setState(() {}));
+              }).then((value) => setState(() => employees = EmployeesService().getAll()));
             }),
         body: Expanded(
           child: Column(

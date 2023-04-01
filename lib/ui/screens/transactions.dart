@@ -1,8 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:nevada/model/dtos/transaction_search_dto.dart';
 import 'package:nevada/model/transaction.dart';
+import 'package:nevada/services/dtos/transaction_search_dto.dart';
 import 'package:nevada/services/transactions_service.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/separator.dart';

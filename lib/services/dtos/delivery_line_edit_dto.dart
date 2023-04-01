@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nevada/model/hiveDtos/delivery_line.dart';
-import 'package:nevada/model/product.dart';
+import 'package:nevada/model/dtos/delivery_line.dart';
 
 class DeliveryLineEditDto {
   DeliveryLine deliveryLine;

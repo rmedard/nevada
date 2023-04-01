@@ -1,13 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery.dart';
-import 'package:nevada/model/dtos/snackbar_message.dart';
 import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/customers_service.dart';
+import 'package:nevada/services/dtos/snackbar_message.dart';
 import 'package:nevada/services/products_service.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/dialogs/delivery_dialog.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nevada/model/delivery.dart';
-import 'package:nevada/model/dtos/snackbar_message.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/deliveries_service.dart';
+import 'package:nevada/services/dtos/snackbar_message.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/delivery_payment_status.dart';
 import 'package:nevada/ui/components/products_delivery_table.dart';
