@@ -11,6 +11,7 @@ import 'package:nevada/model/dtos/salary_pay.dart';
 import 'package:nevada/model/dtos/yearly_holidays.dart';
 import 'package:nevada/model/employee.dart';
 import 'package:nevada/model/product.dart';
+import 'package:nevada/model/raw_material_movement.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/providers/stock_status_notifier.dart';
@@ -56,6 +57,8 @@ void main() async {
   Hive.registerAdapter(EmployeeAdapter());
   Hive.registerAdapter(SalaryPayAdapter());
   Hive.registerAdapter(YearlyHolidaysAdapter());
+  Hive.registerAdapter(RawMaterialMovementAdapter());
+  Hive.registerAdapter(MaterialMovementTypeAdapter());
 
   /** Init Regions **/
   await Hive.openBox<dynamic>(configBoxName);
@@ -63,6 +66,7 @@ void main() async {
   /** Init Products & Stock **/
   await Hive.openBox<Product>(boxNames[BoxNameKey.products]!);
   await Hive.openBox<StockRefill>(boxNames[BoxNameKey.stockRefills]!);
+  await Hive.openBox<RawMaterialMovement>(boxNames[BoxNameKey.rawMaterials]!);
 
   /** Init Customers **/
   await Hive.openBox<Customer>(boxNames[BoxNameKey.customers]!);
@@ -109,6 +113,17 @@ class NevadaApp extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               backgroundColor: Colors.white, side: BorderSide(color: kColorPrimary.withOpacity(0.2))
             )
+          ),
+          tabBarTheme: TabBarTheme(
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            indicator: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                )), overlayColor: MaterialStatePropertyAll<Color>(kColorPrimary.withOpacity(0.03)),
+            indicatorSize: TabBarIndicatorSize.tab,
           ),
           dialogTheme: DialogTheme(
               shadowColor: kColorPrimary.withOpacity(0.1)),

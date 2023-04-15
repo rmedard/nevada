@@ -1,4 +1,7 @@
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
+
+part 'raw_material_movement.g.dart';
 
 const movementTypeRelationship = <MaterialMovementType, String> {
   MaterialMovementType.released: 'Released',
@@ -29,6 +32,13 @@ class RawMaterialMovement extends HiveObject {
     required this.movementType,
     required this.unitSize,
     required this.quantity});
+
+  static RawMaterialMovement empty(MaterialMovementType type) => RawMaterialMovement(
+      uuid: const Uuid().v4(),
+      date: DateTime.now(),
+      movementType: type,
+      unitSize: 0,
+      quantity: 0);
 }
 
 @HiveType(typeId: 91)

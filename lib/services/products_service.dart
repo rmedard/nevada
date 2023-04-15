@@ -16,4 +16,10 @@ class ProductsService extends BaseService<Product> {
     product.isActive = false;
     return product.save();
   }
+
+  Set<String> bottleSizes() {
+    return getAll()
+        .where((product) => product.isStockable)
+        .map((product) => '${product.unitSize}').toSet();
+  }
 }
