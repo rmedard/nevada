@@ -56,7 +56,7 @@ class _CustomersListState extends State<CustomersList> {
             ],
           )),
           DataCell(Text(customer.phone)),
-          DataCell(Text(customer.lastDeliveryDate != null ? DateTools.basicDateFormatter.format(customer.lastDeliveryDate!) : '-')),
+          DataCell(Text(customer.lastDeliveryDate != null ? DateTools.formatter.format(customer.lastDeliveryDate!) : '-')),
           DataCell(customer.balanceText),
           DataCell(Row(
             children: [

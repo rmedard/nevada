@@ -27,7 +27,13 @@ class EmployeeSalaryForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Mois', style: textTheme.labelMedium),
-          MonthSpinner(salaryPay: salaryPay),
+          MonthSpinner(
+            initialMonth: salaryPay.month,
+            initialYear: salaryPay.year,
+            onChanged: (int month, int year) {
+              salaryPay.month = month;
+              salaryPay.year = year;
+          },),
           const SizedBox(height: 20),
           Text('Montant', style: textTheme.labelMedium),
           Container(

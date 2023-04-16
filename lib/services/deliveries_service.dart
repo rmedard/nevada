@@ -6,6 +6,7 @@ import 'package:nevada/services/base_service.dart';
 import 'package:nevada/services/dtos/delivery_search_dto.dart';
 import 'package:nevada/services/products_service.dart';
 import 'package:nevada/services/transactions_service.dart';
+import 'package:nevada/utils/date_tools.dart';
 import 'package:uuid/uuid.dart';
 
 class DeliveriesService extends BaseService<Delivery> {
@@ -65,5 +66,12 @@ class DeliveriesService extends BaseService<Delivery> {
     return delivery.lines.values
         .map((line) => line.productUnitPrice * line.productQuantity)
         .reduce((lineOneTotal, lineTwoTotal) => lineOneTotal + lineTwoTotal);
+  }
+
+  Map<DateTime, int> countSales(DateTime from, DateTime to) {
+    return dataBox.values
+        .where((delivery) => delivery.date.isAfter(DateTools.toStartOfDay(from)) && delivery.date.isBefore(DateTools.toEndOfDay(to)))
+        .groupListsBy((delivery) => delivery.date)
+        .map((date, deliveries) => MapEntry(date, deliveries.map((delivery) => delivery.lines).length));
   }
 }

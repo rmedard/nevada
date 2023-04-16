@@ -145,7 +145,7 @@ class _DeliveriesState extends State<Deliveries> {
                             borderRadius: BorderRadius.circular(10)),
                         child: FormBuilderDateRangePicker(
                           name: 'search_deliveries_date_range',
-                          format: DateTools.basicDateFormatter,
+                          format: DateTools.formatter,
                           decoration: const InputDecoration(
                               label: Text('Periode'),
                               prefixIcon: Icon(Icons.calendar_month)),

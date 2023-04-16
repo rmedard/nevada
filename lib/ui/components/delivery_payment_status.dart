@@ -22,7 +22,7 @@ class _DeliveryPaymentStatusState extends State<DeliveryPaymentStatus> {
   final _dateController = TextEditingController();
 
   String selectedDateValue() {
-    return DateTools.basicDateFormatter.format(selectedDate ?? DateTime.now());
+    return DateTools.formatter.format(selectedDate ?? DateTime.now());
   }
 
   @override

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:nevada/model/dtos/salary_pay.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 
 class MonthSpinner extends StatefulWidget {
 
-  final SalaryPay salaryPay;
-  const MonthSpinner({Key? key, required this.salaryPay}) : super(key: key);
+  final int initialMonth;
+  final int initialYear;
+  final Function(int month, int year) onChanged;
+  const MonthSpinner({Key? key, required this.initialMonth, required this.initialYear, required this.onChanged}) : super(key: key);
 
   @override
   State<MonthSpinner> createState() => _MonthSpinnerState();
@@ -15,10 +16,16 @@ class _MonthSpinnerState extends State<MonthSpinner> {
 
   TextEditingController inputController = TextEditingController();
 
+  late int month;
+  late int year;
+
   @override
   void initState() {
     super.initState();
-    inputController.text = '${widget.salaryPay.month}/${widget.salaryPay.year}';
+    month = widget.initialMonth;
+    year = widget.initialYear;
+    inputController.text = '${widget.initialMonth}/${widget.initialYear}';
+    inputController.addListener(() => widget.onChanged(month, year));
   }
 
   @override
@@ -35,25 +42,25 @@ class _MonthSpinnerState extends State<MonthSpinner> {
         decoration: InputDecoration(
             prefixIcon: IconButton(
                 onPressed: () {
-                  if(widget.salaryPay.month == 1) {
-                    widget.salaryPay.month = 12;
-                    --widget.salaryPay.year;
+                  if(month == 1) {
+                    month = 12;
+                    --year;
                   } else {
-                    --widget.salaryPay.month;
+                    --month;
                   }
-                  inputController.text = '${widget.salaryPay.month}/${widget.salaryPay.year}';
+                  inputController.text = '$month/$year';
                 },
                 icon: const Icon(Nevada.back, size: 18)),
             suffixIcon: IconButton(
                 onPressed: () {
-                  if (widget.salaryPay.month == 12) {
-                    widget.salaryPay.month = 1;
-                    ++widget.salaryPay.year;
+                  if (month == 12) {
+                    month = 1;
+                    ++year;
                   } else {
-                    ++widget.salaryPay.month;
+                    ++month;
                   }
-                  inputController.text = '${widget.salaryPay.month}/${widget.salaryPay.year}';
-                },
+                  inputController.text = '$month/$year';
+                  },
                 icon: const Icon(Nevada.forward, size: 18)),
         ), controller: inputController,
       ),

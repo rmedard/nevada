@@ -37,7 +37,7 @@ class _EmployeeDetailsBlockState extends State<EmployeeDetailsBlock> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Entrer en service', style: textTheme.titleMedium),
-                    Text(DateTools.basicDateFormatter.format(widget.employee.entryDate))
+                    Text(DateTools.formatter.format(widget.employee.entryDate))
                   ],
                 ),
                 Row(

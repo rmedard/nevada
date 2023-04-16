@@ -57,4 +57,8 @@ extension ProductStock on Product {
   bool get isValidProduct {
     return (isStockable && unitSize > 0 && unitsInPack > 0) || (unitSize == 0 && unitsInPack == 0);
   }
+
+  String get totalStockLabel {
+    return isStockable ? '$totalStock' : '-';
+  }
 }

@@ -89,7 +89,7 @@ class _EmployeeSalariesBlockState extends State<EmployeeSalariesBlock> {
             children: [
               Expanded(
                   flex: 1,
-                  child: Align(alignment: Alignment.centerLeft, child: Text(DateTools.basicDateFormatter.format(payment.paymentDate)))),
+                  child: Align(alignment: Alignment.centerLeft, child: Text(DateTools.formatter.format(payment.paymentDate)))),
               Expanded(
                   flex: 1,
                   child: Center(child: Text('${payment.month}/${payment.year}'))),

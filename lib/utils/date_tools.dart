@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 class DateTools {
 
-  static DateFormat basicDateFormatter = DateFormat('dd/MM/yyyy');
+  static DateFormat formatter = DateFormat('dd/MM/yyyy');
 
   static DateTime toEndOfDay(DateTime dateTime) {
     return dateTime
@@ -60,4 +60,13 @@ class DateTools {
         .where((dateTime) => dateTime.day != DateTime.saturday && dateTime.day != DateTime.sunday)
         .length;
   }
+
+  static DateTime beginningOfWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday));
+  }
+
+  static DateTime endOfWeek(DateTime dateTime) {
+    return dateTime.add(Duration(days: 7 - dateTime.weekday));
+  }
+
 }

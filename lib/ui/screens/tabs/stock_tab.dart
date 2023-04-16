@@ -86,7 +86,7 @@ class _StockTabState extends State<StockTab> {
                         DataCell(Text(product.description)),
                         DataCell(Row(
                           children: [
-                            Text('${product.totalStock}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                            Text(product.totalStockLabel, style: const TextStyle(fontWeight: FontWeight.bold)),
                             product.hasValidStock ? const SizedBox.shrink() : const Icon(Icons.warning_rounded, size: 15, color: Colors.deepOrange)
                           ],
                         )),
@@ -144,7 +144,7 @@ class _StockTabState extends State<StockTab> {
                             onPressed: product.isStockable ? () {
                               var stockRefill = StockRefill(uuid: const Uuid().v4(), date: DateTime.now(), product: product, productQuantity: 0);
                               var stockEditorController = TextEditingController(text: '${stockRefill.productQuantity}');
-                              var productionDateController = TextEditingController(text: DateTools.basicDateFormatter.format(stockRefill.date));
+                              var productionDateController = TextEditingController(text: DateTools.formatter.format(stockRefill.date));
                               showDialog(
                                   context: context,
                                   builder: (dialogContext) {
@@ -175,7 +175,7 @@ class _StockTabState extends State<StockTab> {
                                                 ).then((value) {
                                                   if (value != null) {
                                                     stockRefill.date = value;
-                                                    productionDateController.text = DateTools.basicDateFormatter.format(value);
+                                                    productionDateController.text = DateTools.formatter.format(value);
                                                   }
                                                 });
                                               },

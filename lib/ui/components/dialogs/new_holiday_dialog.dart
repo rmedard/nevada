@@ -43,7 +43,7 @@ class _NewHolidayDialogState extends State<NewHolidayDialog> {
                       child: ClipRRect(borderRadius: BorderRadius.circular(20), child: builder));
                 }).then((range) {
               if (range != null) {
-                var formatter = DateTools.basicDateFormatter;
+                var formatter = DateTools.formatter;
                 selectedRange = range;
                 setState(() {
                   _holidayPeriodEditController.text = '${formatter.format(range.start)} - ${formatter.format(range.end)}';

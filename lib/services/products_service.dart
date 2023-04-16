@@ -1,5 +1,6 @@
 import 'package:nevada/model/product.dart';
 import 'package:nevada/services/base_service.dart';
+import 'package:nevada/utils/num_utils.dart';
 
 class ProductsService extends BaseService<Product> {
 
@@ -20,6 +21,6 @@ class ProductsService extends BaseService<Product> {
   Set<String> bottleSizes() {
     return getAll()
         .where((product) => product.isStockable)
-        .map((product) => '${product.unitSize}').toSet();
+        .map((product) => NumUtils.stringify(product.unitSize)).toSet();
   }
 }

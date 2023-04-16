@@ -49,7 +49,7 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
           cells: [
         DataCell(Text('${++index}')),
         DataCell(Text(employee.names)),
-        DataCell(Text(DateTools.basicDateFormatter.format(employee.entryDate))),
+        DataCell(Text(DateTools.formatter.format(employee.entryDate))),
         DataCell(Text('${employee.baseSalary} MT/mois')),
         DataCell(Text('${employee.holidaysLeft}')),
         DataCell(Row(
@@ -211,7 +211,7 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
                                         flex: 1,
                                         child: Visibility(
                                             visible: !isExpanded,
-                                            child: Text(DateTools.basicDateFormatter.format(employee.entryDate)))),
+                                            child: Text(DateTools.formatter.format(employee.entryDate)))),
                                     Expanded(
                                         flex: 1,
                                         child: Visibility(

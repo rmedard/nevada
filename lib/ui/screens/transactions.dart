@@ -29,7 +29,7 @@ class _TransactionsState extends State<Transactions> {
     var pastOneMonth = DateTime.now().subtract(const Duration(days: 30));
     var startDate = oldestTransactionDate.isBefore(pastOneMonth) ? pastOneMonth : oldestTransactionDate;
     transactionSearchDto = TransactionSearchDto.init(startDate);
-    dateRangeTextController.text = '${DateTools.basicDateFormatter.format(transactionSearchDto.start!)} - ${DateTools.basicDateFormatter.format(transactionSearchDto.end!)}';
+    dateRangeTextController.text = '${DateTools.formatter.format(transactionSearchDto.start!)} - ${DateTools.formatter.format(transactionSearchDto.end!)}';
     transactions = TransactionsService().search(transactionSearchDto: transactionSearchDto);
   }
 
@@ -238,8 +238,8 @@ class _TransactionsState extends State<Transactions> {
                             .mapIndexed<DataRow>((index, transaction) =>
                                 DataRow(color: transaction.rowColor, cells: [
                                   DataCell(Text('${++index}')),
-                                  DataCell(Text(DateTools.basicDateFormatter.format(transaction.createdAt))),
-                                  DataCell(Text(DateTools.basicDateFormatter.format(transaction.dueDate ?? transaction.createdAt))),
+                                  DataCell(Text(DateTools.formatter.format(transaction.createdAt))),
+                                  DataCell(Text(DateTools.formatter.format(transaction.dueDate ?? transaction.createdAt))),
                                   DataCell(Text(TransactionsService().getCustomerName(transaction))),
                                   DataCell(Text(
                                     '${transaction.amount} MT',

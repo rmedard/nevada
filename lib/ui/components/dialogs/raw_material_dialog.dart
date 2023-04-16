@@ -2,6 +2,7 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:nevada/model/raw_material_movement.dart';
 import 'package:nevada/utils/date_tools.dart';
+import 'package:nevada/utils/num_utils.dart';
 
 class RawMaterialDialog extends StatelessWidget {
   final String title;
@@ -12,12 +13,16 @@ class RawMaterialDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
-    var dateController = TextEditingController(text: DateTools.basicDateFormatter.format(rawMaterialMovement.date));
+    var dateController = TextEditingController(text: DateTools.formatter.format(rawMaterialMovement.date));
     var quantityController = TextEditingController(text: '${rawMaterialMovement.quantity}');
     quantityController.addListener(() {
       rawMaterialMovement.quantity = int.tryParse(quantityController.value.text) ?? 0;
     });
-    var selectedBottleSize = bottleSizes.first;
+
+    if (rawMaterialMovement.unitSize == 0) {
+      rawMaterialMovement.unitSize = double.parse(bottleSizes.first);
+    }
+
     return AlertDialog(
       title: Text(title),
       content: Column(
@@ -39,7 +44,7 @@ class RawMaterialDialog extends StatelessWidget {
                 ).then((selectedDate) {
                   if (selectedDate != null) {
                     rawMaterialMovement.date = selectedDate;
-                    dateController.text = DateTools.basicDateFormatter.format(rawMaterialMovement.date);
+                    dateController.text = DateTools.formatter.format(rawMaterialMovement.date);
                   }
                 });
               },
@@ -50,14 +55,13 @@ class RawMaterialDialog extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
             child: DropdownButtonFormField(
-                value: selectedBottleSize,
+                value: NumUtils.stringify(rawMaterialMovement.unitSize),
                 items: bottleSizes
                     .map<DropdownMenuItem<String>>((size) => DropdownMenuItem(value: size, child: Text('$size litres')))
                     .toList(),
                 onChanged: (size){
                   if (StringUtils.isNotNullOrEmpty(size)) {
-                    selectedBottleSize = size!;
-                    rawMaterialMovement.unitSize = double.parse(size);
+                    rawMaterialMovement.unitSize = double.parse(size!);
                   }
                 }),
           ),

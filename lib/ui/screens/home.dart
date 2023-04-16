@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:nevada/ui/components/charts/bar_graph.dart';
+import 'package:nevada/ui/components/charts/revenue_bar_graph.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/separator.dart';
+import 'package:nevada/ui/components/time_period_picker.dart';
+import 'package:nevada/utils/date_tools.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
     List<double> weeklyRevenues = [4.4, 2.5, 42.2, 10.5, 100.2, 88.99, 90.10];
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -102,21 +105,15 @@ class Home extends StatelessWidget {
                     Expanded(
                         flex: 1,
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Text('Revenues'),
-                            Container(
-                              child: SizedBox(height: 400,
-                                  child: BarGraph(weeklyRevenues: weeklyRevenues)))
-                          ],
-                        )),
-                    Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: [
-                            Text('Production'),
-                            Container(
-                              color: Colors.green,
-                              child: Text('Chart here'),)
+                            SizedBox(
+                                height: 60,
+                                child: TimePeriodPicker(onChanged: (from, to) {
+                                  debugPrint('From: ${DateTools.formatter.format(from)} | To: ${DateTools.formatter.format(to)}');
+                                },)),
+                            Text('Ventes', style: textTheme.headlineSmall),
+                            Expanded(child: RevenueBarGraph(weeklyRevenues: weeklyRevenues))
                           ],
                         )),
                   ],

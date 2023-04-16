@@ -48,3 +48,18 @@ enum MaterialMovementType {
   @HiveField(1)
   defect
 }
+
+extension RawMaterialExtra on RawMaterialMovement {
+  String get label {
+    switch (movementType) {
+      case MaterialMovementType.released:
+        return 'Sortie';
+      default:
+        return 'Déchet';
+    }
+  }
+
+  bool get isValid {
+    return unitSize > 0 && quantity > 0;
+  }
+}

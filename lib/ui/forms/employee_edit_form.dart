@@ -21,11 +21,11 @@ class EmployeeEditForm extends StatelessWidget {
 
     var namesController = TextEditingController(text: employee.names);
     var salaryController = TextEditingController(text: '${employee.baseSalary}');
-    var entryDateController = TextEditingController(text: DateTools.basicDateFormatter.format(employee.entryDate));
+    var entryDateController = TextEditingController(text: DateTools.formatter.format(employee.entryDate));
 
     namesController.addListener(() => employee.names = namesController.value.text);
     salaryController.addListener(() => employee.baseSalary = int.tryParse(salaryController.value.text) ?? 0);
-    entryDateController.addListener(() => employee.entryDate = DateTools.basicDateFormatter.parse(entryDateController.value.text));
+    entryDateController.addListener(() => employee.entryDate = DateTools.formatter.parse(entryDateController.value.text));
 
     final productFormKey = GlobalKey<FormState>();
 
@@ -72,11 +72,11 @@ class EmployeeEditForm extends StatelessWidget {
                             context: context,
                             initialDate: employee.entryDate,
                             initialEntryMode: DatePickerEntryMode.calendarOnly,
-                            firstDate: DateTools.basicDateFormatter.parse('01/01/2000'),
+                            firstDate: DateTools.formatter.parse('01/01/2000'),
                             lastDate: DateTime.now().add(const Duration(days: 30))
                         ).then((selectedDate) {
                           if (selectedDate != null) {
-                            entryDateController.text = DateTools.basicDateFormatter.format(selectedDate);
+                            entryDateController.text = DateTools.formatter.format(selectedDate);
                           }
                         });
                     },)),
