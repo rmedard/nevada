@@ -1,15 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/services/production_service.dart';
 import 'package:nevada/services/products_service.dart';
-import 'package:nevada/ui/components/default_button.dart';
+import 'package:nevada/ui/components/dialogs/production_dialog.dart';
 import 'package:nevada/ui/forms/product_edit_form.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
-import 'package:nevada/utils/date_tools.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -143,81 +141,18 @@ class _StockTabState extends State<StockTab> {
                             label: const Text('Production'),
                             onPressed: product.isStockable ? () {
                               var stockRefill = StockRefill(uuid: const Uuid().v4(), date: DateTime.now(), product: product, productQuantity: 0);
-                              var stockEditorController = TextEditingController(text: '${stockRefill.productQuantity}');
-                              var productionDateController = TextEditingController(text: DateTools.formatter.format(stockRefill.date));
                               showDialog(
                                   context: context,
                                   builder: (dialogContext) {
-                                    return AlertDialog(
-                                      icon: const Icon(Nevada.box_open),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[100],
-                                                borderRadius: BorderRadius.circular(10)),
-                                            child: TextField(
-                                              textAlign: TextAlign.center,
-                                              textAlignVertical: TextAlignVertical.center,
-                                              readOnly: true,
-                                              controller: productionDateController,
-                                              decoration: const InputDecoration(
-                                                  suffixIcon: Icon(Icons.calendar_month),
-                                                  contentPadding: EdgeInsets.symmetric(horizontal: 10)),
-                                              onTap: () {
-                                                showDatePicker(
-                                                    context: context,
-                                                    initialDate: stockRefill.date,
-                                                    firstDate: DateTime.now().subtract(const Duration(days: 30)),
-                                                    lastDate: DateTime.now().add(const Duration(days: 30))
-                                                ).then((value) {
-                                                  if (value != null) {
-                                                    stockRefill.date = value;
-                                                    productionDateController.text = DateTools.formatter.format(value);
-                                                  }
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                          const SizedBox(height: 20),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[100],
-                                                borderRadius: BorderRadius.circular(10)),
-                                            child: TextField(
-                                              autofocus: true,
-                                              keyboardType: TextInputType.number,
-                                              textAlign: TextAlign.center,
-                                              inputFormatters: [
-                                                FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
-                                              ],
-                                              decoration: const InputDecoration(
-                                                  suffixText: 'Cartons',
-                                                  contentPadding: EdgeInsets.symmetric(horizontal: 10)),
-                                              controller: stockEditorController,
-                                            ),
-                                          )],
-                                      ),
-                                      actionsPadding: const EdgeInsets.only(bottom: 20, right: 20),
-                                      actions: [
-                                        DefaultButton(
-                                          label: 'Sauvegarder',
-                                          onSubmit: () {
-                                            ProductionService().createNew(stockRefill.uuid, stockRefill).then((created) {
-                                              product.totalStock += int.parse(stockEditorController.value.text);
-                                              ProductsService().update(product).then((updated) {
-                                                stockStatusNotifier.update(ProductsService().stockHasWarnings());
-                                                setState(() {});
-                                              });
-                                            });
-                                            Navigator.pop(dialogContext);
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  });
+                                    return ProductionDialog(stockRefill: stockRefill);
+                                  }).then((value) {
+                                    if (value is StockRefill) {
+                                      ProductionService()
+                                          .createNew(value.uuid, value)
+                                          .then((value) => stockStatusNotifier.update(ProductsService().stockHasWarnings()))
+                                          .then((value) => setState((){}));
+                                    }
+                              });
                             } : null))
                       ]))
                       .toList()),

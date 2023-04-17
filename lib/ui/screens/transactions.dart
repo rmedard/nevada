@@ -136,11 +136,9 @@ class _TransactionsState extends State<Transactions> {
                                       } else {
                                         transactionSearchDto.types.remove(TransactionType.income);
                                       }
-                                      setState(() {
-                                        transactions = TransactionsService()
-                                            .search(transactionSearchDto: transactionSearchDto)
-                                            .toList();
-                                      });
+                                      setState(() => transactions = TransactionsService()
+                                          .search(transactionSearchDto: transactionSearchDto)
+                                          .toList());
                                     }),
                                   const SizedBox(width: 2),
                                   FilterChipButton(

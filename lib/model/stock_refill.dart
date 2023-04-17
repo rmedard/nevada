@@ -29,3 +29,9 @@ class StockRefill extends HiveObject {
     return DateFormat('EEEE, dd-MM-yyyy').format(date);
   }
 }
+
+extension StockRefillExtra on StockRefill {
+  bool get isValid {
+    return productQuantity > 0;
+  }
+}

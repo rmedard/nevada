@@ -108,6 +108,10 @@ class NevadaApp extends StatelessWidget {
           highlightColor: Colors.transparent,
           splashFactory: NoSplash.splashFactory,
           dialogBackgroundColor: Colors.white,
+          chipTheme: ChipThemeData(
+              side: BorderSide(color: kColorPrimary.withOpacity(0.2))
+          ),
+          dividerTheme: DividerThemeData(color: kColorPrimary.withOpacity(0.2)),
           hoverColor: Colors.transparent,
           outlinedButtonTheme: OutlinedButtonThemeData(
             style: OutlinedButton.styleFrom(
@@ -125,8 +129,7 @@ class NevadaApp extends StatelessWidget {
                 )), overlayColor: MaterialStatePropertyAll<Color>(kColorPrimary.withOpacity(0.03)),
             indicatorSize: TabBarIndicatorSize.tab,
           ),
-          dialogTheme: DialogTheme(
-              shadowColor: kColorPrimary.withOpacity(0.1)),
+          dialogTheme: DialogTheme(shadowColor: kColorPrimary.withOpacity(0.1)),
           inputDecorationTheme: const InputDecorationTheme(border: InputBorder.none),
           textTheme: TextTheme(
             displayLarge: GoogleFonts.nunito(

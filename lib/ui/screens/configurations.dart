@@ -35,6 +35,7 @@ class _ConfigurationsState extends State<Configurations> {
                 child: TextField(
                   decoration: InputDecoration(
                       label: Text('This is the label'),
+                      prefixIcon: Icon(Icons.check),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
