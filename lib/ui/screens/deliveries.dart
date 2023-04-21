@@ -187,7 +187,7 @@ class _DeliveriesState extends State<Deliveries> {
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
                 child: SingleChildScrollView(
                   child: ExpansionPanelList(
-                    elevation: 0,
+                    elevation: 0, dividerColor: colorScheme.primary.withOpacity(0.2),
                     expandedHeaderPadding: EdgeInsets.zero,
                     expansionCallback: (int index, bool isExpanded) =>
                         setState(() => deliveryPanels[index].isExpanded = !isExpanded),

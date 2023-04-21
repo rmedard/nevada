@@ -35,6 +35,7 @@ class DeliveryPanel {
 
   ExpansionPanel toPanel() {
     return ExpansionPanel(
+        backgroundColor: Colors.white,
         canTapOnHeader: true,
         headerBuilder: (BuildContext context, bool isExpanded) => ListTile(
               title: Row(
@@ -60,11 +61,11 @@ class DeliveryPanel {
                       child: Text(
                           '${delivery.lines.values.map((line) => line.total).reduce((value, element) => value + element)} MT'))
                 ],
-              ),
+              ), style: ListTileStyle.list,
             ),
         body: Container(
           width: double.maxFinite,
-          decoration: BoxDecoration(color: Colors.grey[100]),
+          decoration: const BoxDecoration(color: Colors.white),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,

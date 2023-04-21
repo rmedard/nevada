@@ -41,8 +41,7 @@ class _RawMaterialsTabState extends State<RawMaterialsTab> {
                           context: context, builder: (context) {
                         return RawMaterialDialog(
                             title: 'Sortie de matière première',
-                            rawMaterialMovement: RawMaterialMovement.empty(
-                                MaterialMovementType.released),
+                            rawMaterialMovement: RawMaterialMovement.empty(MaterialMovementType.released),
                             bottleSizes: bottleSizes);
                       }).then((value) {
                         if (value is RawMaterialMovement && value.isValid) {
@@ -99,7 +98,27 @@ class _RawMaterialsTabState extends State<RawMaterialsTab> {
                       DataCell(IconButton(
                         icon: const Icon(Icons.delete, size: 18),
                         onPressed: () {
-
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Confirmation'),
+                                  content: const Text('Voulez-vous supprimer la ligne?'),
+                                  actions: [
+                                    FilledButton.tonal(
+                                        onPressed: () => Navigator.pop(context, false),
+                                        child: const Text('Non')),
+                                    FilledButton(
+                                        onPressed: () => RawMaterialsService()
+                                            .delete(rawMaterial.uuid)
+                                            .then((value) => Navigator.pop(context, true)),
+                                        child: const Text('Oui')),
+                                  ],
+                                );
+                              }).then((done) {
+                            if (done) {
+                              setState((){});
+                            }});
                         }))
     ])).toList()),
               ),

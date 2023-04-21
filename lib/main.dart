@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:loggy/loggy.dart';
 import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery.dart';
@@ -94,6 +96,8 @@ class NevadaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting().then((value) => Intl.defaultLocale = 'fr-FR');
+
     const kColorPrimary = Color(0xff4282E7);
     const kColorDark = Color(0xff181818);
     const kColorDefaultBackground = Color(0xffF9FAFE);

@@ -68,10 +68,10 @@ class DeliveriesService extends BaseService<Delivery> {
         .reduce((lineOneTotal, lineTwoTotal) => lineOneTotal + lineTwoTotal);
   }
 
-  Map<DateTime, int> countSales(DateTime from, DateTime to) {
+  Map<String, int> countSales(DateTime from, DateTime to) {
     return dataBox.values
         .where((delivery) => delivery.date.isAfter(DateTools.toStartOfDay(from)) && delivery.date.isBefore(DateTools.toEndOfDay(to)))
         .groupListsBy((delivery) => delivery.date)
-        .map((date, deliveries) => MapEntry(date, deliveries.map((delivery) => delivery.lines).length));
+        .map((date, deliveries) => MapEntry(DateTools.formatter.format(date), deliveries.map((delivery) => delivery.lines).length));
   }
 }

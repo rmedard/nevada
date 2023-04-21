@@ -15,22 +15,20 @@ class _TimePeriodPickerState extends State<TimePeriodPicker> {
 
   var timePeriod = 'weekly';
   late Widget timePeriodSelector;
+  late DateTime from;
+  late DateTime to;
 
   Widget weeklySelector() {
     var initialDate = DateTime.now();
-    var from = DateTools.beginningOfWeek(initialDate);
-    var to = DateTools.endOfWeek(initialDate);
-    widget.onChanged(from, to);
-    return WeekSpinner(
-        initialWeekDate: initialDate,
-        onChanged: widget.onChanged);
+    from = DateTools.beginningOfWeek(initialDate);
+    to = DateTools.endOfWeek(initialDate);
+    return WeekSpinner(initialWeekDate: initialDate, onChanged: widget.onChanged);
   }
 
   Widget monthlySelector() {
     var initialDate = DateTime.now();
-    var from = DateTime(initialDate.year, initialDate.month, 1);
-    var to = DateTime(initialDate.year, initialDate.month, DateUtils.getDaysInMonth(initialDate.year, initialDate.month));
-    widget.onChanged(from, to);
+    from = DateTime(initialDate.year, initialDate.month, 1);
+    to = DateTime(initialDate.year, initialDate.month, DateUtils.getDaysInMonth(initialDate.year, initialDate.month));
     return MonthSpinner(
         initialMonth: DateTime.now().month,
         initialYear: DateTime.now().year,
@@ -65,6 +63,7 @@ class _TimePeriodPickerState extends State<TimePeriodPicker> {
                     setState(() {
                       timePeriod = 'weekly';
                       timePeriodSelector = weeklySelector();
+                      widget.onChanged(from, to);
                     });
                   }
                 }),
@@ -79,6 +78,7 @@ class _TimePeriodPickerState extends State<TimePeriodPicker> {
                       setState(() {
                         timePeriod = 'monthly';
                         timePeriodSelector = monthlySelector();
+                        widget.onChanged(from, to);
                       });
                     }
                   }))

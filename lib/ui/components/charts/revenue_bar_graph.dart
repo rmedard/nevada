@@ -1,24 +1,20 @@
+import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:nevada/ui/components/charts/days_week_data.dart';
+import 'package:nevada/ui/components/charts/single_chart_bar.dart';
 
 class RevenueBarGraph extends StatelessWidget {
-  final List<double> weeklyRevenues;
+  final Map<String, double> revenues;
 
-  const RevenueBarGraph({Key? key, required this.weeklyRevenues}) : super(key: key);
+  const RevenueBarGraph({Key? key, required this.revenues }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
-    var daysOfWeekData = DaysOfWeekData(
-        monAmount: weeklyRevenues[0],
-        tueAmount: weeklyRevenues[1],
-        wenAmount: weeklyRevenues[2],
-        thurAmount: weeklyRevenues[3],
-        friAmount: weeklyRevenues[4],
-        satAmount: weeklyRevenues[5],
-        sunAmount: weeklyRevenues[6]);
-    daysOfWeekData.initializeBarData();
+
+    var bars = revenues.values
+        .mapIndexed((index, amount) => SingleChartBar(x: index, y: amount))
+        .toList();
 
     return BarChart(BarChartData(
         maxY: 100,
@@ -27,12 +23,15 @@ class RevenueBarGraph extends StatelessWidget {
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
           show: true,
+          bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (index, value) {
+            return Text(revenues.keys.elementAt(index.toInt()));
+          })),
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
-        barGroups: daysOfWeekData.barData.map((data) =>
+        barGroups: bars.map((data) =>
             BarChartGroupData(
-                x: data.x + 1,
+                x: data.x,
                 barRods: [
                   BarChartRodData(
                     toY: data.y,

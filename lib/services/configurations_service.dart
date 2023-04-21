@@ -32,6 +32,12 @@ class ConfigurationsService {
     return configBox.put(ConfigKey.regions.name, rawRegions);
   }
 
+  Future<void> deleteRegion(String regionUuid) {
+    Map<dynamic, dynamic> rawRegions = configBox.get(ConfigKey.regions.name, defaultValue: <dynamic, dynamic>{});
+    rawRegions.removeWhere((key, value) => key == regionUuid);
+    return configBox.put(ConfigKey.regions.name, rawRegions);
+  }
+
   String getRegion(String key) {
     var regions = getRegions(hasAllOption: false);
     return regions.containsKey(key) ? regions.entries.firstWhere((element) => element.key == key).value : '';

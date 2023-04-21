@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:animations/animations.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +18,12 @@ import 'package:nevada/ui/screens/entities/customer_page.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/ui/utils/ui_utils.dart';
 import 'package:nevada/utils/date_tools.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class CustomersList extends StatefulWidget {
   final List<Customer> customers;
@@ -26,6 +33,39 @@ class CustomersList extends StatefulWidget {
   State<CustomersList> createState() => _CustomersListState();
 }
 
+Future<Uint8List> _generatePdf(PdfPageFormat format, String title, List<Customer> clients) async {
+  final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+  final font = await PdfGoogleFonts.nunitoExtraLight();
+  pdf.addPage(
+    pw.Page(
+      pageFormat: format,
+      build: (context) {
+        return pw.Column(
+          children: [
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Text(title, style: pw.TextStyle(font: font, fontSize: 30)),
+                pw.Text(DateTools.formatter.format(DateTime.now()), style: pw.TextStyle(font: font, fontSize: 20))
+              ]
+            ),
+            pw.SizedBox(height: 20),
+            pw.Table.fromTextArray(
+                headers: ['Noms', 'Téléphone', 'Livraison'],
+                columnWidths: {
+                  0: const pw.FlexColumnWidth(1),
+                  1: const pw.FlexColumnWidth(1),
+                  2: const pw.FlexColumnWidth(2),
+                },
+                data: clients.map((e) => [e.names, e.phone, '']).toList())
+          ],
+        );
+      },
+    ),
+  );
+  return pdf.save();
+}
+
 class _CustomersListState extends State<CustomersList> {
   @override
   Widget build(BuildContext context) {
@@ -33,13 +73,31 @@ class _CustomersListState extends State<CustomersList> {
     var textTheme = Theme.of(context).textTheme;
     var stockStatusNotifier = Provider.of<StockStatusNotifier>(context);
     return DataTable(
-        columns: const <DataColumn>[
-          DataColumn(label: Text('#')),
-          DataColumn(label: Text('Nom')),
-          DataColumn(label: Text('Téléphone')),
-          DataColumn(label: Text('Dernière livraison')),
-          DataColumn(label: Text('Créance')),
-          DataColumn(label: Text('')),
+        columns: <DataColumn>[
+          const DataColumn(label: Text('#')),
+          const DataColumn(label: Text('Nom')),
+          const DataColumn(label: Text('Téléphone')),
+          const DataColumn(label: Text('Dernière livraison')),
+          const DataColumn(label: Text('Créance')),
+          DataColumn(label: FilledButton.icon(
+              icon: const Icon(Icons.print),
+              label: const Text('Imprimer'),
+              onPressed: (){
+                showDialog(context: context, builder: (context) {
+                  return AlertDialog(
+                      title: const Text('Imprimer'),
+                      content: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: PdfPreview(
+                          build:  (format) => _generatePdf(format, 'Nevada', widget.customers),
+                          allowSharing: false,
+                          canChangeOrientation: false,
+                          canChangePageFormat: false,
+                          canDebug: false
+                        ),
+                      ));
+                });
+          })),
         ],
         rows: widget.customers.mapIndexed<DataRow>((index, customer) => DataRow(cells: [
           DataCell(Text('${++index}')),

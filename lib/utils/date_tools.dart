@@ -62,7 +62,7 @@ class DateTools {
   }
 
   static DateTime beginningOfWeek(DateTime dateTime) {
-    return dateTime.subtract(Duration(days: dateTime.weekday));
+    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
   }
 
   static DateTime endOfWeek(DateTime dateTime) {
