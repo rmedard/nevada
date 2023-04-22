@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/dtos/transaction_search_dto.dart';
 import 'package:nevada/services/transactions_service.dart';
@@ -8,6 +9,7 @@ import 'package:nevada/ui/components/separator.dart';
 import 'package:nevada/ui/forms/inputs/filter_chip_button.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
 import 'package:nevada/utils/date_tools.dart';
+import 'package:uuid/uuid.dart';
 
 class Transactions extends StatefulWidget {
   const Transactions({Key? key}) : super(key: key);
@@ -43,22 +45,59 @@ class _TransactionsState extends State<Transactions> {
         actions: Row(
           children: [
             FilledButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      var transaction = Transaction(
+                          uuid: const Uuid().v4(),
+                          amount: 0,
+                          type: TransactionType.expense,
+                          sender: 'Nevada',
+                          deliveryUuid: null,
+                          status: TransactionStatus.paid,
+                          createdAt: DateTime.now());
+                      var expenseController = TextEditingController(text: '${transaction.amount}');
+                      expenseController.addListener(() => transaction.amount = int.parse(expenseController.value.text));
+                      return AlertDialog(
+                        title: const Text('Introduire Une Dépense'),
+                        content: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
+                          child: TextField(
+                            controller: expenseController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          FilledButton.tonal(onPressed: (){
+                            Navigator.pop(context);
+                          }, child: const Text('Annuler')),
+                          FilledButton(onPressed: (){
+                            if (transaction.amount > 0) {
+                              TransactionsService()
+                                  .createNew(transaction.uuid, transaction)
+                                  .then((value) => Navigator.pop(context, transaction.uuid));
+                            }
+                          }, child: const Text('Sauvegarder'))
+                        ],
+                      );
+                    }).then((value) {
+                      if (value != null) {
+                        setState(() {
+                          transactions = TransactionsService().getAll();
+                        });
+                      }
+                });
+              },
               icon: const Icon(Icons.trending_down),
               label: const Text('Nouvelle Dépense'),
               style: FilledButton.styleFrom(
                   elevation: 0,
                   backgroundColor: colorScheme.error,
-                  padding: const EdgeInsets.all(15),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-            ),
-            const SizedBox(width: 20),
-            FilledButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.trending_up),
-              label: const Text('Nouvelle Entrée'),
-              style: FilledButton.styleFrom(
-                  elevation: 0,
                   padding: const EdgeInsets.all(15),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
             ),

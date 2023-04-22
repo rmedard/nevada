@@ -1,5 +1,6 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:collection/collection.dart';
+import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/base_service.dart';
@@ -27,6 +28,13 @@ class DeliveriesService extends BaseService<Delivery> {
         .toList();
   }
 
+  List<Delivery> customerDeliveries(Customer customer) {
+    return dataBox.values
+        .where((element) => element.customer.uuid == customer.uuid)
+        .sorted((deliveryA, deliveryB) => deliveryB.date.compareTo(deliveryA.date))
+        .toList();
+  }
+
   Future<void> createNewDelivery(Delivery delivery,
       TransactionStatus transactionStatus, DateTime? paymentDueDate) async {
     bool created = await createNew(delivery.uuid, delivery);
@@ -49,7 +57,8 @@ class DeliveriesService extends BaseService<Delivery> {
           type: TransactionType.income,
           deliveryUuid: delivery.uuid,
           status: transactionStatus,
-          createdAt: DateTime.now());
+          createdAt: DateTime.now(),
+          sender: delivery.customer.uuid);
       transaction.dueDate = paymentDueDate;
       bool transactionCreated =
           await TransactionsService().createNew(transaction.uuid, transaction);

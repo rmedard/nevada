@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nevada/model/dtos/salary_pay.dart';
 import 'package:nevada/model/employee.dart';
+import 'package:nevada/services/employees_service.dart';
 import 'package:nevada/ui/forms/employee_salary_form.dart';
 import 'package:nevada/utils/date_tools.dart';
 
@@ -57,8 +58,9 @@ class _EmployeeSalariesBlockState extends State<EmployeeSalariesBlock> {
                               FilledButton(
                                   onPressed: (){
                                     if (salaryPay.isValid) {
-                                      widget.employee.salaryPayments.add(salaryPay);
-                                      widget.employee.save().then((_) => Navigator.pop(context));
+                                      EmployeesService()
+                                          .paySalary(widget.employee, salaryPay)
+                                          .then((value) => Navigator.pop(context));
                                     }
                                   },
                                   child: const Text('Sauvegarder'))

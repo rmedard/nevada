@@ -3,20 +3,18 @@ import 'package:hive/hive.dart';
 
 part 'transaction.g.dart';
 
-const typeRelationship = <TransactionType, String> {
+const typeRelationship = <TransactionType, String>{
   TransactionType.income: 'Income',
   TransactionType.expense: 'Expense'
 };
 
-const statusRelationship = <TransactionStatus, String> {
+const statusRelationship = <TransactionStatus, String>{
   TransactionStatus.paid: 'Paid',
   TransactionStatus.pending: 'Pending'
 };
 
-
 @HiveType(typeId: 7)
 class Transaction extends HiveObject {
-
   @HiveField(0)
   String uuid;
 
@@ -38,10 +36,14 @@ class Transaction extends HiveObject {
   @HiveField(6)
   DateTime createdAt;
 
+  @HiveField(7)
+  String sender;
+
   Transaction(
       {required this.uuid,
       required this.amount,
       required this.type,
+      required this.sender,
       required this.deliveryUuid,
       required this.status,
       required this.createdAt});
@@ -109,9 +111,13 @@ extension TransactionStatusName on TransactionStatus {
   Widget get labelWidget {
     switch (this) {
       case TransactionStatus.paid:
-        return Text(label, style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold));
+        return Text(label,
+            style: const TextStyle(
+                color: Colors.green, fontWeight: FontWeight.bold));
       case TransactionStatus.pending:
-        return Text(label, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold));
+        return Text(label,
+            style: const TextStyle(
+                color: Colors.redAccent, fontWeight: FontWeight.bold));
     }
   }
 }

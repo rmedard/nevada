@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:animations/animations.dart';
@@ -18,12 +17,11 @@ import 'package:nevada/ui/screens/entities/customer_page.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/ui/utils/ui_utils.dart';
 import 'package:nevada/utils/date_tools.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class CustomersList extends StatefulWidget {
   final List<Customer> customers;
@@ -195,21 +193,9 @@ class _CustomersListState extends State<CustomersList> {
                   icon: const Icon(Nevada.coins, size: 18),
                   splashRadius: 20),
               const SizedBox(width: 30),
-              OpenContainer(
-                closedBuilder: (BuildContext context, void Function() action) {
-                  return IconButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerPage(customer: customer)));
-                      },
-                      tooltip: 'Détails',
-                      icon: const Icon(Icons.arrow_right_rounded, size: 18),
-                      splashRadius: 20);
-                },
-                openBuilder: (BuildContext context, void Function({Object? returnValue}) action) {
-                  return CustomerPage(customer: customer);
-                },),
               IconButton(
                   onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerPage(customer: customer)));
                   },
                   tooltip: 'Détails',
                   icon: const Icon(Icons.arrow_right_rounded, size: 18),

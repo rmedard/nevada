@@ -31,15 +31,15 @@ class _RevenuesChartState extends State<RevenuesChart> {
 
   Map<String, double> weeklyData() {
     var countSales = DeliveriesService().countSales(from, to);
-    Map<String, double> dd = {};
+    Map<String, double> chartData = {};
     DateTime countingFrom = from;
     while(!countingFrom.isAfter(to)) {
       var key = DateTools.formatter.format(countingFrom);
-      dd.putIfAbsent(key, () => (countSales[key] ?? 0).toDouble());
+      chartData.putIfAbsent(key, () => (countSales[key] ?? 0).toDouble());
       countingFrom = countingFrom.add(const Duration(days: 1));
     }
 
-    return dd.map((key, value) {
+    return chartData.map((key, value) {
       var date = DateTools.formatter.parse(key);
       return MapEntry('${DateFormat('EE').format(date).replaceAll('.', '')} ${date.day}', value.toDouble());
     });

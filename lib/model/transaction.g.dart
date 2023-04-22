@@ -20,6 +20,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       uuid: fields[0] as String,
       amount: fields[1] as int,
       type: fields[2] as TransactionType,
+      sender: fields[7] as String,
       deliveryUuid: fields[3] as String?,
       status: fields[5] as TransactionStatus,
       createdAt: fields[6] as DateTime,
@@ -29,7 +30,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
   @override
   void write(BinaryWriter writer, Transaction obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.uuid)
       ..writeByte(1)
@@ -43,7 +44,9 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       ..writeByte(5)
       ..write(obj.status)
       ..writeByte(6)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(7)
+      ..write(obj.sender);
   }
 
   @override
