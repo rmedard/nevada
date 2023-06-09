@@ -15,24 +15,72 @@ class Employee extends HiveObject {
   String names;
 
   @HiveField(2)
-  DateTime entryDate;
+  DateTime dateOfBirth;
 
   @HiveField(3)
-  int baseSalary;
+  String placeOfBirth;
 
   @HiveField(4)
-  List<SalaryPay> salaryPayments = [];
+  DateTime entryDate;
 
   @HiveField(5)
+  ContractType contractType;
+
+  @HiveField(6)
+  JobTitle jobTitle;
+
+  @HiveField(7)
+  int baseSalary;
+
+  @HiveField(8)
+  List<SalaryPay> salaryPayments = [];
+
+  @HiveField(9)
   Map<int, YearlyHolidays> holidays = {};
 
-  Employee({required this.uuid, required this.names, required this.entryDate, required this.baseSalary});
+  Employee({required this.uuid, required this.names, required this.dateOfBirth, required this.placeOfBirth, required this.entryDate, required this.contractType, required this.jobTitle, required this.baseSalary});
 
   static Employee empty() => Employee(
       uuid: const Uuid().v4(),
       names: '',
       entryDate: DateTime.now(),
-      baseSalary: 0);
+      baseSalary: 0,
+      dateOfBirth: DateTime(1900),
+      placeOfBirth: '',
+      contractType: ContractType.contractor,
+      jobTitle: JobTitle.machinist);
+}
+
+@HiveType(typeId: 81)
+enum ContractType {
+  @HiveField(0, defaultValue: true)
+  permanent('Par an'),
+  @HiveField(1)
+  contractor('Par préstation');
+
+  final String label;
+
+  const ContractType(this.label);
+}
+
+@HiveType(typeId: 82)
+enum JobTitle {
+
+  @HiveField(0, defaultValue: true)
+  machinist('Machiniste'),
+
+  @HiveField(1)
+  assistant('Auxiliaire'),
+
+  @HiveField(2)
+  seller('Vendeur'),
+
+  @HiveField(3)
+  guard('Gardien');
+
+  final String label;
+  const JobTitle(this.label);
+
 }
 
 extension EmployeeHolidays on Employee {
