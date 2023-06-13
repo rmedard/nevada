@@ -48,7 +48,7 @@ void main() async {
 
   /** Init hive **/
 
-  await Hive.initFlutter('../db');
+  await Hive.initFlutter('../new_db');
   Hive.registerAdapter(CustomerAdapter());
   Hive.registerAdapter(DeliveryAdapter());
   Hive.registerAdapter(DeliveryLineAdapter());

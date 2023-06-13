@@ -22,6 +22,8 @@ class EmployeeEditForm extends StatelessWidget {
     var namesController = TextEditingController(text: employee.names);
     var salaryController = TextEditingController(text: '${employee.baseSalary}');
     var entryDateController = TextEditingController(text: DateTools.formatter.format(employee.entryDate));
+    var dateOfBirthController = TextEditingController(text: DateTools.formatter.format(employee.dateOfBirth));
+    var placeOfBirthController = TextEditingController(text: employee.placeOfBirth);
 
     namesController.addListener(() => employee.names = namesController.value.text);
     salaryController.addListener(() => employee.baseSalary = int.tryParse(salaryController.value.text) ?? 0);
@@ -32,7 +34,7 @@ class EmployeeEditForm extends StatelessWidget {
     return Form(
       key: productFormKey,
         child: SizedBox(
-          width: 400,
+          width: 600,
           child: MetricCard(
               horizontalPadding: 20,
               verticalPadding: 20,
@@ -80,7 +82,74 @@ class EmployeeEditForm extends StatelessWidget {
                           }
                         });
                     },)),
+                  const SizedBox(height: 10),
+                  Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
+                      child: TextFormField(
+                        controller: dateOfBirthController,
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.calendar_month),
+                            label: Text('Date de naissance')),
+                        onTap: () {
+                          showDatePicker(
+                              context: context,
+                              initialDate: employee.entryDate,
+                              initialEntryMode: DatePickerEntryMode.calendarOnly,
+                              firstDate: DateTools.formatter.parse('01/01/2000'),
+                              lastDate: DateTime.now().add(const Duration(days: 30))
+                          ).then((selectedDate) {
+                            if (selectedDate != null) {
+                              entryDateController.text = DateTools.formatter.format(selectedDate);
+                            }
+                          });
+                        },)),
+                  const SizedBox(height: 10),
+                  Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
+                      child: TextFormField(
+                        controller: placeOfBirthController,
+                        decoration: const InputDecoration(
+                            prefixIcon: Icon(Nevada.location),
+                            label: Text('Lieu de naissance')))),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.maxFinite,
+                  child: SegmentedButton(
+                    multiSelectionEnabled: false,
+                      emptySelectionAllowed: false,
+                      segments: [
+                        ButtonSegment<JobTitle>(value: JobTitle.machinist, label: Text(JobTitle.machinist.label)),
+                        ButtonSegment<JobTitle>(value: JobTitle.assistant, label: Text(JobTitle.assistant.label)),
+                        ButtonSegment<JobTitle>(value: JobTitle.seller, label: Text(JobTitle.seller.label)),
+                        ButtonSegment<JobTitle>(value: JobTitle.guard, label: Text(JobTitle.guard.label)),
+                      ],
+                      selected: {
+                        employee.jobTitle
+                      },
+                      onSelectionChanged: (selected) {
 
+                      }),
+                ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: SegmentedButton(
+                        multiSelectionEnabled: false,
+                        emptySelectionAllowed: false,
+                        segments: [
+                          ButtonSegment<ContractType>(value: ContractType.contractor, label: Text(ContractType.contractor.label)),
+                          ButtonSegment<ContractType>(value: ContractType.permanent, label: Text(ContractType.permanent.label)),
+                        ],
+                        selected: {
+                          employee.contractType
+                        },
+                        onSelectionChanged: (selected) {
+
+                        }),
+                  ),
                 const SizedBox(height: 10),
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
