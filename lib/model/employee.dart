@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:nevada/model/dtos/salary_pay.dart';
 import 'package:nevada/model/dtos/yearly_holidays.dart';
@@ -45,41 +48,43 @@ class Employee extends HiveObject {
       names: '',
       entryDate: DateTime.now(),
       baseSalary: 0,
-      dateOfBirth: DateTime(1900),
+      dateOfBirth: DateTime(1960),
       placeOfBirth: '',
       contractType: ContractType.contractor,
       jobTitle: JobTitle.machinist);
 }
 
-@HiveType(typeId: 81)
+@HiveType(typeId: 85)
 enum ContractType {
   @HiveField(0, defaultValue: true)
-  permanent('Par an'),
+  permanent('Permanent', Colors.blue),
   @HiveField(1)
-  contractor('Par préstation');
+  contractor('Contractuel', Colors.deepOrange);
 
   final String label;
+  final Color labelColor;
 
-  const ContractType(this.label);
+  const ContractType(this.label, this.labelColor);
 }
 
-@HiveType(typeId: 82)
+@HiveType(typeId: 86)
 enum JobTitle {
-
   @HiveField(0, defaultValue: true)
-  machinist('Machiniste'),
+  machinist('Machiniste', Colors.green, Color(0xFFD6F4D7)),
 
   @HiveField(1)
-  assistant('Auxiliaire'),
+  assistant('Auxiliaire', Colors.deepOrange, Color(0xFFFFE5DB)),
 
   @HiveField(2)
-  seller('Vendeur'),
+  seller('Vendeur', Colors.blue, Color(0xFFCDEAFF)),
 
   @HiveField(3)
-  guard('Gardien');
+  guard('Gardien', Colors.black, Colors.black12);
 
   final String label;
-  const JobTitle(this.label);
+  final Color labelColor;
+  final Color labelContainerColor;
+  const JobTitle(this.label, this.labelColor, this.labelContainerColor);
 
 }
 
@@ -91,5 +96,18 @@ extension EmployeeHolidays on Employee {
       return yearlyHolidays!.allowedAmount - yearlyHolidays.consumedCount;
     }
     return 0;
+  }
+
+  Widget get labelBadge {
+    return Container(
+      width: 120,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: jobTitle.labelContainerColor,
+      ),
+      child: Center(
+        child: Text(jobTitle.label, style: TextStyle(color: jobTitle.labelColor),),
+      ),
+    );
   }
 }

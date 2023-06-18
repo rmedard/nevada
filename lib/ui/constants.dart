@@ -17,9 +17,9 @@ var defaultDrawer = Drawer(
   backgroundColor: Colors.grey[300], elevation: 0,
   child: Column(
     children: [
-      DrawerHeader(child: Column(
+      const DrawerHeader(child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Text('NEVADA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
           Text('STOCKs', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),)
         ],

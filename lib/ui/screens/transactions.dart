@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/dtos/transaction_search_dto.dart';
 import 'package:nevada/services/transactions_service.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/separator.dart';
 import 'package:nevada/ui/forms/inputs/filter_chip_button.dart';
@@ -116,44 +117,43 @@ class _TransactionsState extends State<Transactions> {
                     children: [
                       Expanded(
                           flex: 1,
-                          child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
-                        child: TextField(
-                            decoration: const InputDecoration(
-                                label: Text('Periode'),
-                                prefixIcon: Icon(Icons.calendar_month)),
-                            readOnly: true,
-                            controller: dateRangeTextController,
-                            onTap: () {
-                              showDateRangePicker(
-                                  context: context,
-                                  firstDate: TransactionsService().oldestTransactionDate().subtract(const Duration(days: 1)),
-                                  lastDate: DateTime.now().add(const Duration(days: 30)),
-                                  saveText: 'Sauvegarder',
-                                  builder: (context, builder) {
-                                    var screenSize = MediaQuery.of(context).size;
-                                    return Container(
-                                        color: Colors.transparent,
-                                        margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.05, horizontal: screenSize.width * 0.3),
-                                        child: ClipRRect(borderRadius: BorderRadius.circular(20), child: builder));
-                                  }
-                              ).then((value) {
-                                if (value != null) {
-                                  transactionSearchDto.start = DateTools.toStartOfDay(value.start);
-                                  transactionSearchDto.end = DateTools.toEndOfDay(value.end);
-                                  setState(() {
-                                    transactions = TransactionsService()
-                                        .search(transactionSearchDto: transactionSearchDto)
-                                        .toList();
+                          child: BasicContainer(
+                            child: TextField(
+                                decoration: const InputDecoration(
+                                    label: Text('Periode'),
+                                    prefixIcon: Icon(Icons.calendar_month)),
+                                readOnly: true,
+                                controller: dateRangeTextController,
+                                onTap: () {
+                                  showDateRangePicker(
+                                      context: context,
+                                      firstDate: TransactionsService().oldestTransactionDate().subtract(const Duration(days: 1)),
+                                      lastDate: DateTime.now().add(const Duration(days: 30)),
+                                      saveText: 'Sauvegarder',
+                                      builder: (context, builder) {
+                                        var screenSize = MediaQuery.of(context).size;
+                                        return Container(
+                                            color: Colors.transparent,
+                                            margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.05, horizontal: screenSize.width * 0.3),
+                                            child: ClipRRect(borderRadius: BorderRadius.circular(20), child: builder));
+                                      }
+                                  ).then((value) {
+                                    if (value != null) {
+                                      transactionSearchDto.start = DateTools.toStartOfDay(value.start);
+                                      transactionSearchDto.end = DateTools.toEndOfDay(value.end);
+                                      setState(() {
+                                        transactions = TransactionsService()
+                                            .search(transactionSearchDto: transactionSearchDto)
+                                            .toList();
+                                      });
+                                    } else {
+                                      debugPrint('No value selected');
+                                    }
+                                  }, onError: (e) {
+                                    debugPrint('Error occurred: $e');
                                   });
-                                } else {
-                                  debugPrint('No value selected');
-                                }
-                              }, onError: (e) {
-                                debugPrint('Error occurred: $e');
-                              });
-                            }),)),
+                                }),
+                          )),
                       const Separator(direction: SeparatorDirection.vertical),
                       Expanded(flex: 2, child: Row(
                         children: [

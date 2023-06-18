@@ -57,6 +57,7 @@ class _TimePeriodPickerState extends State<TimePeriodPicker> {
             child: RadioListTile(
                 value: 'weekly',
                 groupValue: timePeriod,
+                hoverColor: Colors.red,
                 title: const Text('Par Semaine'),
                 onChanged: (value) {
                   if (timePeriod != 'weekly') {

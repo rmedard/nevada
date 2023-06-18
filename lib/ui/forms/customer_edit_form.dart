@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:nevada/model/customer.dart';
 import 'package:nevada/services/configurations_service.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 
 class CustomerEditForm extends StatelessWidget {
@@ -29,9 +30,7 @@ class CustomerEditForm extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+            BasicContainer(
               child: FormBuilderTextField(
                 name: 'customer_names',
                 controller: namesController,
@@ -41,20 +40,17 @@ class CustomerEditForm extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
-                child: FormBuilderTextField(
-                  name: 'customer_phone',
-                  controller: phoneController,
-                  decoration: const InputDecoration(
-                      label: Text('Téléphone'),
-                      prefixIcon: Icon(Nevada.phone_call)
-                  ),)),
+            BasicContainer(
+              child: FormBuilderTextField(
+                name: 'customer_phone',
+                controller: phoneController,
+                decoration: const InputDecoration(
+                    label: Text('Téléphone'),
+                    prefixIcon: Icon(Nevada.phone_call)
+                ),),
+            ),
             const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
+            BasicContainer(
               child: FormBuilderDropdown(
                   name: 'customer_region',
                   initialValue: StringUtils.isNullOrEmpty(customer.location) ? regions.entries.first.key : customer.location,

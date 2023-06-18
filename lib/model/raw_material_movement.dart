@@ -41,7 +41,7 @@ class RawMaterialMovement extends HiveObject {
       quantity: 0);
 }
 
-@HiveType(typeId: 91)
+@HiveType(typeId: 92)
 enum MaterialMovementType {
   @HiveField(0, defaultValue: true)
   released,

@@ -56,7 +56,7 @@ class RawMaterialMovementAdapter extends TypeAdapter<RawMaterialMovement> {
 
 class MaterialMovementTypeAdapter extends TypeAdapter<MaterialMovementType> {
   @override
-  final int typeId = 91;
+  final int typeId = 92;
 
   @override
   MaterialMovementType read(BinaryReader reader) {

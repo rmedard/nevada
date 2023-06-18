@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -18,14 +17,17 @@ import 'package:nevada/model/stock_refill.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/services/products_service.dart';
-import 'package:nevada/services/test_data_service.dart';
+import 'package:nevada/text_scheme.g.dart';
 import 'package:nevada/ui/layout/devices/desktop_layout.dart';
 import 'package:nevada/ui/layout/devices/mobile_layout.dart';
 import 'package:nevada/ui/layout/devices/tablet_layout.dart';
 import 'package:nevada/ui/layout/responsive_layout.dart';
 import 'package:nevada/utils/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:window_manager/window_manager.dart';
+
+import 'color_schemes.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,24 +50,41 @@ void main() async {
 
   /** Init hive **/
 
-  await Hive.initFlutter('../new_db');
+  await Hive.initFlutter('../db');
   Hive.registerAdapter(CustomerAdapter());
   Hive.registerAdapter(DeliveryAdapter());
   Hive.registerAdapter(DeliveryLineAdapter());
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(StockRefillAdapter());
+  Hive.registerAdapter(TransactionAdapter());
   Hive.registerAdapter(TransactionTypeAdapter());
   Hive.registerAdapter(TransactionStatusAdapter());
-  Hive.registerAdapter(TransactionAdapter());
   Hive.registerAdapter(EmployeeAdapter());
+  Hive.registerAdapter(ContractTypeAdapter());
+  Hive.registerAdapter(JobTitleAdapter());
   Hive.registerAdapter(SalaryPayAdapter());
   Hive.registerAdapter(YearlyHolidaysAdapter());
   Hive.registerAdapter(RawMaterialMovementAdapter());
   Hive.registerAdapter(MaterialMovementTypeAdapter());
 
   /** Init Regions **/
-  await Hive.openBox<dynamic>(configBoxName);
-
+  Box configBox = await Hive.openBox<dynamic>(configBoxName);
+  bool regionsEmpty = false;
+  if (configBox.isEmpty) {
+    regionsEmpty = true;
+  } else {
+    var map = configBox.get(ConfigKey.regions.name, defaultValue: <dynamic, dynamic>{}) as Map<dynamic, dynamic>;
+    if (map.isEmpty) {
+      regionsEmpty = true;
+    }
+  }
+  
+  if (regionsEmpty) {
+    configBox.put(ConfigKey.regions.name, <String, String>{
+      const Uuid().v4().toString(): 'Zimpeto'
+    });
+  }
+  
   /** Init Products & Stock **/
   await Hive.openBox<Product>(boxNames[BoxNameKey.products]!);
   await Hive.openBox<StockRefill>(boxNames[BoxNameKey.stockRefills]!);
@@ -98,103 +117,28 @@ class NevadaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting().then((value) => Intl.defaultLocale = 'fr-FR');
-
-    const kColorPrimary = Color(0xff4282E7);
-    const kColorDark = Color(0xff181818);
-    const kColorDefaultBackground = Color(0xffF9FAFE);
-    const kColorInputBackgroundColor = Color(0xffF7FBFE);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nevada',
       theme: ThemeData(
           useMaterial3: true,
-          brightness: Brightness.light,
-          highlightColor: Colors.transparent,
-          splashFactory: NoSplash.splashFactory,
-          dialogBackgroundColor: Colors.white,
-          chipTheme: ChipThemeData(
-              side: BorderSide(color: kColorPrimary.withOpacity(0.2))
-          ),
-          dividerTheme: DividerThemeData(color: kColorPrimary.withOpacity(0.2)),
-          hoverColor: Colors.transparent,
-          outlinedButtonTheme: OutlinedButtonThemeData(
-            style: OutlinedButton.styleFrom(
-              backgroundColor: Colors.white, side: BorderSide(color: kColorPrimary.withOpacity(0.2))
-            )
-          ),
-          tabBarTheme: TabBarTheme(
-            labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            indicator: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                )), overlayColor: MaterialStatePropertyAll<Color>(kColorPrimary.withOpacity(0.03)),
-            indicatorSize: TabBarIndicatorSize.tab,
-          ),
-          dialogTheme: DialogTheme(shadowColor: kColorPrimary.withOpacity(0.1)),
-          inputDecorationTheme: const InputDecorationTheme(border: InputBorder.none),
-          textTheme: TextTheme(
-            displayLarge: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 57, color: kColorDark),
-            displayMedium: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 45, color: kColorDark),
-            displaySmall: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 36, color: kColorDark),
-            headlineLarge: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 32, color: kColorDark),
-            headlineMedium: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 28, color: kColorDark),
-            headlineSmall: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 24, color: kColorDark),
-            titleLarge: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 22, color: kColorDark),
-            titleMedium: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
-            titleSmall: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
-            labelLarge: GoogleFonts.nunito(
-                fontWeight: FontWeight.bold, fontSize: 14, color: kColorDark),
-            labelMedium: GoogleFonts.nunito(
-                fontWeight: FontWeight.bold, fontSize: 12, color: kColorDark),
-            labelSmall: GoogleFonts.nunito(
-                fontWeight: FontWeight.bold, fontSize: 11, color: kColorDark),
-            bodyLarge: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 16, color: kColorDark),
-            bodyMedium: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 14, color: kColorDark),
-            bodySmall: GoogleFonts.nunito(
-                fontWeight: FontWeight.normal, fontSize: 12, color: kColorDark),
-          ),
-          colorScheme: const ColorScheme.light(
-            primary: kColorPrimary,
-            secondary: kColorInputBackgroundColor,
-            error: Colors.redAccent,
-            background: kColorDefaultBackground,
-            surface: kColorPrimary,
-            onSecondary: Colors.white,
-          ),
-          switchTheme: SwitchThemeData(
-            splashRadius: 20,
-            thumbColor: const MaterialStatePropertyAll<Color>(kColorPrimary),
-            trackColor: MaterialStatePropertyAll<Color>(kColorPrimary.withOpacity(0.2)),
-          ),
-          navigationRailTheme: const NavigationRailThemeData(
-              backgroundColor: Colors.white,
+          colorScheme: lightColorScheme,
+          textTheme: defaultTextTheme,
+          navigationRailTheme: NavigationRailThemeData(
               elevation: 0,
-              selectedIconTheme: IconThemeData(color: kColorPrimary),
-              indicatorColor: Colors.white,
-              indicatorShape: Border(left: BorderSide(color: kColorPrimary, width: 2)),
-              selectedLabelTextStyle: TextStyle(color: kColorPrimary, fontSize: 20),
-              unselectedLabelTextStyle: TextStyle(color: kColorDark, fontSize: 20)
+              selectedIconTheme: IconThemeData(color: lightColorScheme.primary),
+              indicatorColor: lightColorScheme.surface,
+              indicatorShape: Border(left: BorderSide(color: lightColorScheme.primary, width: 2)),
+              selectedLabelTextStyle: TextStyle(color: lightColorScheme.primary, fontSize: 20),
+              unselectedLabelTextStyle: const TextStyle(color: kColorDark, fontSize: 20)
           ),
           dataTableTheme: DataTableThemeData(
-              headingTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: kColorPrimary),
-              headingRowColor: MaterialStatePropertyAll<Color>(kColorPrimary.withOpacity(0.1)),
+              headingTextStyle: TextStyle(fontWeight: FontWeight.bold, color: lightColorScheme.primary),
+              headingRowColor: MaterialStatePropertyAll<Color>(lightColorScheme.primary.withOpacity(0.1)),
               dividerThickness: 1,
-              columnSpacing: 3)),
+              columnSpacing: 3),
+          inputDecorationTheme: const InputDecorationTheme(border: InputBorder.none)
+      ),
       home: const ResponsiveLayout(
           mobileScaffold: MobileLayout(),
           tabletScaffold: TabletLayout(),

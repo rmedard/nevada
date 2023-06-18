@@ -8,8 +8,9 @@ class MetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var colorScheme = Theme.of(context).colorScheme;
     return Card(
-        color: Colors.white,
+        color: colorScheme.surface,
         margin: EdgeInsets.zero,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

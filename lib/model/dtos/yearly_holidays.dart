@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'yearly_holidays.g.dart';
 
-@HiveType(typeId: 82)
+@HiveType(typeId: 89)
 class YearlyHolidays {
 
   @HiveField(0)

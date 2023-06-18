@@ -20,7 +20,7 @@ class _EmployeeDetailsBlockState extends State<EmployeeDetailsBlock> {
     var textTheme = Theme.of(context).textTheme;
     var colorScheme = Theme.of(context).colorScheme;
     return Container(
-      decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(color: colorScheme.surface, borderRadius: BorderRadius.circular(20)),
       padding: const EdgeInsets.all(20),
       child: Stack(
         alignment: Alignment.topRight,
@@ -30,6 +30,16 @@ class _EmployeeDetailsBlockState extends State<EmployeeDetailsBlock> {
             CircleAvatar(radius: 30, backgroundColor: Colors.grey[400], child: const Icon(Nevada.user, size: 40)),
             const SizedBox(height: 20),
             Text(widget.employee.names, style: textTheme.headlineSmall),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+              widget.employee.labelBadge,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text('|', style: TextStyle(color: colorScheme.primaryContainer),),
+              ),
+              Text(widget.employee.contractType.label, style: TextStyle(color: widget.employee.contractType.labelColor),)
+            ]),
             const SizedBox(height: 30),
             Column(
               children: [

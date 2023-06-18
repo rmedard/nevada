@@ -8,7 +8,7 @@ part of 'delivery_line.dart';
 
 class DeliveryLineAdapter extends TypeAdapter<DeliveryLine> {
   @override
-  final int typeId = 31;
+  final int typeId = 33;
 
   @override
   DeliveryLine read(BinaryReader reader) {

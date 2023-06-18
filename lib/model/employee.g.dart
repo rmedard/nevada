@@ -69,7 +69,7 @@ class EmployeeAdapter extends TypeAdapter<Employee> {
 
 class ContractTypeAdapter extends TypeAdapter<ContractType> {
   @override
-  final int typeId = 81;
+  final int typeId = 85;
 
   @override
   ContractType read(BinaryReader reader) {
@@ -106,9 +106,9 @@ class ContractTypeAdapter extends TypeAdapter<ContractType> {
           typeId == other.typeId;
 }
 
-class JobFunctionAdapter extends TypeAdapter<JobTitle> {
+class JobTitleAdapter extends TypeAdapter<JobTitle> {
   @override
-  final int typeId = 82;
+  final int typeId = 86;
 
   @override
   JobTitle read(BinaryReader reader) {
@@ -150,7 +150,7 @@ class JobFunctionAdapter extends TypeAdapter<JobTitle> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is JobFunctionAdapter &&
+      other is JobTitleAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

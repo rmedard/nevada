@@ -39,6 +39,9 @@ class Transaction extends HiveObject {
   @HiveField(7)
   String sender;
 
+  @HiveField(8)
+  String? comment;
+
   Transaction(
       {required this.uuid,
       required this.amount,
@@ -49,7 +52,7 @@ class Transaction extends HiveObject {
       required this.createdAt});
 }
 
-@HiveType(typeId: 21)
+@HiveType(typeId: 72)
 enum TransactionType {
   @HiveField(0, defaultValue: true)
   income,
@@ -57,7 +60,7 @@ enum TransactionType {
   expense
 }
 
-@HiveType(typeId: 51)
+@HiveType(typeId: 75)
 enum TransactionStatus {
   @HiveField(0, defaultValue: true)
   paid,

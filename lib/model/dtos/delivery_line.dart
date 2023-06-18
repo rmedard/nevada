@@ -3,7 +3,7 @@ import 'package:nevada/model/product.dart';
 
 part 'delivery_line.g.dart';
 
-@HiveType(typeId: 31)
+@HiveType(typeId: 33)
 class DeliveryLine {
 
   @HiveField(0)

@@ -88,7 +88,7 @@ class _RegionsConfigBlockState extends State<RegionsConfigBlock> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             decoration: BoxDecoration(
-              color: colorScheme.secondary,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
             child: TextField(

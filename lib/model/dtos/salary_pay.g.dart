@@ -8,7 +8,7 @@ part of 'salary_pay.dart';
 
 class SalaryPayAdapter extends TypeAdapter<SalaryPay> {
   @override
-  final int typeId = 81;
+  final int typeId = 88;
 
   @override
   SalaryPay read(BinaryReader reader) {

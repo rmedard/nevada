@@ -2,6 +2,7 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:nevada/model/product.dart';
 import 'package:nevada/services/products_service.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 
 class ProductEditForm extends StatefulWidget {
@@ -59,12 +60,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                       alignment: Alignment.centerLeft,
                       child: Text(widget.isNew ? 'Créer un nouveau produit' : 'Modifier un produit', style: textTheme.headlineSmall)),
                   const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                    decoration: BoxDecoration(
-                      color: colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                  BasicContainer(
                     child: TextFormField(
                       controller: productNameTextController,
                       maxLength: 20,
@@ -78,12 +74,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                  BasicContainer(
                     child: TextFormField(
                       controller: productDescriptionTextController,
                       maxLength: 60,
@@ -94,12 +85,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                  BasicContainer(
                     child: TextFormField(
                       controller: productUnitPriceTextController,
                       keyboardType: TextInputType.number,
@@ -108,7 +94,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                           suffix: Text('MT')),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -131,12 +117,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                        BasicContainer(
                           child: TextFormField(
                             controller: bottleSizeTextController,
                             keyboardType: TextInputType.number,
@@ -146,12 +127,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                        BasicContainer(
                           child: TextFormField(
                             controller: unitsInPackTextController,
                             keyboardType: TextInputType.number,

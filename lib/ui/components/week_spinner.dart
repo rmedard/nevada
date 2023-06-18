@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/utils/date_tools.dart';
 
@@ -31,12 +32,7 @@ class _WeekSpinnerState extends State<WeekSpinner> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(10)
-      ),
+    return BasicContainer(
       child: TextField(
         textAlign: TextAlign.center,
         controller: inputController,
@@ -57,6 +53,7 @@ class _WeekSpinnerState extends State<WeekSpinner> {
               },
               icon: const Icon(Nevada.forward, size: 18))
         ),
-      ));
+      ),
+    );
   }
 }

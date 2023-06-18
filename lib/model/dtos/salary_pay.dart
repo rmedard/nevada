@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'salary_pay.g.dart';
 
-@HiveType(typeId: 81)
+@HiveType(typeId: 88)
 class SalaryPay {
 
   @HiveField(0)

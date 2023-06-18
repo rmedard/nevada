@@ -1,6 +1,7 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:nevada/model/raw_material_movement.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/utils/date_tools.dart';
 import 'package:nevada/utils/num_utils.dart';
 
@@ -28,9 +29,7 @@ class RawMaterialDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
+          BasicContainer(
             child: TextFormField(
               controller: dateController,
               decoration: const InputDecoration(label: Text('Date')),
@@ -51,9 +50,7 @@ class RawMaterialDialog extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
+          BasicContainer(
             child: DropdownButtonFormField(
                 value: NumUtils.stringify(rawMaterialMovement.unitSize),
                 items: bottleSizes
@@ -66,12 +63,10 @@ class RawMaterialDialog extends StatelessWidget {
                 }),
           ),
           const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
+          BasicContainer(
             child: TextFormField(
               controller: quantityController,
-              decoration: const InputDecoration(label: Text('Quantité')),
+              decoration: const InputDecoration(label: Text('Quantité'), suffix: Text('bouteilles')),
             ),
           )
         ],),

@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 
 class MonthSpinner extends StatefulWidget {
-
   final int initialMonth;
   final int initialYear;
   final Function(int month, int year) onChanged;
-  const MonthSpinner({Key? key, required this.initialMonth, required this.initialYear, required this.onChanged}) : super(key: key);
+
+  const MonthSpinner(
+      {Key? key,
+      required this.initialMonth,
+      required this.initialYear,
+      required this.onChanged})
+      : super(key: key);
 
   @override
   State<MonthSpinner> createState() => _MonthSpinnerState();
 }
 
 class _MonthSpinnerState extends State<MonthSpinner> {
-
   TextEditingController inputController = TextEditingController();
 
   late int month;
@@ -30,39 +35,35 @@ class _MonthSpinnerState extends State<MonthSpinner> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
-        borderRadius: BorderRadius.circular(10)
-      ),
+    return BasicContainer(
       child: TextField(
         textAlign: TextAlign.center,
         readOnly: true,
         decoration: InputDecoration(
-            prefixIcon: IconButton(
-                onPressed: () {
-                  if(month == 1) {
-                    month = 12;
-                    --year;
-                  } else {
-                    --month;
-                  }
-                  inputController.text = '$month/$year';
-                },
-                icon: const Icon(Nevada.back, size: 18)),
-            suffixIcon: IconButton(
-                onPressed: () {
-                  if (month == 12) {
-                    month = 1;
-                    ++year;
-                  } else {
-                    ++month;
-                  }
-                  inputController.text = '$month/$year';
-                  },
-                icon: const Icon(Nevada.forward, size: 18)),
-        ), controller: inputController,
+          prefixIcon: IconButton(
+              onPressed: () {
+                if (month == 1) {
+                  month = 12;
+                  --year;
+                } else {
+                  --month;
+                }
+                inputController.text = '$month/$year';
+              },
+              icon: const Icon(Nevada.back, size: 18)),
+          suffixIcon: IconButton(
+              onPressed: () {
+                if (month == 12) {
+                  month = 1;
+                  ++year;
+                } else {
+                  ++month;
+                }
+                inputController.text = '$month/$year';
+              },
+              icon: const Icon(Nevada.forward, size: 18)),
+        ),
+        controller: inputController,
       ),
     );
   }

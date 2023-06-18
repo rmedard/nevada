@@ -199,38 +199,49 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
                             itemCount: employees.length,
                             itemBuilder: (context, index) {
                               var employee = employees[index];
-                              return ListTile(
-                                selected: expandedEmployee != null && expandedEmployee?.uuid == employee.uuid,
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                        flex: 2,
-                                        child: Text('${index + 1}. ${employee.names}')),
-                                    Expanded(
+                              bool isSelected = expandedEmployee != null && expandedEmployee?.uuid == employee.uuid;
+                              return Card(
+                                color: isSelected ? colorScheme.surface : colorScheme.background,
+                                elevation: 0,
+                                child: ListTile(
+                                  selected: isSelected,
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                          flex: 2,
+                                          child: Text('${index + 1}. ${employee.names}')),
+                                      Expanded(
                                         flex: 1,
-                                        child: Visibility(
-                                            visible: !isExpanded,
-                                            child: Text(DateTools.formatter.format(employee.entryDate)))),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Visibility(
-                                            visible: !isExpanded,
-                                            child: Text('${employee.baseSalary} MT/mois'))),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Visibility(
-                                            visible: !isExpanded,
-                                            child: Text('${employee.holidaysLeft}'))),
-                                    IconButton(
-                                        onPressed: () => onEmployeeLineTap(employee),
-                                        icon: const Icon(Nevada.forward))
-                                  ],
+                                        child: UnconstrainedBox(
+                                          child: employee.labelBadge,
+                                        ),
+                                      ),
+                                      Expanded(
+                                          flex: isExpanded ? 0 : 1,
+                                          child: Visibility(
+                                              visible: !isExpanded,
+                                              child: Text(employee.contractType.label))),
+                                      Expanded(
+                                          flex: isExpanded ? 0 : 1,
+                                          child: Visibility(
+                                              visible: !isExpanded,
+                                              child: Text('${employee.baseSalary} MT/mois'))),
+                                      Expanded(
+                                          flex: isExpanded ? 0 : 1,
+                                          child: Visibility(
+                                              visible: !isExpanded,
+                                              child: Text('${employee.holidaysLeft}'))),
+                                      IconButton(
+                                          onPressed: () => onEmployeeLineTap(employee),
+                                          icon: const Icon(Nevada.forward))
+                                    ],
+                                  ),
+                                  tileColor: Colors.white,
+                                  style: ListTileStyle.list,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                  onTap: () => onEmployeeLineTap(employee),
                                 ),
-                                tileColor: Colors.white,
-                                style: ListTileStyle.list,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                onTap: () => onEmployeeLineTap(employee),
                               );
     }),
                       ),

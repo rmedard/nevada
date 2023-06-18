@@ -8,6 +8,7 @@ import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/dtos/customer_search_dto.dart';
 import 'package:nevada/services/dtos/snackbar_message.dart';
 import 'package:nevada/ui/components/customers_list.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/separator.dart';
@@ -136,13 +137,7 @@ class _ClientsState extends State<Clients> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Container(
-                                width: 350,
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                  color: colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                              child: BasicContainer(
                                 child: FormBuilderTextField(
                                   name: 'search_names',
                                   controller: searchNameController,
@@ -160,12 +155,7 @@ class _ClientsState extends State<Clients> {
                             const SizedBox(width: 10),
                             Expanded(
                               flex: 1,
-                              child: Container(
-                                width: 350,
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                    color: colorScheme.secondary,
-                                    borderRadius: BorderRadius.circular(10)),
+                              child: BasicContainer(
                                 child: FormBuilderDropdown(
                                     name: 'search_customer_region',
                                     borderRadius: BorderRadius.circular(10),

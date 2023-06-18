@@ -24,13 +24,15 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       deliveryUuid: fields[3] as String?,
       status: fields[5] as TransactionStatus,
       createdAt: fields[6] as DateTime,
-    )..dueDate = fields[4] as DateTime?;
+    )
+      ..dueDate = fields[4] as DateTime?
+      ..comment = fields[8] as String?;
   }
 
   @override
   void write(BinaryWriter writer, Transaction obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.uuid)
       ..writeByte(1)
@@ -46,7 +48,9 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       ..writeByte(6)
       ..write(obj.createdAt)
       ..writeByte(7)
-      ..write(obj.sender);
+      ..write(obj.sender)
+      ..writeByte(8)
+      ..write(obj.comment);
   }
 
   @override
@@ -62,7 +66,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
 
 class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
   @override
-  final int typeId = 21;
+  final int typeId = 72;
 
   @override
   TransactionType read(BinaryReader reader) {
@@ -101,7 +105,7 @@ class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
 
 class TransactionStatusAdapter extends TypeAdapter<TransactionStatus> {
   @override
-  final int typeId = 51;
+  final int typeId = 75;
 
   @override
   TransactionStatus read(BinaryReader reader) {

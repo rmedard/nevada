@@ -8,7 +8,7 @@ part of 'yearly_holidays.dart';
 
 class YearlyHolidaysAdapter extends TypeAdapter<YearlyHolidays> {
   @override
-  final int typeId = 82;
+  final int typeId = 89;
 
   @override
   YearlyHolidays read(BinaryReader reader) {

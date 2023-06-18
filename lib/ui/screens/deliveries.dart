@@ -6,6 +6,7 @@ import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/deliveries_service.dart';
 import 'package:nevada/services/dtos/delivery_panel.dart';
 import 'package:nevada/services/dtos/delivery_search_dto.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/utils/date_tools.dart';
@@ -74,13 +75,7 @@ class _DeliveriesState extends State<Deliveries> {
                   children: [
                     Expanded(
                       flex: 1,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        margin: const EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                          color: colorScheme.secondary,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                      child: BasicContainer(
                         child: FormBuilderTextField(
                           name: 'search_deliveries_customer_names',
                           controller: searchNameController,
@@ -94,14 +89,10 @@ class _DeliveriesState extends State<Deliveries> {
                         ),
                       ),
                     ),
+                    const SizedBox(width: 10),
                     Expanded(
                       flex: 1,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        margin: const EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                            color: colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10)),
+                      child: BasicContainer(
                         child: FormBuilderDropdown(
                             name: 'search_deliveries_customer_region',
                             borderRadius: BorderRadius.circular(10),
@@ -136,13 +127,10 @@ class _DeliveriesState extends State<Deliveries> {
                             }),
                       ),
                     ),
+                    const SizedBox(width: 10),
                     Expanded(
                       flex: 1,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                            color: colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10)),
+                      child: BasicContainer(
                         child: FormBuilderDateRangePicker(
                           name: 'search_deliveries_date_range',
                           format: DateTools.formatter,

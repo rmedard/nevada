@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:animations/animations.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:nevada/model/customer.dart';
@@ -10,6 +9,7 @@ import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/customers_service.dart';
 import 'package:nevada/services/dtos/snackbar_message.dart';
 import 'package:nevada/services/products_service.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/dialogs/delivery_dialog.dart';
 import 'package:nevada/ui/forms/customer_edit_form.dart';
@@ -48,14 +48,15 @@ Future<Uint8List> _generatePdf(PdfPageFormat format, String title, List<Customer
               ]
             ),
             pw.SizedBox(height: 20),
-            pw.Table.fromTextArray(
-                headers: ['Noms', 'Téléphone', 'Livraison'],
+            pw.TableHelper.fromTextArray(
+                headers: ['Noms', 'Téléphone', 'Créance', 'Livraison'],
                 columnWidths: {
                   0: const pw.FlexColumnWidth(1),
                   1: const pw.FlexColumnWidth(1),
-                  2: const pw.FlexColumnWidth(2),
+                  2: const pw.FlexColumnWidth(1),
+                  3: const pw.FlexColumnWidth(2),
                 },
-                data: clients.map((e) => [e.names, e.phone, '']).toList())
+                data: clients.map((e) => [e.names, e.phone, '${e.balance} Mt','']).toList())
           ],
         );
       },
@@ -188,7 +189,41 @@ class _CustomersListState extends State<CustomersList> {
                   splashRadius: 20),
               const SizedBox(width: 10),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(context: context, builder: (context){
+                      var paymentDate = DateTime.now();
+                      return AlertDialog(
+                        title: Text('Paiement de: ${customer.names}'),
+                        content: const Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            BasicContainer(
+                              child: TextField(
+                                decoration: InputDecoration(label: Text('Montant payé')),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            BasicContainer(
+                                child: TextField(
+                                  decoration: InputDecoration(label: Text('Date de paiement')),
+                                )),
+                            SizedBox(height: 20),
+                            BasicContainer(
+                                child: TextField(
+                                  keyboardType: TextInputType.multiline,
+                                    maxLines: 3,
+                                    decoration: InputDecoration(
+                                        label: Text('Commentaire')),
+                                ))
+                        ],),
+                        actions: [
+                          FilledButton(
+                              onPressed: (){},
+                              child: const Text('Confirmer'))
+                        ],
+                      );
+                    });
+                  },
                   tooltip: 'Paiement',
                   icon: const Icon(Nevada.coins, size: 18),
                   splashRadius: 20),
