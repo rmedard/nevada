@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:nevada/model/employee.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/utils/date_tools.dart';
 
 class EmployeeHolidaysBlock extends StatefulWidget {
@@ -71,9 +72,7 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                         builder: (context) {
                           return AlertDialog(
                             title: Text('Congé de: ${widget.employee.names}'),
-                            content: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
+                            content: BasicContainer(
                               child: TextField(
                                 decoration: InputDecoration(
                                     label: const Text('Période'),
@@ -84,7 +83,7 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                                       context: context,
                                       initialEntryMode: DatePickerEntryMode.calendarOnly,
                                       firstDate: DateTools.minusMonths(DateTime.now(), 1),
-                                      lastDate: DateTools.plusMonths(DateTime.now(), 1),
+                                      lastDate: DateTools.plusMonths(DateTime.now(), 1), saveText: 'Sauvegarder',
                                       builder: (context, builder) {
                                         var screenSize = MediaQuery.of(context).size;
                                         return Container(
@@ -104,7 +103,7 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                               ),
                             ),
                             actions: [
-                              FilledButton(onPressed: (){}, child: const Text('Annuler')),
+                              FilledButton.tonal(onPressed: (){}, child: const Text('Annuler')),
                               FilledButton(onPressed: (){
                                 selectedRange?.duration.inDays;
                               }, child: const Text('Sauvegarder'))

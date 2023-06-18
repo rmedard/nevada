@@ -19,6 +19,7 @@ import 'package:nevada/ui/screens/entities/customer_page.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/ui/utils/ui_utils.dart';
 import 'package:nevada/utils/date_tools.dart';
+import 'package:nevada/utils/num_utils.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -36,6 +37,7 @@ class CustomersList extends StatefulWidget {
 Future<Uint8List> _generatePdf(PdfPageFormat format, String title, List<Customer> clients) async {
   final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
   final font = await PdfGoogleFonts.nunitoExtraLight();
+  var formatter = NumUtils.currencyFormat(); 
   pdf.addPage(
     pw.Page(
       pageFormat: format,
@@ -58,7 +60,7 @@ Future<Uint8List> _generatePdf(PdfPageFormat format, String title, List<Customer
                   2: const pw.FlexColumnWidth(1),
                   3: const pw.FlexColumnWidth(2),
                 },
-                data: clients.map((e) => [e.names, e.phone, '${e.balance} Mt','']).toList())
+                data: clients.map((e) => ['${e.names}\n${ConfigurationsService().getRegion(e.location)}', e.phone, '${formatter.format(e.debtAmount)} Mt','']).toList())
           ],
         );
       },

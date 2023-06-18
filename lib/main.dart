@@ -39,7 +39,7 @@ void main() async {
     await windowManager.show();
   });
   if (Platform.isWindows || Platform.isMacOS) {
-    WindowManager.instance.setMinimumSize(const Size(370, 800));
+    WindowManager.instance.setMinimumSize(const Size(570, 800));
   }
 
   /** Init Loggy **/

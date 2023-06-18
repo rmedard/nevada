@@ -4,6 +4,7 @@ import 'package:nevada/model/employee.dart';
 import 'package:nevada/services/employees_service.dart';
 import 'package:nevada/ui/forms/employee_salary_form.dart';
 import 'package:nevada/utils/date_tools.dart';
+import 'package:nevada/utils/num_utils.dart';
 
 class EmployeeSalariesBlock extends StatefulWidget {
   final Employee employee;
@@ -97,7 +98,7 @@ class _EmployeeSalariesBlockState extends State<EmployeeSalariesBlock> {
                   child: Center(child: Text('${payment.month}/${payment.year}'))),
               Expanded(
                   flex: 1,
-                  child: Align(alignment: Alignment.centerRight, child: Text('${payment.amount} Mt')))
+                  child: Align(alignment: Alignment.centerRight, child: Text('${NumUtils.currencyFormat().format(payment.amount)} Mt')))
             ],)).toList()
         ],
       ),

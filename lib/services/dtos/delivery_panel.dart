@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:nevada/model/delivery.dart';
 import 'package:nevada/model/dtos/delivery_line.dart';
 import 'package:nevada/services/configurations_service.dart';
+import 'package:nevada/utils/num_utils.dart';
 
 class DeliveryPanel {
   bool isExpanded;
@@ -11,14 +12,16 @@ class DeliveryPanel {
   DeliveryPanel({required this.isExpanded, required this.delivery});
 
   List<DataRow> _computeRows() {
+    var formatter = NumUtils.currencyFormat();
     var rows = delivery.lines.values
         .map<DataRow>((line) => DataRow(cells: [
               DataCell(Text(line.product.name)),
               DataCell(Text('${line.productQuantity}')),
-              DataCell(Text('${line.productUnitPrice} MT')),
-              DataCell(Text('${line.total} MT')),
+              DataCell(Text('${formatter.format(line.productUnitPrice)} MT')),
+              DataCell(Text('${formatter.format(line.total)} MT')),
             ]))
         .toList();
+    var totalAmount = delivery.lines.values.map((line) => line.total).reduce((value, element) => value + element);
     rows.add(
         DataRow(
             cells: [
@@ -26,7 +29,7 @@ class DeliveryPanel {
               const DataCell(SizedBox.shrink()),
               const DataCell(SizedBox.shrink()),
               DataCell(Text(
-                  '${delivery.lines.values.map((line) => line.total).reduce((value, element) => value + element)} MT',
+                  '${formatter.format(totalAmount)} MT',
                   style: const TextStyle(fontWeight: FontWeight.bold))),
             ],
             color: MaterialStateColor.resolveWith((states) => Colors.grey[200]!)));
@@ -34,6 +37,8 @@ class DeliveryPanel {
   }
 
   ExpansionPanel toPanel() {
+    var formatter = NumUtils.currencyFormat();
+    var deliveryTotalPrice = delivery.lines.values.map((line) => line.total).reduce((value, element) => value + element);
     return ExpansionPanel(
         backgroundColor: Colors.white,
         canTapOnHeader: true,
@@ -59,7 +64,7 @@ class DeliveryPanel {
                   Expanded(
                       flex: 1,
                       child: Text(
-                          '${delivery.lines.values.map((line) => line.total).reduce((value, element) => value + element)} MT'))
+                          '${formatter.format(deliveryTotalPrice)} MT'))
                 ],
               ), style: ListTileStyle.list,
             ),

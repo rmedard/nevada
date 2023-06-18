@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:nevada/utils/num_utils.dart';
 import 'package:uuid/uuid.dart';
 
 part 'customer.g.dart';
@@ -33,11 +34,16 @@ class Customer extends HiveObject {
 
 extension CustomerBalanceText on Customer {
   Widget get balanceText {
+    var formatter = NumUtils.currencyFormat();
     return Text(
-      '$balance MT',
+      '${formatter.format(balance)} MT',
       style: TextStyle(
           color: balance < 0 ? Colors.redAccent : Colors.green,
           fontWeight: FontWeight.bold),
     );
+  }
+
+  int get debtAmount {
+    return balance < 0 ? balance * -1 : 0;
   }
 }

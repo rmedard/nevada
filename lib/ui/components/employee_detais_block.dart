@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nevada/model/employee.dart';
 import 'package:nevada/ui/forms/employee_edit_form.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/utils/date_tools.dart';
+import 'package:nevada/utils/num_utils.dart';
 
 class EmployeeDetailsBlock extends StatefulWidget {
 
@@ -54,7 +56,7 @@ class _EmployeeDetailsBlockState extends State<EmployeeDetailsBlock> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Salaire de base', style: textTheme.titleMedium),
-                    Text('${widget.employee.baseSalary} MT/mois')
+                    Text('${NumUtils.currencyFormat().format(widget.employee.baseSalary)} MT/mois')
                   ],
                 ),
                 Row(

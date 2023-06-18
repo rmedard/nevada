@@ -6,6 +6,7 @@ import 'package:nevada/services/employees_service.dart';
 import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
+import 'package:nevada/ui/utils/thousand_separator_input_formatter.dart';
 import 'package:nevada/utils/date_tools.dart';
 
 class EmployeeEditForm extends StatefulWidget {
@@ -31,7 +32,10 @@ class _EmployeeEditFormState extends State<EmployeeEditForm> {
     var placeOfBirthController = TextEditingController(text: widget.employee.placeOfBirth);
 
     namesController.addListener(() => widget.employee.names = namesController.value.text);
-    salaryController.addListener(() => widget.employee.baseSalary = int.tryParse(salaryController.value.text) ?? 0);
+    salaryController.addListener(() {
+      String currentValue = salaryController.value.text.replaceAll(ThousandSeparatorInputFormatter.separator, '');
+      widget.employee.baseSalary = int.tryParse(currentValue) ?? 0;
+    });
     entryDateController.addListener(() => widget.employee.entryDate = DateTools.formatter.parse(entryDateController.value.text));
 
     final productFormKey = GlobalKey<FormState>();
@@ -175,7 +179,7 @@ class _EmployeeEditFormState extends State<EmployeeEditForm> {
                     controller: salaryController,
                     keyboardType: TextInputType.number,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
+                      ThousandSeparatorInputFormatter()
                     ],
                     decoration: const InputDecoration(
                         prefixIcon: Icon(Nevada.coins),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:nevada/utils/num_utils.dart';
 import 'package:uuid/uuid.dart';
 
 part 'transaction.g.dart';
@@ -78,7 +79,7 @@ enum TransactionStatus {
   pending
 }
 
-extension TransactionRowColor on Transaction {
+extension TransactionExtras on Transaction {
   MaterialStateProperty<Color> get rowColor {
     if (type == TransactionType.income) {
       if (status == TransactionStatus.pending) {
@@ -88,6 +89,11 @@ extension TransactionRowColor on Transaction {
       }
     }
     return const MaterialStatePropertyAll(Colors.white);
+  }
+
+  String get amountText {
+    var formatter = NumUtils.currencyFormat();
+    return '${formatter.format(amount)} MT';
   }
 }
 

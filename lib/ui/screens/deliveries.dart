@@ -170,9 +170,9 @@ class _DeliveriesState extends State<Deliveries> {
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+                decoration: BoxDecoration(
+                  color: colorScheme.surface,
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
                 child: SingleChildScrollView(
                   child: ExpansionPanelList(
                     elevation: 0, dividerColor: colorScheme.primary.withOpacity(0.2),

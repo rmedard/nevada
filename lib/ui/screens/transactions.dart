@@ -279,7 +279,7 @@ class _TransactionsState extends State<Transactions> {
                                   DataCell(Text(DateTools.formatter.format(transaction.dueDate ?? transaction.createdAt))),
                                   DataCell(Text(TransactionsService().getCustomerName(transaction))),
                                   DataCell(Text(
-                                    '${transaction.amount} MT',
+                                    transaction.amountText,
                                     style: const TextStyle(fontWeight: FontWeight.bold),
                                   )),
                                   DataCell(transaction.type.icon),
