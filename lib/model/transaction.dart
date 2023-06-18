@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 part 'transaction.g.dart';
 
@@ -37,7 +38,7 @@ class Transaction extends HiveObject {
   DateTime createdAt;
 
   @HiveField(7)
-  String sender;
+  String senderUuid; // Customer ID
 
   @HiveField(8)
   String? comment;
@@ -46,10 +47,19 @@ class Transaction extends HiveObject {
       {required this.uuid,
       required this.amount,
       required this.type,
-      required this.sender,
+      required this.senderUuid,
       required this.deliveryUuid,
       required this.status,
       required this.createdAt});
+
+  static Transaction empty() => Transaction(
+      uuid: const Uuid().v4().toString(),
+      amount: 0,
+      type: TransactionType.income,
+      senderUuid: '',
+      deliveryUuid: '',
+      status: TransactionStatus.pending,
+      createdAt: DateTime.now());
 }
 
 @HiveType(typeId: 72)

@@ -1,9 +1,12 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:collection/collection.dart';
+import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/base_service.dart';
 import 'package:nevada/services/deliveries_service.dart';
 import 'package:nevada/services/dtos/transaction_search_dto.dart';
+
+import 'customers_service.dart';
 
 class TransactionsService extends BaseService<Transaction> {
 
@@ -28,8 +31,9 @@ class TransactionsService extends BaseService<Transaction> {
   String getCustomerName(Transaction transaction) {
     if (transaction.type == TransactionType.expense) {
       return 'Nevada';
-    } else if (StringUtils.isNotNullOrEmpty(transaction.deliveryUuid)) {
-      return DeliveriesService().findById(transaction.deliveryUuid!)?.customer.names ?? 'Inconnu';
+    } else if (StringUtils.isNotNullOrEmpty(transaction.senderUuid)) {
+      Customer? customer = CustomersService().findById(transaction.senderUuid);
+      return customer == null ? 'Inconnu' : customer.names;
     } else {
       return 'Inconnu';
     }

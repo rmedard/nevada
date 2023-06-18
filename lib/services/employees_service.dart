@@ -17,7 +17,7 @@ class EmployeesService extends BaseService<Employee> {
           uuid: const Uuid().v4(),
           amount: salaryPay.amount,
           type: TransactionType.expense,
-          sender: 'Nevada',
+          senderUuid: 'Nevada',
           deliveryUuid: '',
           status: TransactionStatus.paid,
           createdAt: DateTime.now());

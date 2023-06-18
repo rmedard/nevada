@@ -54,7 +54,7 @@ class _TransactionsState extends State<Transactions> {
                           uuid: const Uuid().v4(),
                           amount: 0,
                           type: TransactionType.expense,
-                          sender: 'Nevada',
+                          senderUuid: 'Nevada',
                           deliveryUuid: null,
                           status: TransactionStatus.paid,
                           createdAt: DateTime.now());

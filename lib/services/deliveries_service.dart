@@ -58,7 +58,7 @@ class DeliveriesService extends BaseService<Delivery> {
           deliveryUuid: delivery.uuid,
           status: transactionStatus,
           createdAt: DateTime.now(),
-          sender: delivery.customer.uuid);
+          senderUuid: delivery.customer.uuid);
       transaction.dueDate = paymentDueDate;
       bool transactionCreated =
           await TransactionsService().createNew(transaction.uuid, transaction);

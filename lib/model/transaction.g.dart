@@ -20,7 +20,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       uuid: fields[0] as String,
       amount: fields[1] as int,
       type: fields[2] as TransactionType,
-      sender: fields[7] as String,
+      senderUuid: fields[7] as String,
       deliveryUuid: fields[3] as String?,
       status: fields[5] as TransactionStatus,
       createdAt: fields[6] as DateTime,
@@ -48,7 +48,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       ..writeByte(6)
       ..write(obj.createdAt)
       ..writeByte(7)
-      ..write(obj.sender)
+      ..write(obj.senderUuid)
       ..writeByte(8)
       ..write(obj.comment);
   }

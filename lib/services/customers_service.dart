@@ -32,7 +32,7 @@ class CustomersService extends BaseService<Customer> {
           deliveryUuid: '',
           status: TransactionStatus.paid,
           createdAt: DateTime.now(),
-          sender: customer.uuid);
+          senderUuid: customer.uuid);
       return TransactionsService().createNew(transaction.uuid, transaction);
     });
   }

@@ -4,11 +4,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:nevada/model/customer.dart';
 import 'package:nevada/model/delivery.dart';
+import 'package:nevada/model/transaction.dart';
 import 'package:nevada/providers/stock_status_notifier.dart';
 import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/customers_service.dart';
 import 'package:nevada/services/dtos/snackbar_message.dart';
 import 'package:nevada/services/products_service.dart';
+import 'package:nevada/services/transactions_service.dart';
 import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/ui/components/default_button.dart';
 import 'package:nevada/ui/components/dialogs/delivery_dialog.dart';
@@ -191,24 +193,36 @@ class _CustomersListState extends State<CustomersList> {
               IconButton(
                   onPressed: () {
                     showDialog(context: context, builder: (context){
-                      var paymentDate = DateTime.now();
+                      var paymentTransaction = Transaction.empty();
+                      paymentTransaction.senderUuid = customer.uuid;
+                      paymentTransaction.status = TransactionStatus.paid;
+                      paymentTransaction.type = TransactionType.income;
+                      var paymentAmountController = TextEditingController(text: '${paymentTransaction.amount}');
+                      var paymentDateController = TextEditingController(text: DateTools.formatter.format(paymentTransaction.createdAt));
+                      var paymentCommentController = TextEditingController(text: '${paymentTransaction.comment}');
+
+                      paymentAmountController.addListener(() => paymentTransaction.amount = int.tryParse(paymentAmountController.value.text) ?? 0);
+                      paymentDateController.addListener(() => paymentTransaction.createdAt = DateTime.parse(paymentDateController.value.text));
+                      paymentCommentController.addListener(() => paymentTransaction.comment = paymentCommentController.value.text);
                       return AlertDialog(
                         title: Text('Paiement de: ${customer.names}'),
-                        content: const Column(
+                        content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             BasicContainer(
                               child: TextField(
-                                decoration: InputDecoration(label: Text('Montant payé')),
+                                decoration: const InputDecoration(label: Text('Montant payé')),
+                                controller: paymentAmountController,
                               ),
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             BasicContainer(
                                 child: TextField(
-                                  decoration: InputDecoration(label: Text('Date de paiement')),
+                                  decoration: const InputDecoration(label: Text('Date de paiement')),
+                                  controller: paymentDateController,
                                 )),
-                            SizedBox(height: 20),
-                            BasicContainer(
+                            const SizedBox(height: 20),
+                            const BasicContainer(
                                 child: TextField(
                                   keyboardType: TextInputType.multiline,
                                     maxLines: 3,
@@ -218,10 +232,17 @@ class _CustomersListState extends State<CustomersList> {
                         ],),
                         actions: [
                           FilledButton(
-                              onPressed: (){},
+                              onPressed: () => Navigator.pop(context, paymentTransaction),
                               child: const Text('Confirmer'))
                         ],
                       );
+                    }).then((transaction) {
+                      if (transaction is Transaction) {
+                        TransactionsService().createNew(const Uuid().v4().toString(), transaction).then((_) {
+                          customer.balance += transaction.amount;
+                          CustomersService().update(customer);
+                        });
+                      }
                     });
                   },
                   tooltip: 'Paiement',
