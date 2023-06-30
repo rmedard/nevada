@@ -64,6 +64,7 @@ void main() async {
   Hive.registerAdapter(JobTitleAdapter());
   Hive.registerAdapter(SalaryPayAdapter());
   Hive.registerAdapter(YearlyHolidaysAdapter());
+  Hive.registerAdapter(HolidayAdapter());
   Hive.registerAdapter(RawMaterialMovementAdapter());
   Hive.registerAdapter(MaterialMovementTypeAdapter());
 

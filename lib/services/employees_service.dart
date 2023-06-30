@@ -1,4 +1,8 @@
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:in_date_utils/in_date_utils.dart';
 import 'package:nevada/model/dtos/salary_pay.dart';
+import 'package:nevada/model/dtos/yearly_holidays.dart';
 import 'package:nevada/model/employee.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/base_service.dart';
@@ -23,5 +27,19 @@ class EmployeesService extends BaseService<Employee> {
           createdAt: DateTime.now());
       return TransactionsService().createNew(transaction.uuid, transaction);
     });
+  }
+
+  Future<void> createEmployeeHolidays(Employee employee, DateTimeRange selectedRange) {
+    var generateWithDayStep = DTU.generateWithDayStep(selectedRange.start, selectedRange.end);
+    Map<int, Set<DateTime>> groupSetsBy = generateWithDayStep.toSet().groupSetsBy((element) => element.year);
+    groupSetsBy.forEach((year, days) {
+      YearlyHolidays yearlyHolidays = employee.holidays[year] ?? YearlyHolidays(allowedAmount: 20);
+      var holidays = yearlyHolidays.holidays;
+      for (var day in days) {
+        holidays.add(Holiday(dateTime: day, consumed: false));
+      }
+      employee.holidays[year] = yearlyHolidays;
+    });
+    return employee.save();
   }
 }

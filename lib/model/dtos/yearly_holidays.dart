@@ -15,8 +15,13 @@ class YearlyHolidays {
   YearlyHolidays({required this.allowedAmount});
 }
 
+@HiveType(typeId: 90)
 class Holiday {
+
+  @HiveField(0)
   DateTime dateTime;
+
+  @HiveField(1)
   bool consumed;
 
   Holiday({required this.dateTime, required this.consumed});

@@ -7,6 +7,7 @@ import 'package:nevada/ui/screens/elements/screen_elements.dart';
 import 'package:nevada/ui/screens/entities/employee_page.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
 import 'package:nevada/utils/date_tools.dart';
+import 'package:nevada/utils/num_utils.dart';
 
 class Employees extends StatefulWidget {
   const Employees({Key? key}) : super(key: key);
@@ -164,6 +165,7 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
+    var currencyFormatter = NumUtils.currencyFormat();
     return ScreenElements().defaultBodyFrame(
         context: context,
         title: 'Personnel',
@@ -226,7 +228,7 @@ class _EmployeesState extends State<Employees> with SingleTickerProviderStateMix
                                           flex: isExpanded ? 0 : 1,
                                           child: Visibility(
                                               visible: !isExpanded,
-                                              child: Text('${employee.baseSalary} MT/mois'))),
+                                              child: Text('${currencyFormatter.format(employee.baseSalary)} MT/mois'))),
                                       Expanded(
                                           flex: isExpanded ? 0 : 1,
                                           child: Visibility(

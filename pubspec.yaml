@@ -53,6 +53,7 @@ dependencies:
   flutter_calendar_carousel: ^2.4.1
   path_provider: ^2.0.14
   printing: ^5.10.3
+  in_date_utils: ^1.2.0+2
 
 dev_dependencies:
   flutter_test:
