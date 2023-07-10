@@ -70,3 +70,10 @@ class DateTools {
   }
 
 }
+
+extension DateTimeExtra on DateTime {
+  int get toInt {
+    var value = '$year$month$day';
+    return int.parse(value);
+  }
+}

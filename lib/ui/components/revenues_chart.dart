@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nevada/services/deliveries_service.dart';
+import 'package:nevada/ui/components/metric_card.dart';
 import 'package:nevada/ui/components/time_period_picker.dart';
 import 'package:nevada/utils/date_tools.dart';
 
 import 'charts/revenue_bar_graph.dart';
-import 'metric_card.dart';
 
 class RevenuesChart extends StatefulWidget {
   const RevenuesChart({Key? key}) : super(key: key);
@@ -35,7 +35,9 @@ class _RevenuesChartState extends State<RevenuesChart> {
     DateTime countingFrom = from;
     while(!countingFrom.isAfter(to)) {
       var key = DateTools.formatter.format(countingFrom);
-      chartData.putIfAbsent(key, () => (countSales[key] ?? 0).toDouble());
+      double salesCount = (countSales[key] ?? 0).toDouble();
+      debugPrint('Sales count on $key: $salesCount');
+      chartData.putIfAbsent(key, () => salesCount);
       countingFrom = countingFrom.add(const Duration(days: 1));
     }
 
@@ -65,16 +67,14 @@ class _RevenuesChartState extends State<RevenuesChart> {
                 children: [
                   SizedBox(
                       height: 60,
-                      child: TimePeriodPicker(onChanged: (from, to) {
-                        debugPrint('From: ${DateTools.formatter.format(from)} | To: ${DateTools.formatter.format(to)}');
-                        if (to.difference(from).inDays < 10) {
-                          setState(() {
-                            data = weeklyData();
-                          });
+                      child: TimePeriodPicker(onChanged: (newFrom, newTo) {
+                        debugPrint('From: ${DateTools.formatter.format(newFrom)} | To: ${DateTools.formatter.format(newTo)}');
+                        from = newFrom;
+                        to = newTo;
+                        if (newTo.difference(newFrom).inDays < 10) {
+                          setState(() => data = weeklyData());
                         } else {
-                          setState(() {
-                            data = monthlyData();
-                          });
+                          setState(() => data = monthlyData());
                         }
                         },)),
                   Text('Ventes', style: textTheme.headlineSmall),

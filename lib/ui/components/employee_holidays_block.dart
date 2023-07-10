@@ -1,9 +1,6 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-import 'package:in_date_utils/in_date_utils.dart';
-import 'package:nevada/model/dtos/yearly_holidays.dart';
 import 'package:nevada/model/employee.dart';
 import 'package:nevada/services/employees_service.dart';
 import 'package:nevada/ui/forms/employee_holidays_form.dart';
@@ -33,11 +30,7 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
     DateTime(2023, 3, 16),
   ];
 
-  // Map<DateTime, List<Event>> holidays = widget
-  //     .employee
-  //     .holidays
-  //     .values
-  //     .expand((e) => e.holidays).map((e) => e.dateTime).map((e) => MapEntry(e, value))
+  Map<DateTime, List<Event>> holidays = {};
   EventList<Event> markedDates = EventList(events: {});
 
   @override
@@ -58,6 +51,15 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
       markedDates.events
           .putIfAbsent(holiday, () => [Event(date: holiday, title: 'ff')]);
     }
+
+    //Fix
+    var ff = Map.fromIterable(widget
+        .employee
+        .holidays
+        .values
+        .expand((e) => e.holidays)
+        .map((e) => e.dateTime)
+        .map((e) => MapEntry(e, [Event(date: e)])));
   }
 
   @override

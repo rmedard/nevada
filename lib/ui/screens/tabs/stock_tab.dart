@@ -81,7 +81,7 @@ class _StockTabState extends State<StockTab> {
                             Text('MT', style: textTheme.bodySmall),
                           ],
                         )),
-                        DataCell(Text(product.description)),
+                        DataCell(Text(product.unitSize.toString())),
                         DataCell(Row(
                           children: [
                             Text(product.totalStockLabel, style: const TextStyle(fontWeight: FontWeight.bold)),

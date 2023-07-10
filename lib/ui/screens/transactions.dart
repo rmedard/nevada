@@ -59,29 +59,45 @@ class _TransactionsState extends State<Transactions> {
                           status: TransactionStatus.paid,
                           createdAt: DateTime.now());
                       var expenseController = TextEditingController(text: '${transaction.amount}');
+                      var expenseCommentController = TextEditingController(text: transaction.comment);
                       expenseController.addListener(() => transaction.amount = int.parse(expenseController.value.text));
+                      expenseCommentController.addListener(() => transaction.comment = expenseCommentController.value.text);
                       return AlertDialog(
                         title: const Text('Introduire Une Dépense'),
-                        content: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(color: colorScheme.secondary, borderRadius: BorderRadius.circular(10)),
-                          child: TextField(
-                            controller: expenseController,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
-                            ],
-                          ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            BasicContainer(
+                              child: TextField(
+                                controller: expenseController,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
+                                ],
+                                decoration: const InputDecoration(
+                                  label: Text('Montant')
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            BasicContainer(child: TextField(
+                              controller: expenseCommentController,
+                              minLines: 3,
+                              maxLines: 5,
+                              decoration: const InputDecoration(
+                                label: Text('Commentaire')
+                              ),
+                            ))],
                         ),
                         actions: [
-                          FilledButton.tonal(onPressed: (){
-                            Navigator.pop(context);
-                          }, child: const Text('Annuler')),
+                          FilledButton.tonal(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Annuler')),
                           FilledButton(onPressed: (){
                             if (transaction.amount > 0) {
                               TransactionsService()
                                   .createNew(transaction.uuid, transaction)
-                                  .then((value) => Navigator.pop(context, transaction.uuid));
+                                  .then((_) => Navigator.pop(context, transaction.uuid));
                             }
                           }, child: const Text('Sauvegarder'))
                         ],
