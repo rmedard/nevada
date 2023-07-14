@@ -12,13 +12,12 @@ class DeliveryPanel {
   DeliveryPanel({required this.isExpanded, required this.delivery});
 
   List<DataRow> _computeRows() {
-    var formatter = NumUtils.currencyFormat();
     var rows = delivery.lines.values
         .map<DataRow>((line) => DataRow(cells: [
               DataCell(Text(line.product.name)),
               DataCell(Text('${line.productQuantity}')),
-              DataCell(Text('${formatter.format(line.productUnitPrice)} MT')),
-              DataCell(Text('${formatter.format(line.total)} MT')),
+              DataCell(Text('${line.productUnitPrice.asMoney} MT')),
+              DataCell(Text('${line.total.asMoney} MT')),
             ]))
         .toList();
     var totalAmount = delivery.lines.values.map((line) => line.total).reduce((value, element) => value + element);
@@ -29,7 +28,7 @@ class DeliveryPanel {
               const DataCell(SizedBox.shrink()),
               const DataCell(SizedBox.shrink()),
               DataCell(Text(
-                  '${formatter.format(totalAmount)} MT',
+                  '${totalAmount.asMoney} MT',
                   style: const TextStyle(fontWeight: FontWeight.bold))),
             ],
             color: MaterialStateColor.resolveWith((states) => Colors.grey[200]!)));
@@ -37,7 +36,6 @@ class DeliveryPanel {
   }
 
   ExpansionPanel toPanel() {
-    var formatter = NumUtils.currencyFormat();
     var deliveryTotalPrice = delivery.lines.values.map((line) => line.total).reduce((value, element) => value + element);
     return ExpansionPanel(
         backgroundColor: Colors.white,
@@ -64,7 +62,7 @@ class DeliveryPanel {
                   Expanded(
                       flex: 1,
                       child: Text(
-                          '${formatter.format(deliveryTotalPrice)} MT'))
+                          '${deliveryTotalPrice.asMoney} MT'))
                 ],
               ), style: ListTileStyle.list,
             ),

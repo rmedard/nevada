@@ -92,8 +92,7 @@ extension TransactionExtras on Transaction {
   }
 
   String get amountText {
-    var formatter = NumUtils.currencyFormat();
-    return '${formatter.format(amount)} MT';
+    return '${amount.asMoney} MT';
   }
 }
 

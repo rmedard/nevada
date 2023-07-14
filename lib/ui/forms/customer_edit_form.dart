@@ -17,7 +17,6 @@ class CustomerEditForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
     var namesController = TextEditingController(text: customer.names);
     var phoneController = TextEditingController(text: customer.phone);
     namesController.addListener(() => customer.names = namesController.value.text);
@@ -36,7 +35,7 @@ class CustomerEditForm extends StatelessWidget {
                 controller: namesController,
                 decoration: const InputDecoration(
                     label: Text('Noms'),
-                    prefixIcon: Icon(Nevada.user_fill)),
+                    prefixIcon: Icon(Nevada.userFill)),
               ),
             ),
             const SizedBox(height: 10),
@@ -46,7 +45,7 @@ class CustomerEditForm extends StatelessWidget {
                 controller: phoneController,
                 decoration: const InputDecoration(
                     label: Text('Téléphone'),
-                    prefixIcon: Icon(Nevada.phone_call)
+                    prefixIcon: Icon(Nevada.phoneCall)
                 ),),
             ),
             const SizedBox(height: 10),

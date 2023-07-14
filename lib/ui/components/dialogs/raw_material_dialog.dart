@@ -13,7 +13,6 @@ class RawMaterialDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
     var dateController = TextEditingController(text: DateTools.formatter.format(rawMaterialMovement.date));
     var quantityController = TextEditingController(text: '${rawMaterialMovement.quantity}');
     quantityController.addListener(() {

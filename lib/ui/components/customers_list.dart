@@ -37,7 +37,6 @@ class CustomersList extends StatefulWidget {
 Future<Uint8List> _generatePdf(PdfPageFormat format, String title, List<Customer> clients) async {
   final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
   final font = await PdfGoogleFonts.nunitoExtraLight();
-  var formatter = NumUtils.currencyFormat(); 
   pdf.addPage(
     pw.Page(
       pageFormat: format,
@@ -60,7 +59,7 @@ Future<Uint8List> _generatePdf(PdfPageFormat format, String title, List<Customer
                   2: const pw.FlexColumnWidth(1),
                   3: const pw.FlexColumnWidth(2),
                 },
-                data: clients.map((e) => ['${e.names}\n${ConfigurationsService().getRegion(e.location)}', e.phone, '${formatter.format(e.debtAmount)} Mt','']).toList())
+                data: clients.map((e) => ['${e.names}\n${ConfigurationsService().getRegion(e.location)}', e.phone, '${e.debtAmount.asMoney} Mt','']).toList())
           ],
         );
       },
@@ -189,7 +188,7 @@ class _CustomersListState extends State<CustomersList> {
                         setState(() {});
                   }),
                   tooltip: 'Livraison',
-                  icon: const Icon(Nevada.truck_loading, size: 18),
+                  icon: const Icon(Nevada.truckLoading, size: 18),
                   splashRadius: 20),
               const SizedBox(width: 10),
               IconButton(

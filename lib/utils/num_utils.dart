@@ -6,8 +6,10 @@ class NumUtils {
     var regex = RegExp(r'([.]*0)(?!.*\d)');
     return value.toString().replaceAll(regex, '');
   }
+}
 
-  static NumberFormat currencyFormat() {
-    return NumberFormat.decimalPattern('en_US');
+extension NumberExtras on num {
+  String get asMoney {
+    return NumberFormat.decimalPattern('en_US').format(this);
   }
 }

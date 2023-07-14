@@ -112,9 +112,9 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
           const SizedBox(height: 10),
           Column(
             children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Row(
-                  children: const [
+                  children: [
                     Icon(Icons.fiber_manual_record, size: 13),
                     Text('Total des congés annuels:'),
                   ],

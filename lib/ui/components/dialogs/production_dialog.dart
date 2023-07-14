@@ -20,7 +20,7 @@ class ProductionDialog extends StatelessWidget {
     });
 
     return AlertDialog(
-      icon: const Icon(Nevada.box_open),
+      icon: const Icon(Nevada.boxOpen),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Column(
         mainAxisSize: MainAxisSize.min,

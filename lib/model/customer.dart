@@ -34,9 +34,8 @@ class Customer extends HiveObject {
 
 extension CustomerBalanceText on Customer {
   Widget get balanceText {
-    var formatter = NumUtils.currencyFormat();
     return Text(
-      '${formatter.format(balance)} MT',
+      '${balance.asMoney} MT',
       style: TextStyle(
           color: balance < 0 ? Colors.redAccent : Colors.green,
           fontWeight: FontWeight.bold),

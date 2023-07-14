@@ -8,6 +8,7 @@ import 'package:nevada/services/products_service.dart';
 import 'package:nevada/ui/components/dialogs/production_dialog.dart';
 import 'package:nevada/ui/forms/product_edit_form.dart';
 import 'package:nevada/ui/utils/nevada_icons.dart';
+import 'package:nevada/utils/num_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -62,9 +63,9 @@ class _StockTabState extends State<StockTab> {
               child: DataTable(
                   columns: const <DataColumn>[
                     DataColumn(label: Text('#')),
-                    DataColumn(label: Text('Nom du produit')),
+                    DataColumn(label: Text('Produit')),
+                    DataColumn(label: Text('Taille de bouteille')),
                     DataColumn(label: Text('Prix unitaire')),
-                    DataColumn(label: Text('Déscription')),
                     DataColumn(label: Text('Stock')),
                     DataColumn(label: Text('')),
                     DataColumn(label: Text(''))
@@ -72,8 +73,9 @@ class _StockTabState extends State<StockTab> {
                   rows: products
                       .mapIndexed<DataRow>((index, product) => DataRow(
                       cells: [
-                        DataCell(Text('${++index}')),
-                        DataCell(Text(product.name, overflow: TextOverflow.fade)),
+                        DataCell(Text('${++index}.')),
+                        DataCell(Text(product.name)),
+                        DataCell(Text('${NumUtils.stringify(product.unitSize)} L')),
                         DataCell(Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -81,7 +83,6 @@ class _StockTabState extends State<StockTab> {
                             Text('MT', style: textTheme.bodySmall),
                           ],
                         )),
-                        DataCell(Text(product.unitSize.toString())),
                         DataCell(Row(
                           children: [
                             Text(product.totalStockLabel, style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -175,14 +176,14 @@ class _StockTabState extends State<StockTab> {
                         DataColumn(label: Text('Quantité produite (cartons)')),
                         DataColumn(label: Text('')),
                       ],
-                      rows: productions.asMap().entries.map<DataRow>((e) => DataRow(cells: [
-                        DataCell(Text('${e.key + 1}')),
-                        DataCell(Text(e.value.product.name)),
-                        DataCell(Text(e.value.dateFormatted)),
-                        DataCell(Text('${e.value.productQuantity}')),
+                      rows: productions.mapIndexed((index, stockRefill) => DataRow(cells: [
+                        DataCell(Text('${index + 1}.')),
+                        DataCell(Text(stockRefill.product.name)),
+                        DataCell(Text(stockRefill.dateFormatted)),
+                        DataCell(Text('${stockRefill.productQuantity}')),
                         DataCell(
                             IconButton(
-                                icon: const Icon(Nevada.pencil_fill, size: 15),
+                                icon: const Icon(Nevada.pencilFill, size: 15),
                                 splashRadius: 20,
                                 onPressed: () {  })),
                       ])).toList()),

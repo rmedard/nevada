@@ -85,7 +85,12 @@ class _TimePeriodPickerState extends State<TimePeriodPicker> {
                   }))
         ],),
       ),
-      Expanded(child: AnimatedSwitcher(duration: const Duration(milliseconds: 300), child: timePeriodSelector)),
+      Expanded(
+          child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: timePeriodSelector
+          ),
+      ),
     ],);
   }
 }

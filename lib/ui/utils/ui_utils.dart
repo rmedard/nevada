@@ -57,12 +57,12 @@ class UiUtils {
               ],
             ),
           ),
-          Positioned(
+          const Positioned(
               bottom: 25,
               left: 20,
               child: ClipRRect(
                 child: Stack(
-                  children: const [
+                  children: [
                     Icon(
                       Icons.circle,
                       color: Colors.deepOrange,

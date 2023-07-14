@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nevada/services/deliveries_service.dart';
@@ -10,16 +8,14 @@ import 'package:nevada/utils/date_tools.dart';
 import 'charts/revenue_bar_graph.dart';
 
 class RevenuesChart extends StatefulWidget {
-  const RevenuesChart({Key? key}) : super(key: key);
+  final ValueNotifier<DateTimeRange> transactionsDateRangeNotifier;
+  const RevenuesChart({Key? key, required this.transactionsDateRangeNotifier}) : super(key: key);
 
   @override
   State<RevenuesChart> createState() => _RevenuesChartState();
 }
 
 class _RevenuesChartState extends State<RevenuesChart> {
-
-  DateTime from = DateTools.beginningOfWeek(DateTime.now());
-  DateTime to = DateTools.endOfWeek(DateTime.now());
 
   Map<String, double> data = {};
 
@@ -30,6 +26,8 @@ class _RevenuesChartState extends State<RevenuesChart> {
   }
 
   Map<String, double> weeklyData() {
+    var from = widget.transactionsDateRangeNotifier.value.start;
+    var to = widget.transactionsDateRangeNotifier.value.end;
     var countSales = DeliveriesService().countSales(from, to);
     Map<String, double> chartData = {};
     DateTime countingFrom = from;
@@ -48,8 +46,19 @@ class _RevenuesChartState extends State<RevenuesChart> {
   }
 
   Map<String, double> monthlyData() {
-    List<double> month = List.generate(31, (index) => Random().nextInt(100).toDouble());
-    return {for (var index = 0; index < month.length; index++) '$index' : month[index]};
+    var from = widget.transactionsDateRangeNotifier.value.start;
+    var to = widget.transactionsDateRangeNotifier.value.end;
+    var countSales = DeliveriesService().countSales(from, to);
+    Map<String, double> chartData = {};
+    DateTime countingFrom = from;
+    while(!countingFrom.isAfter(to)) {
+      var key = DateTools.formatter.format(countingFrom);
+      double salesCount = (countSales[key] ?? 0).toDouble();
+      debugPrint('Sales count on $key: $salesCount');
+      chartData.putIfAbsent('${countingFrom.day}', () => salesCount);
+      countingFrom = countingFrom.add(const Duration(days: 1));
+    }
+    return chartData;
   }
 
   @override
@@ -68,9 +77,8 @@ class _RevenuesChartState extends State<RevenuesChart> {
                   SizedBox(
                       height: 60,
                       child: TimePeriodPicker(onChanged: (newFrom, newTo) {
+                        widget.transactionsDateRangeNotifier.value = DateTimeRange(start: newFrom, end: newTo);
                         debugPrint('From: ${DateTools.formatter.format(newFrom)} | To: ${DateTools.formatter.format(newTo)}');
-                        from = newFrom;
-                        to = newTo;
                         if (newTo.difference(newFrom).inDays < 10) {
                           setState(() => data = weeklyData());
                         } else {

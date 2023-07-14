@@ -74,6 +74,7 @@ class _ProductDeliveryTableState extends State<ProductDeliveryTable> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         DataTable(
+          columnSpacing: 20,
             columns: const [
               DataColumn(label: Text('Produit')),
               DataColumn(label: Text('Quantité')),

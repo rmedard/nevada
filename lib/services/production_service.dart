@@ -14,6 +14,7 @@ class ProductionService  extends BaseService<StockRefill> {
     t.product.totalStock += t.productQuantity;
     return await dataBox.put(uuid, t).then((_) {
       loggy.info('Entity $uuid of type ${t.runtimeType.toString()} created successfully!');
+      t.product.save();
       return true;
     }, onError: (error) {
       loggy.error(error);

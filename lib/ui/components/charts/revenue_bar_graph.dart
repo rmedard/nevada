@@ -19,15 +19,15 @@ class RevenueBarGraph extends StatelessWidget {
     return BarChart(BarChartData(
         maxY: 100,
         minY: 0,
-        gridData: FlGridData(show: false),
+        gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
           show: true,
           bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (index, value) {
             return Text(revenues.keys.elementAt(index.toInt()));
           })),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         barGroups: bars.map((data) =>
             BarChartGroupData(

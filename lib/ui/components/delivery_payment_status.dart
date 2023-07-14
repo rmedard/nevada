@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/utils/date_tools.dart';
 

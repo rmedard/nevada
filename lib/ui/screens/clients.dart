@@ -54,7 +54,6 @@ class _ClientsState extends State<Clients> {
 
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
     var newCustomer = Customer.empty();
     return ScreenElements().defaultBodyFrame(
         context: context,

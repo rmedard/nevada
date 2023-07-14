@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nevada/services/configurations_service.dart';
 import 'package:nevada/services/test_data_service.dart';
 import 'package:nevada/ui/screens/config/regions_config_block.dart';
 import 'package:nevada/ui/screens/elements/screen_elements.dart';
@@ -22,7 +21,7 @@ class _ConfigurationsState extends State<Configurations> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              const Row(
                 children: [
                   SizedBox(
                     width: 300,

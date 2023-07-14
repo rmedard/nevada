@@ -43,7 +43,6 @@ class _ProductEditFormState extends State<ProductEditForm> {
   Widget build(BuildContext context) {
 
     var textTheme = Theme.of(context).textTheme;
-    var colorScheme = Theme.of(context).colorScheme;
 
     return Form(
       key: _productFormKey,

@@ -16,18 +16,37 @@ class WeekSpinner extends StatefulWidget {
 
 class _WeekSpinnerState extends State<WeekSpinner> {
 
-  TextEditingController inputController = TextEditingController();
+  final int stepSize = 7;
+  final TextEditingController _inputController = TextEditingController();
   late DateTime from;
   late DateTime to;
-
+  bool isForwardSpinnerInRange = true;
+  bool isBackwardSpinnerInRange = true;
 
   @override
   void initState() {
     super.initState();
     from = DateTools.beginningOfWeek(widget.initialWeekDate);
     to = DateTools.endOfWeek(widget.initialWeekDate);
-    inputController.text = '${DateTools.formatter.format(from)} - ${DateTools.formatter.format(to)}';
-    inputController.addListener(() => widget.onChanged(from, to));
+    isForwardSpinnerInRange = from.add(Duration(days: stepSize)).isBefore(DateTime.now());
+    _inputController.text = '${DateTools.formatter.format(from)} - ${DateTools.formatter.format(to)}';
+    _inputController.addListener(() {
+      widget.onChanged(from, to);
+      var nextForwardFrom = from.add(Duration(days: stepSize));
+      if (nextForwardFrom.isAfter(DateTime.now()) && isForwardSpinnerInRange) {
+        setState(() => isForwardSpinnerInRange = false);
+      }
+      if (nextForwardFrom.isBefore(DateTime.now()) && !isForwardSpinnerInRange) {
+        setState(() => isForwardSpinnerInRange = true);
+      }
+    });
+  }
+
+
+  @override
+  void dispose() {
+    _inputController.dispose();
+    super.dispose();
   }
 
   @override
@@ -35,22 +54,22 @@ class _WeekSpinnerState extends State<WeekSpinner> {
     return BasicContainer(
       child: TextField(
         textAlign: TextAlign.center,
-        controller: inputController,
+        controller: _inputController,
         readOnly: true,
         decoration: InputDecoration(
           prefixIcon: IconButton(
               onPressed: () {
                 from = from.subtract(const Duration(days: 7));
                 to = to.subtract(const Duration(days: 7));
-                inputController.text = '${DateTools.formatter.format(from)} - ${DateTools.formatter.format(to)}';
+                _inputController.text = '${DateTools.formatter.format(from)} - ${DateTools.formatter.format(to)}';
               },
               icon: const Icon(Nevada.back, size: 18)),
           suffixIcon: IconButton(
-              onPressed: () {
-                from = from.add(const Duration(days: 7));
-                to = to.add(const Duration(days: 7));
-                inputController.text = '${DateTools.formatter.format(from)} - ${DateTools.formatter.format(to)}';
-              },
+              onPressed: isForwardSpinnerInRange ? () {
+                from = from.add(Duration(days: stepSize));
+                to = to.add(Duration(days: stepSize));
+                _inputController.text = '${DateTools.formatter.format(from)} - ${DateTools.formatter.format(to)}';
+              } : null,
               icon: const Icon(Nevada.forward, size: 18))
         ),
       ),
