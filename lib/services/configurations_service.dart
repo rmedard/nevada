@@ -42,4 +42,35 @@ class ConfigurationsService {
     var regions = getRegions(hasAllOption: false);
     return regions.containsKey(key) ? regions.entries.firstWhere((element) => element.key == key).value : '';
   }
+
+  int maximumYearlyHolidays() {
+    return configBox.get(ConfigKey.maxHolidaysCount.name, defaultValue: 0) as int;
+  }
+
+  Future<void> updateMaximumYearlyHolidays(int count) {
+    return configBox.put(ConfigKey.maxHolidaysCount.name, count);
+  }
+
+  List<int> getWeekendDays() {
+    return configBox.get(ConfigKey.weekendDays.name, defaultValue: []) as List<int>;
+  }
+
+  List<int> addWeekendDay(int day) {
+    var weekendDays = getWeekendDays();
+    if (!weekendDays.contains(day)) {
+      weekendDays.add(day);
+      configBox.put(ConfigKey.weekendDays.name, weekendDays);
+    }
+    return weekendDays;
+  }
+
+  List<int> removeWeekendDay(int day) {
+    var weekendDays = getWeekendDays();
+    if (weekendDays.contains(day)) {
+      weekendDays.removeWhere((d) => d == day);
+      configBox.put(ConfigKey.weekendDays.name, weekendDays);
+    }
+    return weekendDays;
+  }
+
 }

@@ -68,16 +68,24 @@ void main() async {
   Hive.registerAdapter(RawMaterialMovementAdapter());
   Hive.registerAdapter(MaterialMovementTypeAdapter());
 
-  /** Init Regions **/
+  /** Init Config **/
   Box configBox = await Hive.openBox<dynamic>(configBoxName);
   bool regionsEmpty = false;
+  bool holidaysCountEmpty = false;
+  bool weekendDaysEmpty = false;
   if (configBox.isEmpty) {
     regionsEmpty = true;
+    holidaysCountEmpty = true;
+    weekendDaysEmpty = true;
   } else {
     var map = configBox.get(ConfigKey.regions.name, defaultValue: <dynamic, dynamic>{}) as Map<dynamic, dynamic>;
-    if (map.isEmpty) {
-      regionsEmpty = true;
-    }
+    regionsEmpty = map.isEmpty;
+
+    var holidaysCount = configBox.get(ConfigKey.maxHolidaysCount.name, defaultValue: 0) as int;
+    holidaysCountEmpty = holidaysCount == 0;
+
+    var weekendDays = configBox.get(ConfigKey.weekendDays.name, defaultValue: []) as List<dynamic>;
+    weekendDaysEmpty = weekendDays.isEmpty;
   }
   
   if (regionsEmpty) {
@@ -85,7 +93,15 @@ void main() async {
       const Uuid().v4().toString(): 'Zimpeto'
     });
   }
-  
+
+  if (holidaysCountEmpty) {
+    configBox.put(ConfigKey.maxHolidaysCount.name, 20);
+  }
+
+  if (weekendDaysEmpty) {
+    configBox.put(ConfigKey.weekendDays.name, [DateTime.saturday, DateTime.sunday]);
+  }
+
   /** Init Products & Stock **/
   await Hive.openBox<Product>(boxNames[BoxNameKey.products]!);
   await Hive.openBox<StockRefill>(boxNames[BoxNameKey.stockRefills]!);

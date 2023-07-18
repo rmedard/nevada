@@ -12,17 +12,19 @@ class EmployeeHolidaysForm extends StatefulWidget {
 
 class _EmployeeHolidaysFormState extends State<EmployeeHolidaysForm> {
   final _holidayPeriodEditController = TextEditingController();
-  DateTimeRange initialRange = DateTimeRange(start: DateTime.now(), end: DateTime.now().add(const Duration(days: 3)));
+  DateTimeRange selectedRange = DateTimeRange(start: DateTime.now(), end: DateTime.now().add(const Duration(days: 1)));
 
   @override
   Widget build(BuildContext context) {
+    _holidayPeriodEditController.text = '${selectedRange.start.toBasicDateStr} - ${selectedRange.end.toBasicDateStr}';
+    int workingDays = DateTools.countWorkingDays(selectedRange);
     return BasicContainer(
       child: SizedBox(
         width: 300,
         child: TextField(
           decoration: InputDecoration(
               label: const Text('Période'),
-              suffix: Text('${DateTools.countWorkingDays(initialRange)} jours')),
+              suffix: Text('$workingDays jour${workingDays == 1 ? "" : "s"}')),
           controller: _holidayPeriodEditController,
           onTap: () {
             showDateRangePicker(
@@ -30,6 +32,7 @@ class _EmployeeHolidaysFormState extends State<EmployeeHolidaysForm> {
                 initialEntryMode: DatePickerEntryMode.calendarOnly,
                 firstDate: DateTools.minusMonths(DateTime.now(), 1),
                 lastDate: DateTools.plusMonths(DateTime.now(), 1),
+                initialDateRange: selectedRange,
                 saveText: 'Sauvegarder',
                 builder: (dialogContext, builder) {
                   var screenSize = MediaQuery.of(context).size;
@@ -38,16 +41,11 @@ class _EmployeeHolidaysFormState extends State<EmployeeHolidaysForm> {
                       margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.05, horizontal: screenSize.width * 0.3),
                       child: ClipRRect(borderRadius: BorderRadius.circular(20), child: builder));
                 }).then((range) {
-              if (range != null) {
-                var formatter = DateTools.formatter;
-                setState(() {
-                  widget.onNewSelection(range);
-                  _holidayPeriodEditController.text = '${formatter.format(range.start)} - ${formatter.format(range.end)}';
-                  setState(() {
-                    initialRange = range;
-                  });
-                });
-              }
+                  if (range != null) {
+                    setState(() => selectedRange = range);
+                    _holidayPeriodEditController.text = '${range.start.toBasicDateStr} - ${range.end.toBasicDateStr}';
+                    widget.onNewSelection(range);
+                  }
             });
           },
         ),

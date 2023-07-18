@@ -24,5 +24,5 @@ var boxNames = {
 const configBoxName = 'config';
 
 enum ConfigKey {
-  regions, languages
+  regions, languages, maxHolidaysCount, weekendDays
 }

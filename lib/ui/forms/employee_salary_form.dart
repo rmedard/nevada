@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nevada/model/dtos/salary_pay.dart';
 import 'package:nevada/ui/components/decor/basic_container.dart';
-import 'package:nevada/ui/components/month_spinner.dart';
+import 'package:nevada/ui/components/spinners/month_spinner.dart';
 import 'package:nevada/ui/utils/thousand_separator_input_formatter.dart';
 
 class EmployeeSalaryForm extends StatelessWidget {

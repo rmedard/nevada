@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
+import 'package:nevada/model/dtos/yearly_holidays.dart';
 import 'package:nevada/model/employee.dart';
 import 'package:nevada/services/employees_service.dart';
+import 'package:nevada/ui/components/decor/basic_container.dart';
+import 'package:nevada/ui/components/spinners/year_spinner.dart';
 import 'package:nevada/ui/forms/employee_holidays_form.dart';
+import 'package:nevada/utils/date_tools.dart';
 
 class EmployeeHolidaysBlock extends StatefulWidget {
   final Employee employee;
@@ -19,6 +23,8 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
   List<DateTime> holidayDates = [];
 
   DateTimeRange? selectedRange;
+
+  late YearlyHolidays selectedYearlyHolidays;
 
   var holidayD = [
     DateTime(2023, 1, 1),
@@ -36,6 +42,7 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
   @override
   void initState() {
     super.initState();
+    selectedYearlyHolidays = EmployeesService().getYearlyHolidays(widget.employee, DateTime.now().year);
     if (widget.employee.holidays.isNotEmpty) {
       holidayDates = widget.employee.holidays.values
           .map((e) => e.holidays)
@@ -60,6 +67,13 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
         .expand((e) => e.holidays)
         .map((e) => e.dateTime)
         .map((e) => MapEntry(e, [Event(date: e)])));
+
+    widget.employee.holidays.forEach((key, value) {
+      debugPrint('### Year: $key => count: ${value.holidays.length}');
+      value.holidays.forEach((element) {
+        debugPrint(element.dateTime.toBasicDateStr);
+      });
+    });
   }
 
   @override
@@ -109,50 +123,65 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                   label: const Text('Nouveau congé'))
             ],
           ),
-          const SizedBox(height: 10),
-          Column(
-            children: [
-              const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Row(
-                  children: [
-                    Icon(Icons.fiber_manual_record, size: 13),
-                    Text('Total des congés annuels:'),
-                  ],
-                ),
-                Text('20')
-              ]),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Row(
-                  children: [
-                    Icon(Icons.fiber_manual_record,
-                        size: 13, color: colorScheme.primary),
-                    const Text('Congés consommés:'),
-                  ],
-                ),
-                Text('8')
-              ]),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Row(
-                  children: [
-                    Icon(Icons.fiber_manual_record,
-                        size: 13, color: colorScheme.error),
-                    const Text('Congés restants:'),
-                  ],
-                ),
-                Text('12')
-              ])
-            ],
+          const SizedBox(height: 20),
+          BasicContainer(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: [
+                  YearSpinner(
+                    initialYear: DateTime.now().year,
+                    onChanged: (int year) => setState(() => selectedYearlyHolidays = EmployeesService().getYearlyHolidays(widget.employee, year)),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Row(
+                          children: [
+                            Icon(Icons.fiber_manual_record, size: 13),
+                            Text('Total des congés annuels:'),
+                          ],
+                        ),
+                        Text('${selectedYearlyHolidays.allowedAmount}')
+                  ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    Row(
+                      children: [
+                        Icon(Icons.fiber_manual_record,
+                            size: 13, color: colorScheme.primary),
+                        const Text('Congés consommés:'),
+                      ],
+                    ),
+                    Text('${selectedYearlyHolidays.holidays.length}')
+                  ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    Row(
+                      children: [
+                        Icon(Icons.fiber_manual_record,
+                            size: 13, color: colorScheme.error),
+                        const Text('Congés restants:'),
+                      ],
+                    ),
+                    Text('${selectedYearlyHolidays.allowedAmount - selectedYearlyHolidays.holidays.length}')
+                  ]),
+                ],
+              ),
+            ),
           ),
-          SizedBox(
-            width: double.infinity,
-            height: 400,
-            child: CalendarCarousel<Event>(
-              customGridViewPhysics: const NeverScrollableScrollPhysics(),
-              markedDateCustomShapeBorder: CircleBorder(side: BorderSide(color: colorScheme.error)),
-              headerTextStyle: textTheme.labelLarge,
-              locale: 'fr',
-              thisMonthDayBorderColor: Colors.green,
-              markedDatesMap: markedDates,
+          const SizedBox(height: 20),
+          BasicContainer(
+            child: SizedBox(
+              width: double.infinity,
+              height: 400,
+              child: CalendarCarousel<Event>(
+                customGridViewPhysics: const NeverScrollableScrollPhysics(),
+                markedDateCustomShapeBorder: CircleBorder(side: BorderSide(color: colorScheme.error)),
+                headerTextStyle: textTheme.labelLarge,
+                locale: 'fr',
+                thisMonthDayBorderColor: Colors.green,
+                markedDatesMap: markedDates,
+              ),
             ),
           ),
         ],

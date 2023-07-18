@@ -7,6 +7,7 @@ import 'package:nevada/model/employee.dart';
 import 'package:nevada/model/transaction.dart';
 import 'package:nevada/services/base_service.dart';
 import 'package:nevada/services/transactions_service.dart';
+import 'package:nevada/utils/date_tools.dart';
 import 'package:uuid/uuid.dart';
 
 class EmployeesService extends BaseService<Employee> {
@@ -31,10 +32,11 @@ class EmployeesService extends BaseService<Employee> {
 
   Future<void> createEmployeeHolidays(Employee employee, DateTimeRange selectedRange) {
     var generateWithDayStep = DTU.generateWithDayStep(selectedRange.start, selectedRange.end);
-    Map<int, Set<DateTime>> groupSetsBy = generateWithDayStep.toSet().groupSetsBy((element) => element.year);
+    Map<int, Set<DateTime>> groupSetsBy = generateWithDayStep.toSet().groupSetsBy((date) => date.year);
     groupSetsBy.forEach((year, days) {
       YearlyHolidays yearlyHolidays = employee.holidays[year] ?? YearlyHolidays(allowedAmount: 20);
-      var holidays = yearlyHolidays.holidays;
+      List<Holiday> holidays = yearlyHolidays.holidays;
+      days.removeWhere((newHoliday) => holidays.any((existingHoliday) => existingHoliday.dateTime.toInt == newHoliday.toInt));
       for (var day in days) {
         holidays.add(Holiday(dateTime: day, consumed: false));
       }
@@ -42,4 +44,9 @@ class EmployeesService extends BaseService<Employee> {
     });
     return employee.save();
   }
+
+  YearlyHolidays getYearlyHolidays(Employee employee, int year) {
+    return employee.holidays[year] ?? YearlyHolidays(allowedAmount: 20);
+  }
+
 }

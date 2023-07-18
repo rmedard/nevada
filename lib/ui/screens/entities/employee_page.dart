@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nevada/model/employee.dart';
-import 'package:nevada/ui/components/employee_detais_block.dart';
+import 'package:nevada/ui/components/employee_details_block.dart';
 import 'package:nevada/ui/components/employee_holidays_block.dart';
 import 'package:nevada/ui/components/employee_salaries_block.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nevada/ui/components/month_spinner.dart';
-import 'package:nevada/ui/components/week_spinner.dart';
+import 'package:nevada/ui/components/spinners/month_spinner.dart';
+import 'package:nevada/ui/components/spinners/week_spinner.dart';
 import 'package:nevada/utils/date_tools.dart';
 
 class TimePeriodPicker extends StatefulWidget {
