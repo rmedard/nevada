@@ -20,20 +20,8 @@ class EmployeeHolidaysBlock extends StatefulWidget {
 }
 
 class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
-  List<DateTime> holidayDates = [];
-
   late YearlyHolidays selectedYearlyHolidays;
   late int selectedYear = DateTime.now().year;
-
-  var holidayD = [
-    DateTime(2023, 1, 1),
-    DateTime(2023, 1, 5),
-    DateTime(2023, 1, 12),
-    DateTime(2023, 1, 20),
-    DateTime(2023, 2, 15),
-    DateTime(2023, 2, 18),
-    DateTime(2023, 3, 16),
-  ];
 
   Map<DateTime, List<Event>> holidays = {};
   EventList<Event> markedDates = EventList(events: {});
@@ -42,43 +30,21 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
   void initState() {
     super.initState();
     selectedYearlyHolidays = EmployeesService().getYearlyHolidays(widget.employee, DateTime.now().year);
-    if (widget.employee.holidays.isNotEmpty) {
-      holidayDates = widget.employee.holidays.values
-          .map((e) => e.holidays)
-          .reduce((value, element) {
-            value.addAll(element);
-            return value;
-          })
-          .map((e) => e.dateTime)
-          .toList();
-    }
 
-    for (var holiday in holidayD) {
+    for (var holiday in selectedYearlyHolidays.holidays.map((e) => e.dateTime)) {
       markedDates.events
-          .putIfAbsent(holiday, () => [Event(date: holiday, title: 'ff')]);
+          .putIfAbsent(holiday, () => [Event(date: holiday, dot: const SizedBox.shrink())]);
     }
-
-    //Fix
-    var ff = Map.fromIterable(widget
-        .employee
-        .holidays
-        .values
-        .expand((e) => e.holidays)
-        .map((e) => e.dateTime)
-        .map((e) => MapEntry(e, [Event(date: e)])));
-
-    widget.employee.holidays.forEach((key, value) {
-      debugPrint('### Year: $key => count: ${value.holidays.length}');
-      value.holidays.forEach((element) {
-        debugPrint(element.dateTime.toBasicDateStr);
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
     var textTheme = Theme.of(context).textTheme;
+    int totalMaxYearlyHolidays = selectedYearlyHolidays.allowedAmount;
+    int totalTakenHolidays = EmployeesService().countYearlyHolidaysDates(widget.employee, selectedYear);
+    int totalRemainingHolidays = totalMaxYearlyHolidays - totalTakenHolidays;
+
     return Container(
       decoration: BoxDecoration(color: colorScheme.surface, borderRadius: BorderRadius.circular(20)),
       padding: const EdgeInsets.all(20),
@@ -128,7 +94,7 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                             Text('Total des congés annuels:'),
                           ],
                         ),
-                        Text('${selectedYearlyHolidays.allowedAmount}')
+                        Text('$totalMaxYearlyHolidays')
                   ]),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                     Row(
@@ -137,7 +103,7 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                         const Text('Congés consommés:'),
                       ],
                     ),
-                    Text('${EmployeesService().countYearlyHolidaysDates(widget.employee, selectedYear)}')
+                    Text('$totalTakenHolidays')
                   ]),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                     Row(
@@ -146,16 +112,16 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                         const Text('Congés restants:'),
                       ],
                     ),
-                    Text('${selectedYearlyHolidays.allowedAmount - selectedYearlyHolidays.holidays.length}')
+                    Text('$totalRemainingHolidays')
                   ]),
+                  const SizedBox(height: 20),
                   ...EmployeesService()
                       .computeHolidaySpans(widget.employee, selectedYear)
-                      .entries
-                      .map((e) => Row(
+                      .map((range) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('${e.key.start.toBasicDateStr} - ${e.key.end.toBasicDateStr}'),
-                          Text('${e.value} jours')
+                          Text('${range.start.toBasicDateStr} - ${range.end.toBasicDateStr}'),
+                          Text('${range.workingDaysCount} jour${range.workingDaysCount > 1 ? "s" : ""}')
                         ],
                       ))
                       .toList()
@@ -169,11 +135,12 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
               width: double.infinity,
               height: 400,
               child: CalendarCarousel<Event>(
+                todayButtonColor: colorScheme.background,
+                todayTextStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.primary),
                 customGridViewPhysics: const NeverScrollableScrollPhysics(),
-                markedDateCustomShapeBorder: CircleBorder(side: BorderSide(color: colorScheme.error)),
+                markedDateCustomShapeBorder: CircleBorder(side: BorderSide(color: colorScheme.primary)),
                 headerTextStyle: textTheme.labelLarge,
                 locale: 'fr',
-                thisMonthDayBorderColor: Colors.green,
                 markedDatesMap: markedDates,
               ),
             ),

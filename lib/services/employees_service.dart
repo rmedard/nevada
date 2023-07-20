@@ -55,32 +55,17 @@ class EmployeesService extends BaseService<Employee> {
     if (holidaySpans.isEmpty) {
       return 0;
     }
-    return holidaySpans.values.reduce((span1, span2) => span1 + span2);
+    return holidaySpans.map((span) => span.workingDaysCount).reduce((span1, span2) => span1 + span2);
   }
 
-  Map<DateTimeRange, int> computeHolidaySpans(Employee employee, int year) {
+  List<DateTimeRange> computeHolidaySpans(Employee employee, int year) {
     YearlyHolidays yearlyHolidays = getYearlyHolidays(employee, year);
-    Map<DateTimeRange, int> holidaysCount = {};
-
+    List<DateTimeRange> holidaysCount = [];
     if (yearlyHolidays.holidays.isNotEmpty) {
       var holidayDates = yearlyHolidays.holidays.sortedBy((holiday) => holiday.dateTime).map((holiday) => holiday.dateTime);
-      DateTime startDate = holidayDates.first;
-      if (holidayDates.length == 1) {
-        var range = DateTimeRange(start: startDate, end: startDate);
-        holidaysCount.putIfAbsent(range, () => DateTools.countWorkingDays(range));
-      } else {
-        for (int i = 1; i < holidayDates.length; i++) {
-          var previousDate = holidayDates.elementAt(i - 1);
-          var currentDate = holidayDates.elementAt(i);
-          if (currentDate.subtract(const Duration(days: 1)).toInt == previousDate.toInt) {
-            continue;
-          } else {
-            var range = DateTimeRange(start: startDate, end: previousDate);
-            holidaysCount.putIfAbsent(range, () => DateTools.countWorkingDays(range));
-            startDate = currentDate;
-          }
-        }
-      }
+      holidayDates
+          .splitBetween((first, second) => !DateTools.isSameDay(first, second.dayBefore))
+          .forEach((dates) => holidaysCount.add(DateTimeRange(start: dates.first, end: dates.last)));
     }
     return holidaysCount;
   }

@@ -52,13 +52,6 @@ class DateTools {
     return dateTime;
   }
 
-  static int countWorkingDays(DateTimeRange dateTimeRange) {
-    return dateTimeRange
-        .toListOfDates
-        .where((element) => !ConfigurationsService().getWeekendDays().contains(element.weekday))
-        .length;
-  }
-
   static DateTime beginningOfWeek(DateTime dateTime) {
     return dateTime.subtract(Duration(days: dateTime.weekday - 1));
   }
@@ -88,6 +81,9 @@ class DateTools {
     }
   }
 
+  static bool isSameDay(DateTime dateTime1, DateTime dateTime2) {
+    return dateTime1.toInt == dateTime2.toInt;
+  }
 }
 
 extension DateTimeExtra on DateTime {
@@ -99,6 +95,14 @@ extension DateTimeExtra on DateTime {
   String get toBasicDateStr {
     return DateFormat('dd/MM/y').format(this);
   }
+
+  DateTime get dayAfter {
+    return add(const Duration(days: 1));
+  }
+
+  DateTime get dayBefore {
+    return subtract(const Duration(days: 1));
+  }
 }
 
 extension DateTimeRangeExtra on DateTimeRange {
@@ -108,5 +112,11 @@ extension DateTimeRangeExtra on DateTimeRange {
       dates.add(start.add(Duration(days: i)));
     }
     return dates;
+  }
+
+  int get workingDaysCount {
+    return toListOfDates
+        .where((element) => !ConfigurationsService().getWeekendDays().contains(element.weekday))
+        .length;
   }
 }

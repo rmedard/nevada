@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nevada/model/employee.dart';
-import 'package:nevada/services/employees_service.dart';
 import 'package:nevada/ui/components/decor/basic_container.dart';
 import 'package:nevada/utils/date_tools.dart';
 
@@ -26,7 +25,7 @@ class _NewHolidayDialogState extends State<NewHolidayDialog> {
 
   @override
   Widget build(BuildContext context) {
-    int workingDays = DateTools.countWorkingDays(selectedRange);
+    int workingDays = selectedRange.workingDaysCount;
     return AlertDialog(
       title: Text('Congé de: ${widget.employee.names}'),
       content: BasicContainer(
