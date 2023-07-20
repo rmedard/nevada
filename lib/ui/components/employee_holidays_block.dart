@@ -31,10 +31,10 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
     super.initState();
     selectedYearlyHolidays = EmployeesService().getYearlyHolidays(widget.employee, DateTime.now().year);
 
-    for (var holiday in selectedYearlyHolidays.holidays.map((e) => e.dateTime)) {
-      markedDates.events
-          .putIfAbsent(holiday, () => [Event(date: holiday, dot: const SizedBox.shrink())]);
-    }
+    selectedYearlyHolidays
+        .holidays
+        .map((holiday) => holiday.dateTime)
+        .forEach((holidayDate) => markedDates.events.putIfAbsent(holidayDate, () => [Event(date: holidayDate, dot: const SizedBox.shrink())]));
   }
 
   @override
@@ -119,12 +119,11 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                       .computeHolidaySpans(widget.employee, selectedYear)
                       .map((range) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('${range.start.toBasicDateStr} - ${range.end.toBasicDateStr}'),
-                          Text('${range.workingDaysCount} jour${range.workingDaysCount > 1 ? "s" : ""}')
-                        ],
-                      ))
-                      .toList()
+                    children: [
+                      Text('${range.start.toBasicDateStr} - ${range.end.toBasicDateStr}'),
+                      Text('${range.workingDaysCount} jour${range.workingDaysCount > 1 ? "s" : ""}')
+                    ],
+                  )).toList()
                 ],
               ),
             ),
