@@ -32,7 +32,7 @@ class _HolidaysConfigBlockState extends State<HolidaysConfigBlock> {
     super.dispose();
   }
 
-  Widget toCheckBox(int day) {
+  Widget _toCheckBox(int day) {
     bool isChecked = weekendDays.contains(day);
     return Row(
       children: [
@@ -92,7 +92,7 @@ class _HolidaysConfigBlockState extends State<HolidaysConfigBlock> {
           Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [1, 2, 3, 4, 5, 6, 7].map((e) => toCheckBox(e)).toList())
+                children: [1, 2, 3, 4, 5, 6, 7].map((e) => _toCheckBox(e)).toList())
           ],
         ), horizontalPadding: 20, verticalPadding: 20,
     );

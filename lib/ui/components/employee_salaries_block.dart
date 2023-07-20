@@ -29,9 +29,7 @@ class _EmployeeSalariesBlockState extends State<EmployeeSalariesBlock> {
     var colorScheme = Theme.of(context).colorScheme;
     var textTheme = Theme.of(context).textTheme;
     return Container(
-      decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(color: colorScheme.surface, borderRadius: BorderRadius.circular(20)),
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [

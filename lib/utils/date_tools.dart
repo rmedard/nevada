@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nevada/services/configurations_service.dart';
 
 class DateTools {
 
@@ -52,12 +53,9 @@ class DateTools {
   }
 
   static int countWorkingDays(DateTimeRange dateTimeRange) {
-    List<DateTime> dateTimes = [];
-    for (int i = 0; i <= dateTimeRange.duration.inDays; i++) {
-      dateTimes.add(dateTimeRange.start.add(Duration(days: i)));
-    }
-    return dateTimes
-        .where((dateTime) => dateTime.day != DateTime.saturday && dateTime.day != DateTime.sunday)
+    return dateTimeRange
+        .toListOfDates
+        .where((element) => !ConfigurationsService().getWeekendDays().contains(element.weekday))
         .length;
   }
 
@@ -99,6 +97,16 @@ extension DateTimeExtra on DateTime {
   }
 
   String get toBasicDateStr {
-    return DateFormat('dd/MM/yyyy').format(this);
+    return DateFormat('dd/MM/y').format(this);
+  }
+}
+
+extension DateTimeRangeExtra on DateTimeRange {
+  List<DateTime> get toListOfDates {
+    List<DateTime> dates = [];
+    for (int i = 0; i <= duration.inDays; i++) {
+      dates.add(start.add(Duration(days: i)));
+    }
+    return dates;
   }
 }

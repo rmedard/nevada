@@ -5,8 +5,8 @@ import 'package:nevada/model/dtos/yearly_holidays.dart';
 import 'package:nevada/model/employee.dart';
 import 'package:nevada/services/employees_service.dart';
 import 'package:nevada/ui/components/decor/basic_container.dart';
+import 'package:nevada/ui/components/dialogs/new_holiday_dialog.dart';
 import 'package:nevada/ui/components/spinners/year_spinner.dart';
-import 'package:nevada/ui/forms/employee_holidays_form.dart';
 import 'package:nevada/utils/date_tools.dart';
 
 class EmployeeHolidaysBlock extends StatefulWidget {
@@ -22,9 +22,8 @@ class EmployeeHolidaysBlock extends StatefulWidget {
 class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
   List<DateTime> holidayDates = [];
 
-  DateTimeRange? selectedRange;
-
   late YearlyHolidays selectedYearlyHolidays;
+  late int selectedYear = DateTime.now().year;
 
   var holidayD = [
     DateTime(2023, 1, 1),
@@ -81,10 +80,7 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
     var colorScheme = Theme.of(context).colorScheme;
     var textTheme = Theme.of(context).textTheme;
     return Container(
-      decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
-      ),
+      decoration: BoxDecoration(color: colorScheme.surface, borderRadius: BorderRadius.circular(20)),
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
@@ -96,28 +92,14 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                   onPressed: () {
                     showDialog(
                         context: context,
-                        builder: (BuildContext dialogContext) {
-                          return AlertDialog(
-                            title: Text('Congé de: ${widget.employee.names}'),
-                            content: EmployeeHolidaysForm(onNewSelection: (newRange) => selectedRange = newRange),
-                            actions: [
-                              FilledButton.tonal(
-                                  onPressed: () => Navigator.pop(dialogContext),
-                                  child: const Text('Annuler')),
-                              FilledButton(
-                                  onPressed: () {
-                                    if (selectedRange != null) {
-                                      EmployeesService().createEmployeeHolidays(widget.employee, selectedRange!)
-                                          .then((value) {
-                                            Navigator.pop(dialogContext);
-                                            setState((){});
-                                      });
-                                    }
-                                  },
-                                  child: const Text('Sauvegarder'))
-                            ],
-                          );
-                        });
+                        builder: (BuildContext dialogContext) => NewHolidayDialog(employee: widget.employee))
+                        .then((range) {
+                          if (range is DateTimeRange) {
+                            EmployeesService()
+                                .createEmployeeHolidays(widget.employee, range)
+                                .then((value) => setState((){}));
+                          }
+                    });
                   },
                   icon: const Icon(Icons.add),
                   label: const Text('Nouveau congé'))
@@ -131,7 +113,10 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                 children: [
                   YearSpinner(
                     initialYear: DateTime.now().year,
-                    onChanged: (int year) => setState(() => selectedYearlyHolidays = EmployeesService().getYearlyHolidays(widget.employee, year)),
+                    onChanged: (int year) => setState(() {
+                      selectedYearlyHolidays = EmployeesService().getYearlyHolidays(widget.employee, year);
+                      selectedYear = year;
+                    }),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -148,23 +133,32 @@ class _EmployeeHolidaysBlockState extends State<EmployeeHolidaysBlock> {
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                     Row(
                       children: [
-                        Icon(Icons.fiber_manual_record,
-                            size: 13, color: colorScheme.primary),
+                        Icon(Icons.fiber_manual_record, size: 13, color: colorScheme.primary),
                         const Text('Congés consommés:'),
                       ],
                     ),
-                    Text('${selectedYearlyHolidays.holidays.length}')
+                    Text('${EmployeesService().countYearlyHolidaysDates(widget.employee, selectedYear)}')
                   ]),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                     Row(
                       children: [
-                        Icon(Icons.fiber_manual_record,
-                            size: 13, color: colorScheme.error),
+                        Icon(Icons.fiber_manual_record, size: 13, color: colorScheme.error),
                         const Text('Congés restants:'),
                       ],
                     ),
                     Text('${selectedYearlyHolidays.allowedAmount - selectedYearlyHolidays.holidays.length}')
                   ]),
+                  ...EmployeesService()
+                      .computeHolidaySpans(widget.employee, selectedYear)
+                      .entries
+                      .map((e) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('${e.key.start.toBasicDateStr} - ${e.key.end.toBasicDateStr}'),
+                          Text('${e.value} jours')
+                        ],
+                      ))
+                      .toList()
                 ],
               ),
             ),
